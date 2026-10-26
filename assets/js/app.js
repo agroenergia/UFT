@@ -75,7 +75,7 @@ async function init(){
  $("lista").addEventListener("change",e=>{const id=+e.target.dataset.id;if(!id)return;e.target.checked?sel.add(id):sel.delete(id);renderCmp();});
  ["q","area","perc","sjr","qualis","acesso","taxa","dias","ord"].forEach(id=>$(id).addEventListener("input",render));
  $("limpar").onclick=limpar;
- $("pdf").onclick=pdf;
+ $("pdf-download").onclick=pdf;
  $("csv").onclick=()=>{const cols=["titulo","editora","issn","area","qualis","sjr","h","percentil","acesso","taxa","dias","atualizado"];const linhas=[cols.join(";"),...filtradas().map(r=>cols.map(c=>'"'+String(r[c]??"").replaceAll('"','""')+'"').join(";"))];const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+linhas.join("\n")],{type:"text/csv;charset=utf-8"}));a.download="revistas-ppgad.csv";a.click();URL.revokeObjectURL(a.href);};
  render();
 }
