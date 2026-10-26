@@ -1325,3 +1325,40 @@ main>section:nth-of-type(even){background:var(--menu-bg-even);border-color:#cbdd
 .site-header nav a.on{box-shadow:inset 0 -2px 0 #15619b}
 .site-header nav a:hover{text-decoration:underline;text-underline-offset:3px}
 .site-flow .flow-step{border-color:#c6dbe3}
+
+
+/* Cabeçalho compacto com navegação sob demanda. */
+:root{--search-green:#20704f}
+html{scroll-padding-top:var(--header-offset,82px)}
+.site-header{border-bottom-color:var(--search-green)}
+.site-header .header-inner{position:relative;width:calc(100% - 32px);max-width:1440px;min-height:65px;padding:8px 0;display:grid;grid-template-columns:max-content minmax(0,560px);justify-content:space-between;align-items:center;gap:20px}
+.site-header .brand-lockup{gap:10px}
+.site-header .ppgad-logo{width:44px;height:44px}
+.site-header .brand-text strong{font-size:22px}
+.site-header .brand-text small{font-size:9px;margin-top:4px}
+.site-header .header-search{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;width:100%;max-width:none;margin:0}
+.site-header .header-search input{width:100%;min-width:0;height:32px;min-height:32px;padding:0 10px;font-size:13px;border:1px solid var(--search-green)}
+.header-actions{display:flex;align-items:center;gap:8px;min-width:0}
+.site-header .header-search #ai-search-button{height:32px;min-height:32px;min-width:78px;padding:0 10px;border:1px solid var(--search-green);background:var(--search-green);color:#fff;font-size:12px}
+.site-header .header-search #ai-search-button:hover{background:var(--search-green);border-color:var(--search-green);color:#fff}
+.site-header .header-search .menu-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:32px;min-height:32px;min-width:72px;padding:0 10px;border:1px solid var(--search-green);border-radius:8px;background:#f4faf6;color:var(--search-green);font-size:12px;font-weight:700}
+.menu-icon{display:grid;gap:3px;width:16px;flex:none}
+.menu-icon>span{display:block;height:2px;border-radius:2px;background:currentColor}
+.site-header .header-menu[hidden]{display:none!important}
+.site-header .header-menu:not([hidden]){position:absolute;top:calc(100% + 8px);right:0;left:auto;display:grid;grid-template-columns:minmax(0,1fr);gap:5px;width:min(300px,calc(100vw - 24px));max-width:none;max-height:calc(100dvh - var(--header-offset,82px) - 24px);overflow:auto;padding:8px;border:1px solid #c8ddd1;border-radius:12px;background:#fff;box-shadow:0 8px 26px #103d612e;z-index:110}
+.site-header .header-menu a{display:block;width:100%;padding:10px 12px;color:#123f65;font-size:13px;border-radius:7px;text-align:left}
+.site-header .header-menu a[data-focus-search]{color:var(--search-green)}
+main>.site-stage,main>.discovery-banner,.journal-card{scroll-margin-top:12px}
+.floating-actions a:first-child{background:var(--search-green);color:#fff}
+@media(max-width:700px){
+  .site-header .header-inner{width:calc(100% - 24px);min-height:0;padding:6px 0;grid-template-columns:minmax(0,1fr);gap:6px}
+  .site-header .brand-lockup{gap:8px}
+  .site-header .ppgad-logo{width:28px;height:28px}
+  .site-header .brand-text strong{font-size:18px}
+  .site-header .brand-text small{font-size:8px;margin-top:2px}
+  .site-header .header-search{grid-template-columns:minmax(0,1fr);gap:6px}
+  .site-header .header-search input{height:40px;min-height:40px;font-size:16px}
+  .header-actions{gap:8px}
+  .site-header .header-search #ai-search-button,.site-header .header-search .menu-toggle{height:40px;min-height:40px;flex:1}
+}
+@media print{.header-menu,.menu-toggle{display:none!important}}

@@ -245,6 +245,24 @@ function setupBanner(){
   }));
 }
 
+function setupHeaderMenu(){
+  const header=document.querySelector(".site-header"),toggle=$("menu-toggle"),nav=$("primary-navigation");
+  if(!header||!toggle||!nav)return;
+  function setOpen(open,restoreFocus=false){
+    nav.hidden=!open;toggle.setAttribute("aria-expanded",String(open));
+    if(restoreFocus)toggle.focus();
+  }
+  toggle.addEventListener("click",()=>setOpen(nav.hidden));
+  nav.addEventListener("click",event=>{if(event.target.closest("a"))setOpen(false)});
+  document.addEventListener("click",event=>{if(!nav.hidden&&!nav.contains(event.target)&&!toggle.contains(event.target))setOpen(false)});
+  document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!nav.hidden){setOpen(false,true);event.preventDefault()}});
+  document.addEventListener("focusin",event=>{if(!nav.hidden&&!header.contains(event.target))setOpen(false)});
+  const updateOffset=()=>document.documentElement.style.setProperty("--header-offset",(Math.ceil(header.getBoundingClientRect().height)+14)+"px");
+  updateOffset();
+  if(typeof ResizeObserver!=="undefined")new ResizeObserver(updateOffset).observe(header);
+  else window.addEventListener("resize",updateOffset);
+}
+
 async function init(){
   const res=await fetch(DATA_URL,{cache:"no-store"});if(!res.ok)throw Error("Não foi possível carregar a base de revistas");
   const data=await res.json();ALL=(data.revistas||[]).map((r,i)=>({...r,id:r.id??i+1}));
@@ -272,5 +290,7 @@ async function init(){
   $("csv").onclick=exportCsv;$("ai-search-form").addEventListener("submit",e=>{e.preventDefault();askAI()});
   const predatoryToggle=$("predatory-toggle"),predatoryDetails=$("predatory-details");predatoryToggle.addEventListener("click",()=>{const open=predatoryDetails.hidden;predatoryDetails.hidden=!open;predatoryToggle.setAttribute("aria-expanded",String(open));predatoryToggle.textContent=open?"Ocultar sinais de alerta":"Ver sinais de alerta"});
   render();renderFeatured();setupBanner();
-}init().catch(e=>{$("lista").textContent=e.message;if($("featured-journals"))$("featured-journals").textContent="Não foi possível carregar os destaques. Tente atualizar a página.";console.error(e)});
+}
+setupHeaderMenu();
+init().catch(e=>{$("lista").textContent=e.message;if($("featured-journals"))$("featured-journals").textContent="Não foi possível carregar os destaques. Tente atualizar a página.";console.error(e)});
 
