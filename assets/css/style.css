@@ -857,3 +857,14 @@ main,
   .site-header nav{width:100%;justify-content:flex-start}
   .header-search-row{width:calc(100% - 16px)}
 }
+
+/* Catálogo acessível baseado nas planilhas PPGAD */
+.portal-toolbar{display:grid;grid-template-columns:minmax(220px,2fr) repeat(3,minmax(125px,1fr)) auto;gap:10px;background:#fff;padding:18px;border:1px solid var(--line);border-radius:16px}
+.portal-toolbar input,.portal-toolbar select,.portal-toolbar button,.portal-tools select,.portal-tools button{min-height:44px;max-width:100%;border:1px solid #ccd9d1;border-radius:9px;padding:9px;background:#fff;color:#173c2d}
+.portal-toolbar button,.portal-tools button{cursor:pointer;font-weight:600}
+.portal-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:20px 0 10px}
+.source-disclaimer{color:#66776d;font-size:12px;line-height:1.5}
+.journal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.journal-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;min-width:0;box-shadow:var(--shadow)}
+.journal-card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.tier{font-size:11px;font-weight:750;color:#176046;background:#e4f2e9;border-radius:30px;padding:5px 9px}.journal-card h3{font-size:20px;color:#073f30;margin:12px 0 3px;line-height:1.25}.journal-area{font-size:12px;color:#65756a;margin:0 0 10px}.journal-card p{margin:9px 0}.journal-metrics{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}.journal-metrics span{font-size:12px;background:#eef4f0;padding:6px 9px;border-radius:8px}.journal-actions{margin:16px 0 8px}.journal-actions a{display:inline-block;background:#07523c;color:white;padding:10px 13px;border-radius:9px;text-decoration:none;font-weight:600}.journal-note{display:block;color:#748078;font-size:11px}.journal-card details{border-top:1px solid var(--line);padding-top:12px}.journal-card summary{cursor:pointer;font-weight:650;color:#07523c}
+@media(max-width:900px){.portal-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.portal-toolbar input{grid-column:1/-1}}@media(max-width:620px){.journal-grid{grid-template-columns:1fr}.portal-toolbar{grid-template-columns:1fr}.portal-toolbar input{grid-column:auto}.portal-tools{align-items:stretch}.portal-tools select{flex:1}}
