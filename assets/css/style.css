@@ -1379,3 +1379,30 @@ main>.site-stage,main>.discovery-banner,.journal-card{scroll-margin-top:12px}
 .site-flow .flow-step:last-child{grid-column:auto}
 .site-header .header-menu a:nth-child(n),.site-header .header-menu a:nth-child(n):hover,.site-header .header-menu a:nth-child(n):focus-visible{background:#e6f1fb;color:#123f65}
 .site-header .header-menu a:hover,.site-header .header-menu a:focus-visible{text-decoration:underline;text-underline-offset:3px}
+
+/* More readable notebook and desktop layout; mobile header remains compact. */
+@media(min-width:901px){
+ .site-header .header-inner{min-height:98px;padding:12px 0;grid-template-columns:max-content minmax(0,840px);gap:24px}
+ .site-header .brand-lockup{gap:15px}
+ .site-header .ppgad-logo{width:66px;height:66px}
+ .site-header .brand-text strong{font-size:33px}
+ .site-header .brand-text small{font-size:13.5px;margin-top:6px}
+ .site-header .header-search{gap:12px}
+ .header-actions{gap:12px}
+ .site-header .header-search input{height:48px;min-height:48px;padding:0 15px;font-size:18px}
+ .site-header .header-search #ai-search-button{height:48px;min-height:48px;min-width:117px;padding:0 15px;font-size:18px}
+ .site-header .header-search .menu-toggle{height:48px;min-height:48px;min-width:108px;padding:0 15px;font-size:18px;gap:10px}
+ .menu-icon{width:24px;gap:4px}
+ .menu-icon>span{height:3px}
+ .site-header .header-menu:not([hidden]){width:360px;padding:12px;gap:7px}
+ .site-header .header-menu a{font-size:18px;padding:14px 16px}
+ #sinais-alerta,#comparar,#sugerir,#pdf{min-height:360px;padding:32px;box-sizing:border-box}
+ #sinais-alerta h2,#comparar h2,#sugerir h2,#pdf h2{font-size:32px;line-height:1.25}
+ #sinais-alerta .predatory-intro,#comparar .compare-hint,#sugerir .suggest-header p,#pdf .suggest-header p{font-size:16px;line-height:1.65}
+ #sinais-alerta .section-help{font-size:13px}
+ #sugerir .field label{font-size:14px;margin-bottom:6px}
+ #sugerir .suggest-form input{min-height:48px;font-size:16px}
+ #sugerir .suggest-form textarea{min-height:100px;font-size:16px}
+ #sugerir .suggest-submit{min-height:48px;font-size:15px}
+ #pdf .pdf-actions a,#pdf .pdf-actions button{font-size:15px}
+}
