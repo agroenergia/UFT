@@ -16,6 +16,14 @@
 <section class="catalog-section" id="revistas" aria-labelledby="titulo-revistas"><div class="section-heading"><div><span class="eyebrow">Catálogo</span><h2 id="titulo-revistas">Revistas acadêmicas</h2></div><span class="data-note">Base atualizada em <span id="base-data"></span></span></div>
 <div class="layout"><aside aria-label="Filtros"><div class="filter-title">Filtrar resultados</div>
 <label for="q">Busca por palavra-chave</label><input type="text" id="q" placeholder="título, escopo, editora, ISSN">
+<div class="ai-search">
+  <label for="ai-question">Ou pergunte à IA em linguagem natural</label>
+  <textarea id="ai-question" rows="3" maxlength="1500" placeholder="Ex.: Quero uma revista de bioenergia que não cobre taxa de publicação."></textarea>
+  <button type="button" id="ai-search-button" class="primary">Consultar assistente IA</button>
+  <p class="ai-disclaimer">A resposta usa o catálogo disponível; confirme taxas e indicadores nas fontes oficiais.</p>
+  <div id="ai-status" class="ai-status" role="status" aria-live="polite" hidden></div>
+  <div id="ai-answer" class="ai-answer" aria-live="polite"></div>
+</div>
 <label for="area">Área</label><select id="area"><option value="">Todas as áreas</option></select>
 <label for="perc">Percentil mínimo do índice H: <span id="perc-v">50</span></label><input type="range" id="perc" min="0" max="100" value="50">
 <div class="two"><div><label for="sjr">Quartil SJR</label><select id="sjr"><option value="">Todos</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></div><div><label for="qualis">Qualis</label><select id="qualis"><option value="">Todos</option></select></div></div>
@@ -31,5 +39,5 @@
 <section id="pdf" class="suggest-section"><div class="suggest-header"><span class="eyebrow">Download</span><h2>Baixar todas as revistas</h2><p>Gere um PDF com todas as revistas atualmente cadastradas no catálogo.</p><button type="button" id="pdf-download" class="primary">Baixar todas as revistas em PDF</button></div></section>
 </main>
 <footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><img class="footer-logo" src="https://docs.uft.edu.br/share/proxy/alfresco-noauth/api/internal/shared/node/UI5_A5t5TrCZ39Srrs4OSQ/content/PPGAD_Sigla.png" alt="" aria-hidden="true"><div><strong>PPGAD · UFT</strong><p>Portal de apoio à publicação científica.</p></div></div><div class="footer-objective"><span class="footer-label">Objetivo do projeto</span><p>Este projeto foi desenvolvido para ajudar os alunos do PPGAD/UFT a encontrar, consultar e comparar revistas e informações editoriais, facilitando a escolha de periódicos para a publicação de seus trabalhos científicos.</p></div><div class="footer-columns"><section class="footer-project"><span class="footer-label">Projeto</span><strong>Sob orientação do Prof. Dr. Guilherme Benko Siqueira.</strong><small>Desenvolvimento: Michael e Nibert, alunos do PPGAD/UFT.</small></section><section><span class="footer-label">Contato</span><a href="tel:+5548996390391">(48) 99639-0391</a><small>Contato do projeto</small></section></div><div class="footer-bottom"><span>Programa de Pós-Graduação em Agroenergia Digital · Universidade Federal do Tocantins</span><span><a class="technical-access" href="acesso.html">Área técnica</a> · Dados de contato adicionais podem ser incluídos quando autorizados pelos participantes.</span></div></div></footer>
-<script type="module" src="assets/js/app.js?v=20260925d"></script>
+<script type="module" src="assets/js/app.js?v=20261026ai"></script>
 </body></html>
