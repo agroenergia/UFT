@@ -766,3 +766,94 @@ main,
   border:1px solid #d7e2da;
   background:#fff;
 }
+
+
+/* Barra de pesquisa permanente no cabeçalho */
+.sr-only{
+  position:absolute!important;
+  width:1px!important;height:1px!important;
+  padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;border:0!important;
+}
+.header-inner{min-height:58px;gap:16px}
+.header-search-row{
+  width:min(1180px,calc(100% - 40px));
+  margin:0 auto;
+  padding:0 0 12px;
+}
+.header-search{
+  display:flex;
+  align-items:stretch;
+  width:100%;
+  min-width:0;
+  gap:8px;
+}
+.header-search input{
+  flex:1;
+  min-width:0;
+  height:42px;
+  padding:0 14px;
+  border:1px solid rgba(255,255,255,.32);
+  border-radius:9px;
+  background:#fff;
+  color:#17241f;
+  font-size:14px;
+}
+.header-search input::placeholder{color:#66766d}
+.header-search button{
+  flex:none;
+  min-width:108px;
+  padding:0 18px;
+  border:1px solid #dcece5;
+  border-radius:9px;
+  background:#dcece5;
+  color:#073f30;
+  font-weight:700;
+}
+.header-search button:hover{background:#fff}
+.header-search button:disabled{opacity:.65;cursor:wait}
+.ai-response-wrap{
+  width:min(1180px,calc(100% - 40px));
+  margin:0 auto;
+}
+.ai-status{
+  padding:10px 14px 0;
+  color:#24583b;
+  font-size:.9rem;
+  line-height:1.5;
+}
+.ai-answer{
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  line-height:1.6;
+}
+.ai-answer:not(:empty){
+  margin:8px 0 16px;
+  padding:14px 16px;
+  border:1px solid #d7e2da;
+  border-radius:10px;
+  background:#fff;
+  box-shadow:0 5px 18px rgba(7,63,48,.05);
+}
+@media(max-width:900px){
+  .header-inner{flex-wrap:wrap;justify-content:center;padding:8px 0;gap:7px}
+  .header-search-row{width:calc(100% - 32px);padding-bottom:10px}
+  .ai-response-wrap{width:calc(100% - 32px)}
+}
+@media(max-width:700px){
+  .header-inner{width:calc(100% - 20px);flex-direction:row;align-items:center}
+  .brand-lockup{width:auto;flex:1;justify-content:flex-start}
+  .site-header nav{width:auto;max-width:100%;flex-wrap:wrap;justify-content:flex-end}
+  .header-search-row{width:calc(100% - 20px)}
+  .header-search{gap:6px}
+  .header-search input{height:40px;font-size:13px;padding:0 10px}
+  .header-search button{min-width:78px;padding:0 10px;font-size:12px}
+  .ai-response-wrap{width:calc(100% - 20px)}
+}
+@media(max-width:420px){
+  .header-inner{align-items:flex-start;flex-direction:column}
+  .brand-lockup{width:100%}
+  .site-header nav{width:100%;justify-content:flex-start}
+  .header-search-row{width:calc(100% - 16px)}
+}
