@@ -1362,3 +1362,11 @@ main>.site-stage,main>.discovery-banner,.journal-card{scroll-margin-top:12px}
   .site-header .header-search #ai-search-button,.site-header .header-search .menu-toggle{height:40px;min-height:40px;flex:1}
 }
 @media print{.header-menu,.menu-toggle{display:none!important}}
+
+/* Discreet catalogue links and progressive disclosure. */
+.catalog-guide-link a{display:inline;background:transparent;border:0;border-radius:0;padding:0;color:#15619b;font-size:13px;font-weight:400;text-decoration:underline;text-underline-offset:3px;box-shadow:none}
+.catalog-guide-link a:hover,.catalog-guide-link a:focus-visible{background:transparent;color:#104b79;text-decoration:underline}
+.catalog-expand-control{text-align:center;margin:14px 0 0}
+.catalog-expand-control button{font-size:13px;font-weight:400;box-shadow:none}
+.catalog-expand-control button:hover{background:transparent;color:#104b79}
+.catalog-expand-control button[hidden]{display:none}

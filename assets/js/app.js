@@ -1,4 +1,4 @@
-const DATA_URL="./assets/data/revistas.json";const $=id=>document.getElementById(id);const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));const fmt=v=>v===null||v===undefined||v===""?"Não informado":String(v);const safeUrl=u=>{try{const x=new URL(u);return ["https:","http:"].includes(x.protocol)?x.href:""}catch{return""}};let ALL=[],BASE="",SELECTED=new Set();function field(r,k){return r[k]??null}function priority(r){return {"ALTO":0,"MÉDIO":1,"COMPLEMENTAR":2}[r.tier]??3}let CATALOG_TOP10=false;
+const DATA_URL="./assets/data/revistas.json";const $=id=>document.getElementById(id);const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));const fmt=v=>v===null||v===undefined||v===""?"Não informado":String(v);const safeUrl=u=>{try{const x=new URL(u);return ["https:","http:"].includes(x.protocol)?x.href:""}catch{return""}};let ALL=[],BASE="",SELECTED=new Set();function field(r,k){return r[k]??null}function priority(r){return {"ALTO":0,"MÉDIO":1,"COMPLEMENTAR":2}[r.tier]??3}let CATALOG_TOP10=false,CATALOG_EXPANDED=false;
 const isSelection=r=>!r.criterioPlanilha||r.criterioPlanilha.status==="selecao";
 const selectionCatalog=()=>ALL.filter(isSelection);
 function matchesCost(r,filter){
@@ -21,7 +21,9 @@ function render(){
   arr.sort((a,b)=>order==="nome"?a.titulo.localeCompare(b.titulo,"pt-BR"):order==="tier"?priority(a)-priority(b)||((Number(b.citescore)||0)-(Number(a.citescore)||0)):((Number(b.citescore)||0)-(Number(a.citescore)||0))||a.titulo.localeCompare(b.titulo,"pt-BR"));
   if(CATALOG_TOP10)arr=arr.filter(r=>isSelection(r)&&r.citescore!==null&&r.citescore!==""&&Number.isFinite(Number(r.citescore))).slice(0,10);
   $("count").textContent=arr.length+" resultados";
-  $("lista").innerHTML=arr.map(r=>{
+  const visible=CATALOG_EXPANDED?arr:arr.slice(0,10);
+  const expand=$("catalog-expand");expand.hidden=arr.length<=10;expand.setAttribute("aria-expanded",String(CATALOG_EXPANDED));expand.textContent=CATALOG_EXPANDED?"Mostrar apenas 10 registros ↑":"Ver todos os "+arr.length+" registros ↓";
+  $("lista").innerHTML=visible.map(r=>{
     const url=safeUrl(r.url_ficha||r.url);
     const metrics=[["Quartil",r.sjr],["CiteScore",r.citescore],["Impacto",r.fatorImpacto]].filter(([,v])=>v!==null&&v!==undefined&&v!=="").map(([name,v])=>'<span><b>'+name+'</b> '+esc(v)+'</span>').join("");
     return '<article class="journal-card" id="revista-'+esc(r.id)+'"><div class="journal-card-top"><span class="tier criterion-badge status-'+esc(r.criterioPlanilha?.status||"confirmar")+'">'+esc(compactStatus(r))+'</span><label class="cmp"><input type="checkbox" data-id="'+esc(r.id)+'" '+(SELECTED.has(String(r.id))?"checked":"")+'> Comparar</label></div><h3>'+esc(r.titulo)+'</h3><p class="journal-area">'+esc(r.area||"Área não informada")+'</p><div class="journal-metrics">'+metrics+'</div><p class="journal-cost"><strong>Custo:</strong> '+esc(compactCost(r))+'</p><div class="journal-actions journal-card-actions"><a class="journal-record-link" href="ficha-revista.html?id='+encodeURIComponent(r.id)+'" target="_blank" rel="noopener">Ficha completa ↗</a>'+(url?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+(r.tipoLink?"Fonte externa":"Site da revista")+' ↗</a>':"")+'</div></article>';
@@ -269,14 +271,14 @@ async function init(){
   BASE=data.fonteArquivo||data.baseAtualizada||"base do projeto";
   const checked=ALL.filter(r=>Array.isArray(r.conferenciasOnline)&&r.conferenciasOnline.length).length;
   $("catalog-summary").textContent=ALL.length+" revistas cadastradas · "+checked+" com campos conferidos";$("selecao-option").textContent="Seleção do catálogo ("+selectionCatalog().length+")";
-  if(/^#revista-/.test(location.hash))$("criterio").value="";
+  if(/^#revista-/.test(location.hash)){$("criterio").value="";CATALOG_EXPANDED=true;}
   [...new Set(ALL.map(r=>r.area).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR")).forEach(v=>$("area").add(new Option(v,v)));
-  const resetTop10=()=>{CATALOG_TOP10=false;document.querySelectorAll("[data-fast-filter]").forEach(b=>b.setAttribute("aria-pressed","false"))};
+  const resetTop10=()=>{CATALOG_TOP10=false;CATALOG_EXPANDED=false;document.querySelectorAll("[data-fast-filter]").forEach(b=>b.setAttribute("aria-pressed","false"))};
   ["q","criterio","area","sjr","idioma","custo","score","ord"].forEach(id=>$(id).addEventListener("input",()=>{resetTop10();render()}));
   $("limpar").onclick=()=>{["q","criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");resetTop10();render()};
   document.querySelectorAll("[data-fast-filter]").forEach(button=>button.addEventListener("click",()=>{
     ["q","criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");
-    CATALOG_TOP10=false;
+    CATALOG_TOP10=false;CATALOG_EXPANDED=false;
     const filter=button.dataset.fastFilter;
     if(filter!=="clear"&&filter!=="all")$("criterio").value="selecao";
     if(filter==="q1")$("sjr").value="Q1";
@@ -286,6 +288,7 @@ async function init(){
     document.querySelectorAll("[data-fast-filter]").forEach(b=>b.setAttribute("aria-pressed",String(filter!=="clear"&&b===button)));
     render();$("lista").scrollIntoView({behavior:"smooth",block:"start"});
   }));
+  $("catalog-expand").addEventListener("click",()=>{CATALOG_EXPANDED=!CATALOG_EXPANDED;render();if(!CATALOG_EXPANDED)$("revistas").scrollIntoView({behavior:"smooth",block:"start"})});
   $("lista").addEventListener("change",e=>{const id=e.target.dataset.id;if(!id)return;if(e.target.checked){if(SELECTED.size>=4){e.target.checked=false;alert("Selecione até quatro revistas.");return}SELECTED.add(id)}else SELECTED.delete(id);renderCompare()});
   $("csv").onclick=exportCsv;$("ai-search-form").addEventListener("submit",e=>{e.preventDefault();askAI()});
   const predatoryToggle=$("predatory-toggle"),predatoryDetails=$("predatory-details");predatoryToggle.addEventListener("click",()=>{const open=predatoryDetails.hidden;predatoryDetails.hidden=!open;predatoryToggle.setAttribute("aria-expanded",String(open));predatoryToggle.textContent=open?"Ocultar sinais de alerta":"Ver sinais de alerta"});
