@@ -1370,3 +1370,12 @@ main>.site-stage,main>.discovery-banner,.journal-card{scroll-margin-top:12px}
 .catalog-expand-control button{font-size:13px;font-weight:400;box-shadow:none}
 .catalog-expand-control button:hover{background:transparent;color:#104b79}
 .catalog-expand-control button[hidden]{display:none}
+
+/* Uniform cards retain full content, including sparse records. */
+.journal-grid,.featured-journals,.ai-rich-grid,.ai-catalog-grid,.ai-web-journals,.site-flow{grid-auto-rows:1fr;align-items:stretch}
+.journal-grid>.journal-card{display:flex;flex-direction:column;height:100%;box-sizing:border-box}
+.journal-card .journal-card-actions{margin-top:auto;padding-top:9px}
+.featured-journals>.featured-journal,.ai-rich-grid>.ai-rich-card,.ai-catalog-grid>.ai-catalog-card,.ai-web-journals>.ai-web-journal,.site-flow>.flow-step{height:100%;box-sizing:border-box}
+.site-flow .flow-step:last-child{grid-column:auto}
+.site-header .header-menu a:nth-child(n),.site-header .header-menu a:nth-child(n):hover,.site-header .header-menu a:nth-child(n):focus-visible{background:#e6f1fb;color:#123f65}
+.site-header .header-menu a:hover,.site-header .header-menu a:focus-visible{text-decoration:underline;text-underline-offset:3px}
