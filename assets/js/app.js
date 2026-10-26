@@ -23,6 +23,39 @@ async function init(){
  $("dias").max=maxDias;$("dias").value=maxDias;
  const sel=new Set();
 
+ async function askAI(){
+   const question=$("ai-question").value.trim();
+   const status=$("ai-status");
+   const answer=$("ai-answer");
+   if(!question){status.hidden=false;status.textContent="Digite uma pergunta para consultar a IA.";answer.textContent="";return;}
+   status.hidden=false;status.textContent="Consultando o assistente…";
+   answer.textContent="";
+   $("ai-search-button").disabled=true;
+   try{
+     const response=await fetch("https://muddy-field-7b19.michael-oliveira.workers.dev/api/search",{
+       method:"POST",
+       headers:{"Content-Type":"application/json"},
+       body:JSON.stringify({
+         question,
+         catalog:REVISTAS.map(r=>({
+           titulo:r.titulo,issn:r.issn,escopo:r.escopo,area:r.area,
+           editora:r.editora,idioma:r.idioma,acesso:r.acesso,taxa:r.taxa,
+           percentil:r.percentil,qualis:r.qualis,url:r.url_ficha
+         }))
+       })
+     });
+     const data=await response.json().catch(()=>({}));
+     if(!response.ok) throw new Error(data.error||("O serviço respondeu com erro ("+response.status+")."));
+     answer.textContent=data.answer||"A IA não retornou uma resposta.";
+     status.textContent="Resposta gerada com "+(data.records_considered??0)+" registros do catálogo. Verifique as fontes oficiais.";
+   }catch(error){
+     status.textContent="Não foi possível consultar a IA.";
+     answer.textContent=error.message+" Se o Worker acabou de ser publicado, confirme que está implantado e que a rota /api/search está disponível.";
+   }finally{
+     $("ai-search-button").disabled=false;
+   }
+ }
+
  function filtradas(){
    const q=$("q").value.trim().toLowerCase();
    const maxTax=+$("taxa").value,maxDay=+$("dias").value;
@@ -74,7 +107,7 @@ async function init(){
 
  $("lista").addEventListener("change",e=>{const id=+e.target.dataset.id;if(!id)return;e.target.checked?sel.add(id):sel.delete(id);renderCmp();});
  ["q","area","perc","sjr","qualis","acesso","taxa","dias","ord"].forEach(id=>$(id).addEventListener("input",render));
- $("limpar").onclick=limpar;
+ $("ai-search-button").addEventListener("click",askAI);\n $("ai-question").addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter")askAI();});\n $("limpar").onclick=limpar;
  $("pdf-download").onclick=pdf;
  $("csv").onclick=()=>{const cols=["titulo","editora","issn","area","qualis","sjr","h","percentil","acesso","taxa","dias","atualizado"];const linhas=[cols.join(";"),...filtradas().map(r=>cols.map(c=>'"'+String(r[c]??"").replaceAll('"','""')+'"').join(";"))];const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+linhas.join("\n")],{type:"text/csv;charset=utf-8"}));a.download="revistas-ppgad.csv";a.click();URL.revokeObjectURL(a.href);};
  render();
