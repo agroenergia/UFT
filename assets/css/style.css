@@ -1198,3 +1198,21 @@ main{padding-bottom:80px}
 .ai-result-summary span:last-child{border-color:#ead8ac;color:#765a18}
 .ai-web-journal .external-result-label{letter-spacing:.04em}
 @media(max-width:600px){.ai-result-summary{align-items:flex-start;flex-direction:column;gap:6px}}
+
+
+/* Separação visível entre base do projeto e busca complementar */
+.ai-base-results{margin:18px 0 24px;padding:18px;border:1px solid #bad8c8;border-radius:14px;background:linear-gradient(135deg,#f0f8f3,#fff) padding-box,linear-gradient(130deg,#3c9b70,#b8d5c5) border-box}
+.ai-base-results>h3{margin:0 0 6px;color:#174b37;font-size:20px}
+.ai-base-summary,.ai-base-empty{margin:0 0 14px;color:#48675a;font-size:13px;line-height:1.6}
+.ai-catalog-expansion{margin-top:14px;border:1px solid #bfd6c8;border-radius:10px;background:#fff}
+.ai-catalog-expansion>summary{padding:13px 15px;color:#15563e;font-weight:750;cursor:pointer}
+.catalog-section .catalog-guide-link{margin:0 0 14px}
+.catalog-guide-link a{display:inline-flex;padding:9px 13px;border:1px solid #b9d9ca;border-radius:9px;background:#eff8f3;color:#18583e;font-weight:700;text-decoration:none}
+.predatory-section{margin:22px 0;padding:22px;border:1px solid transparent;border-radius:16px;background:linear-gradient(135deg,#f1f8fc,#fff9eb) padding-box,linear-gradient(125deg,#15619b,#e3b544,#54a779) border-box}
+.predatory-intro{max-width:900px;color:#36556a;line-height:1.7}
+.predatory-details{margin-top:16px;padding:18px;border-radius:12px;background:#fff;border:1px solid #d8e5eb}
+.predatory-details h3{margin-top:0;color:#153f60}
+.predatory-details li{margin:0 0 11px;line-height:1.6;color:#36556a}
+.predatory-sources{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.predatory-sources a{font-weight:700}
+@media(max-width:700px){.ai-base-results,.predatory-section{padding:15px}.predatory-sources{flex-direction:column;gap:8px}}
