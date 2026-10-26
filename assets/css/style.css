@@ -1039,3 +1039,18 @@ body{overflow-x:clip}
   .site-header{position:static}
   .discovery-banner,.ai-response-wrap,.portal-toolbar,.portal-tools,.suggest-section{display:none}
 }
+
+/* Ficha completa da revista na orientação da IA */
+.ai-full-record{margin:12px 0;border:1px solid #c9dce9;border-radius:10px;background:#f4f9fc}
+.ai-full-record>summary{padding:11px 12px;color:#155c90;font-size:13px;font-weight:700;cursor:pointer;list-style:none}
+.ai-full-record>summary::-webkit-details-marker{display:none}
+.ai-full-record>summary::after{content:"＋";float:right;color:#277b57;font-size:15px}
+.ai-full-record[open]>summary::after{content:"−"}
+.ai-full-record>summary:focus-visible{outline:3px solid #dc9d13;outline-offset:2px}
+.ai-full-record-note{margin:0!important;padding:0 12px 10px;color:#5c7283;font-size:11px!important;line-height:1.5}
+.ai-full-record-list{margin:0;padding:0 12px 12px}
+.ai-full-record-row{display:grid;grid-template-columns:minmax(110px,.7fr) minmax(0,1.5fr);gap:12px;padding:8px 0;border-top:1px solid #dce8ef}
+.ai-full-record-row dt{font-size:11px;font-weight:700;color:#315d78}
+.ai-full-record-row dd{margin:0;font-size:12px;line-height:1.55;color:#244257;overflow-wrap:anywhere}
+.ai-full-record-row dd a{display:inline;color:#155c90;background:transparent;padding:0;margin:0;text-decoration:underline;overflow-wrap:anywhere}
+@media(max-width:520px){.ai-full-record-row{grid-template-columns:1fr;gap:3px}.ai-rich-card{padding:13px}}
