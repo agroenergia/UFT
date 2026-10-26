@@ -1054,3 +1054,26 @@ body{overflow-x:clip}
 .ai-full-record-row dd{margin:0;font-size:12px;line-height:1.55;color:#244257;overflow-wrap:anywhere}
 .ai-full-record-row dd a{display:inline;color:#155c90;background:transparent;padding:0;margin:0;text-decoration:underline;overflow-wrap:anywhere}
 @media(max-width:520px){.ai-full-record-row{grid-template-columns:1fr;gap:3px}.ai-rich-card{padding:13px}}
+
+/* Descoberta do catálogo integral e da literatura externa */
+.ai-catalog-expansion{margin:18px 0;border:1px solid #c8dbe8;border-radius:12px;background:#f4f9fc}
+.ai-catalog-expansion>summary{padding:14px 16px;color:#155c90;font-size:15px;font-weight:750;cursor:pointer}
+.ai-catalog-note,.ai-web-note{margin:0;padding:0 16px 13px;color:#586f80;font-size:12px;line-height:1.6}
+.ai-catalog-grid{padding:0 14px 14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.ai-catalog-card,.ai-web-journal{min-width:0;padding:15px;background:#fff;border:1px solid #d8e5ed;border-radius:10px}
+.ai-catalog-card h4,.ai-web-journal h4{margin:0 0 8px;color:#173f5b;font-size:15px;line-height:1.4;overflow-wrap:anywhere}
+.catalog-relevance{display:inline-block;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:700;margin:0 0 7px}
+.catalog-relevance.direct{background:#e5f3ea;color:#216744}
+.catalog-relevance.adjacent{background:#e8f1f7;color:#315f7d}
+.ai-catalog-card p,.ai-web-journal p{font-size:12px;line-height:1.55;color:#536d7d;margin:7px 0}
+.ai-catalog-metrics{font-weight:650}
+.ai-catalog-card>a{display:inline-block;margin-top:8px;padding:8px 10px;border-radius:7px;background:#15619b;color:#fff;font-size:11px;font-weight:650;text-decoration:none}
+.ai-catalog-card .ai-full-record{margin-top:10px}
+.ai-web-discovery{margin:18px 0;padding:16px;border:1px solid #d7e4ec;border-radius:12px;background:#fff}
+.ai-web-discovery h3{margin:0 0 8px;font-size:18px;color:#123f65}
+.ai-source-link{display:inline-block;margin:0 16px 12px;font-size:11px;color:#155c90}
+.ai-web-journals{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px}
+.ai-web-journal .origin-internal,.ai-web-journal .origin-external{font-size:10px}
+.ai-web-paper{border-top:1px solid #e1eaf0;padding-top:7px}
+.ai-web-paper a{display:inline;color:#155c90;background:transparent;padding:0;margin:0;text-decoration:underline;font-weight:500;overflow-wrap:anywhere}
+.ai-web-paper span{font-size:10px;color:#6d7f8b}
