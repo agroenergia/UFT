@@ -2,10 +2,10 @@ const $=id=>document.getElementById(id),fmt=v=>v===null||v===undefined||v===""?"
 function safeUrl(value){try{const u=new URL(value);return["https:","http:"].includes(u.protocol)?u.href:""}catch{return""}}
 function node(tag,className,text){const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el}
 function renderTen(journals,data){
- const top= (journals||[]).filter(r=>r.citescore!==null&&r.citescore!==""&&Number.isFinite(Number(r.citescore))).sort((a,b)=>Number(b.citescore)-Number(a.citescore)||a.titulo.localeCompare(b.titulo,"pt-BR")).slice(0,10);
+ const top= (journals||[]).filter(r=>(!r.criterioPlanilha||r.criterioPlanilha.status==="selecao")&&r.citescore!==null&&r.citescore!==""&&Number.isFinite(Number(r.citescore))).sort((a,b)=>Number(b.citescore)-Number(a.citescore)||a.titulo.localeCompare(b.titulo,"pt-BR")).slice(0,10);
  const list=$("top-ten-list");list.replaceChildren();
  if(!top.length){$("report-status").textContent="A base ainda não tem CiteScores suficientes para montar este guia.";return}
- $("report-status").textContent=top.length+" revistas encontradas · CiteScores mais altos cadastrados";
+ $("report-status").textContent=top.length+" revistas da seleção da planilha · CiteScores mais altos cadastrados";
  top.forEach((r,index)=>{
    const card=node("article","top-ten-card"),head=node("div","report-card-head"),rank=node("span","report-rank",String(index+1).padStart(2,"0")),badge=node("span","report-tier",r.tier||"Curadoria");
    head.append(rank,badge);card.append(head);card.append(node("h2","",r.titulo));card.append(node("p","report-area",r.area||"Área não informada"));
@@ -23,3 +23,4 @@ function renderTen(journals,data){
 }
 $("print-report").addEventListener("click",()=>window.print());
 fetch("./assets/data/revistas.json",{cache:"no-store"}).then(response=>{if(!response.ok)throw Error("Não foi possível carregar o catálogo.");return response.json()}).then(data=>renderTen(data.revistas,data)).catch(error=>{$("report-status").textContent=error.message});
+
