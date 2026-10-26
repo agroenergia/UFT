@@ -96,7 +96,7 @@ async function searchCrossref(question){
   const params=new URLSearchParams({"query.bibliographic":phrase.slice(0,300),filter:"from-pub-date:"+fromYear+"-01-01,type:journal-article",rows:"100",select:"DOI,title,container-title,URL,published,published-print,published-online,publisher,type,subject",sort:"published",order:"desc"});
   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),12000);let response;
   try{response=await fetch(CROSSREF_API+"?"+params.toString(),{headers:{Accept:"application/json"},cache:"no-store",signal:controller.signal})}finally{clearTimeout(timeout)}
-  if(!response.ok)throw new Error("Crossref respondeu com HTTP "+response.status);
+  if(!response.ok)throw new Error("A busca bibliográfica respondeu com erro HTTP "+response.status);
   const payload=await response.json(),items=payload&&payload.message&&payload.message.items||[],groups=new Map();
   items.filter(item=>crossrefItemMatches(item,phrase)).forEach(item=>{
     const title=Array.isArray(item["container-title"])?item["container-title"][0]:"";if(!title||!item.DOI)return;
@@ -132,28 +132,38 @@ function makeAllCatalogSection(question){
   });
   details.append(grid);return details;
 }
-function appendCrossrefResults(parent,discovery){
+function discoveryCounts(matched,discovery){
+  const catalog=new Set((matched||[]).map(r=>normalizeSearchText(r.titulo))),external=new Set();
+  (discovery&&discovery.journals||[]).forEach(j=>{const key=normalizeSearchText(j.title);if(j.inCatalog)catalog.add(key);else external.add(key)});
+  for(const title of catalog)external.delete(title);
+  return {catalog:catalog.size,external:external.size,total:catalog.size+external.size};
+}
+function appendCrossrefResults(parent,discovery,matched){
   const section=document.createElement("section");section.className="ai-web-discovery";
-  const kicker=document.createElement("span");kicker.className="external-stage-kicker";kicker.textContent="ETAPA EXTERNA · PESQUISAS NA INTERNET";section.append(kicker);
-  const heading=document.createElement("h3");heading.textContent="Descobertas na literatura científica";section.append(heading);
+  const kicker=document.createElement("span");kicker.className="external-stage-kicker";kicker.textContent="PESQUISAS NA INTERNET · NOVA ETAPA";section.append(kicker);
+  const heading=document.createElement("h3");heading.textContent="Novas possibilidades na literatura";section.append(heading);
+  const counts=discoveryCounts(matched,discovery),summary=document.createElement("p");summary.className="ai-result-summary";
+  if(counts.total){summary.append(document.createTextNode("Encontramos "+counts.total+" títulos relacionados · "));const inside=document.createElement("span");inside.textContent=counts.catalog+" do catálogo";const outside=document.createElement("span");outside.textContent=counts.external+" sugestões da internet";summary.append(inside,document.createTextNode(" · "),outside)}
+  else summary.textContent="Nenhum título relacionado foi identificado nesta busca.";
+  section.append(summary);
   const lead=document.createElement("p");lead.className="ai-web-note";
   if(discovery&&discovery.journals&&discovery.journals.length){
     const query=document.createElement("p");query.className="external-search-query";query.append(document.createTextNode("Busca por: "));const strong=document.createElement("strong");strong.textContent=discovery.query||"tema da pergunta";query.append(strong);section.append(query);
-    lead.textContent="Periódicos que publicaram artigos relacionados à sua busca nos últimos quatro anos. Estes registros ampliam o catálogo do projeto; não confirmam escopo, indexação, taxas ou aceitação.";section.append(lead);
-    const source=document.createElement("a");source.href="https://www.crossref.org/documentation/retrieve-metadata/rest-api/";source.target="_blank";source.rel="noopener noreferrer";source.className="ai-source-link";source.textContent="Fonte bibliográfica: Crossref · Ver método ↗";section.append(source);
+    lead.textContent="A busca encontrou artigos recentes ligados ao tema. As sugestões da internet são iniciais e precisam ser conferidas no site de cada revista.";section.append(lead);
+    const source=document.createElement("a");source.href="https://www.crossref.org/documentation/retrieve-metadata/rest-api/";source.target="_blank";source.rel="noopener noreferrer";source.className="ai-source-link";source.textContent="Como são encontradas estas sugestões?";section.append(source);
     const list=document.createElement("div");list.className="ai-web-journals";
     discovery.journals.forEach(journal=>{
       const card=document.createElement("article");card.className="ai-web-journal";
-      const label=document.createElement("span");label.className="external-result-label";label.textContent="RESULTADO EXTERNO";card.append(label);
+      const label=document.createElement("span");label.className="external-result-label";label.textContent=journal.inCatalog?"NO CATÁLOGO":"SUGESTÃO DA INTERNET";card.append(label);
       const title=document.createElement("h4");title.textContent=journal.title;card.append(title);
-      const badge=document.createElement("span");badge.className=journal.inCatalog?"origin-internal":"origin-external";badge.textContent=journal.inCatalog?"Também está no catálogo":"Nova possibilidade · avaliar escopo";card.append(badge);
+      const badge=document.createElement("span");badge.className=journal.inCatalog?"origin-internal":"origin-external";badge.textContent=journal.inCatalog?"No catálogo":"Conferir antes de usar";card.append(badge);
       const meta=document.createElement("p");meta.className="external-result-meta";meta.textContent=journal.count+" artigos relacionados"+(journal.publisher?" · "+journal.publisher:"");card.append(meta);
-      journal.papers.forEach(paper=>{if(!paper.title)return;const p=document.createElement("p");p.className="ai-web-paper";const a=document.createElement("a");a.href=paper.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=paper.title+" ↗";p.append(a);const year=document.createElement("span");year.textContent=paper.year?" ("+paper.year+")":"";p.append(year);card.append(p)});
+      journal.papers.forEach(paper=>{if(!paper.title)return;const p=document.createElement("p");p.className="ai-web-paper";const link=document.createElement("a");link.href=paper.url;link.target="_blank";link.rel="noopener noreferrer";link.textContent=paper.title+" ↗";p.append(link);const year=document.createElement("span");year.textContent=paper.year?" ("+paper.year+")":"";p.append(year);card.append(p)});
       list.append(card);
     });
     section.append(list);
   }else{
-    lead.textContent=discovery&&discovery.error?"A busca externa na literatura ficou indisponível nesta tentativa. O catálogo e seus filtros continuam disponíveis abaixo.":"Nenhum artigo recente relacionado ao tema e ao escopo do portal apareceu nesta busca. Tente termos específicos de agricultura, energia, biomassa, sustentabilidade, água ou ambiente.";section.append(lead);
+    lead.textContent=discovery&&discovery.error?"A busca na internet não ficou disponível nesta tentativa. As revistas do catálogo continuam acessíveis abaixo.":"Não foram encontradas sugestões externas relacionadas ao tema desta busca. Tente termos mais específicos.";section.append(lead);
   }
   parent.append(section);
 }
@@ -164,20 +174,20 @@ function presentAI(raw,question,discovery){
   if(matched.length){
     const sub=document.createElement("p");sub.className="ai-rich-sub";sub.textContent="Revistas mencionadas na resposta da IA e cadastradas no catálogo. Abra cada ficha para consultar os dados completos.";wrap.append(sub);
     const grid=document.createElement("div");grid.className="ai-rich-grid";
-    matched.forEach(r=>{const card=document.createElement("article");card.className="ai-rich-card";const name=document.createElement("h4");name.textContent=r.titulo;card.append(name);card.append(makeFullRecord(r));const origin=document.createElement("span");origin.className="origin-internal";origin.textContent="Catálogo do projeto";card.append(origin);const area=document.createElement("p");area.textContent=r.area||"Área não informada";card.append(area);const metrics=document.createElement("p");metrics.className="ai-rich-metrics";metrics.textContent="SJR: "+fmt(r.sjr)+" · CiteScore: "+fmt(r.citescore);card.append(metrics);const cost=document.createElement("p");cost.textContent="Custo informado: "+fmt(r.custo);card.append(cost);const url=safeUrl(r.url_ficha||r.url);if(url){const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Abrir site externo ↗";card.append(a);}grid.append(card)});
+    matched.forEach(r=>{const card=document.createElement("article");card.className="ai-rich-card";const name=document.createElement("h4");name.textContent=r.titulo;card.append(name);card.append(makeFullRecord(r));const origin=document.createElement("span");origin.className="origin-internal";origin.textContent="No catálogo";card.append(origin);const area=document.createElement("p");area.textContent=r.area||"Área não informada";card.append(area);const metrics=document.createElement("p");metrics.className="ai-rich-metrics";metrics.textContent="SJR: "+fmt(r.sjr)+" · CiteScore: "+fmt(r.citescore);card.append(metrics);const cost=document.createElement("p");cost.textContent="Custo informado: "+fmt(r.custo);card.append(cost);const url=safeUrl(r.url_ficha||r.url);if(url){const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Abrir site externo ↗";card.append(a);}grid.append(card)});
     wrap.append(grid);
   }
-  appendCrossrefResults(wrap,discovery);
+  appendCrossrefResults(wrap,discovery,matched);
   wrap.append(makeAllCatalogSection(question));
   const details=document.createElement("details");details.className="ai-explanation";details.open=!matched.length;
   const summary=document.createElement("summary");summary.textContent=matched.length?"Ler explicação completa da IA":"Resposta da IA";details.append(summary);
   const body=document.createElement("div");body.className="ai-explanation-text";body.textContent=raw;details.append(body);wrap.append(details);
-  const note=document.createElement("p");note.className="source-disclaimer";note.textContent="Fontes: catálogo do projeto e registros bibliográficos do Crossref, quando encontrados. Uma ocorrência em artigo não confirma que uma revista seja adequada ao seu manuscrito; verifique o escopo e as regras atuais na página oficial.";wrap.append(note);
+  const note=document.createElement("p");note.className="source-disclaimer";note.textContent="As sugestões externas ainda não foram conferidas pela equipe. Verifique escopo, taxas e regras atuais no site oficial antes de considerar uma submissão.";wrap.append(note);
   el.append(wrap);
 }
 async function askAI(){
   const question=$("ai-question").value.trim(),status=$("ai-status"),answer=$("ai-answer");if(!question)return;
-  status.hidden=false;status.textContent="Consultando o assistente e buscando artigos relacionados no Crossref…";answer.textContent="";
+  status.hidden=false;status.textContent="Consultando o catálogo e buscando novas possibilidades na internet…";answer.textContent="";
   $("ai-loading").hidden=false;$("ai-search-button").disabled=true;$("ai-search-button").textContent="Pesquisando…";
   const webPromise=searchCrossref(question).catch(error=>({journals:[],error:error.message,fromYear:new Date().getFullYear()-4}));
   let aiText="",aiError="";
@@ -186,9 +196,9 @@ async function askAI(){
     const data=await resp.json().catch(()=>({}));if(!resp.ok)throw Error(data.error||"Falha no serviço de IA");aiText=data.answer||"Sem resposta.";
   }catch(error){aiError=error.message||"Falha no serviço de IA";aiText="O assistente de IA está indisponível nesta tentativa. Consulte as revistas relacionadas do catálogo e as referências bibliográficas recentes abaixo."}
   const discovery=await webPromise;presentAI(aiText,question,discovery);
-  status.textContent=aiError?"IA indisponível; busca acadêmica externa e catálogo carregados quando disponíveis. Erro: "+aiError:
-    discovery.error?"IA consultou o catálogo; Crossref indisponível nesta tentativa. A lista completa do catálogo continua abaixo.":
-    "A resposta combina o catálogo do projeto com artigos recentes localizados no Crossref. Consulte os links das fontes e confirme o escopo diretamente com a revista.";
+  status.textContent=aiError?"IA indisponível; busca externa e catálogo disponíveis quando carregados. Erro: "+aiError:
+    discovery.error?"Busca na internet indisponível nesta tentativa. O catálogo completo continua disponível abaixo.":
+    "Pesquisa concluída. Use os rótulos “No catálogo” e “Conferir antes de usar” para identificar a origem dos títulos.";
   $("ai-loading").hidden=true;$("ai-search-button").disabled=false;$("ai-search-button").textContent="Pesquisar";
 }
 function exportCsv(){const cols=["titulo","area","editora","sjr","idioma","custo","alinhamento","citescore","fatorImpacto","url_ficha"];const csv=[cols.join(";"),...ALL.map(r=>cols.map(k=>'"'+String(r[k]??"").replaceAll('"','""')+'"').join(";"))].join("\n");const a=document.createElement("a");const u=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.href=u;a.download="revistas-ppgad.csv";a.click();setTimeout(()=>URL.revokeObjectURL(u),2000)}

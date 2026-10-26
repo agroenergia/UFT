@@ -1190,3 +1190,11 @@ main{padding-bottom:80px}
   body{padding:0!important}
   .floating-actions,.catalog-shortcuts,.portal-tools,.portal-toolbar,.journal-actions,.cmp,.site-header nav{display:none!important}
 }
+
+
+/* Resumo da origem dos títulos sugeridos */
+.ai-result-summary{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:12px 0 14px;padding:10px 12px;border:1px solid #c9dce8;border-radius:10px;background:linear-gradient(105deg,#eaf4f9,#f7fbf8);color:#183448;font-size:13px;font-weight:700}
+.ai-result-summary span{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#fff;border:1px solid #d6e4eb;color:#24536e;font-size:12px}
+.ai-result-summary span:last-child{border-color:#ead8ac;color:#765a18}
+.ai-web-journal .external-result-label{letter-spacing:.04em}
+@media(max-width:600px){.ai-result-summary{align-items:flex-start;flex-direction:column;gap:6px}}
