@@ -1411,3 +1411,9 @@ main>.site-stage,main>.discovery-banner,.journal-card{scroll-margin-top:12px}
 @media(min-width:901px){
  .site-header .header-inner{width:min(1180px,calc(100% - 32px));max-width:1180px;margin-inline:auto;grid-template-columns:max-content minmax(0,1fr);justify-content:center;gap:24px}
 }
+
+/* Step-by-step cards use a single neutral surface on every screen. */
+.site-flow .flow-step:nth-child(n){background:#fff;color:#123f65;border:1px solid #bfd4e3;border-top:3px solid #187cb9;box-shadow:0 2px 8px rgba(18,63,101,.05);gap:8px;align-items:flex-start;justify-content:center}
+.site-flow .flow-step .flow-kicker{font-size:14px;line-height:1.3;letter-spacing:0;color:#123f65;font-weight:750;margin:0}
+.site-flow .flow-step strong{font-size:13px;line-height:1.5;font-weight:400;color:#456274;margin:0}
+.site-flow .flow-step:hover,.site-flow .flow-step:focus-visible{background:#fff;border-color:#187cb9;box-shadow:0 4px 14px rgba(18,63,101,.12)}
