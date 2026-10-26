@@ -707,3 +707,62 @@ main,
     grid-template-columns:1fr;
   }
 }
+
+
+/* Assistente de pesquisa com IA */
+.ai-search{
+  margin-top:18px;
+  padding:16px;
+  border:1px solid #d7e2da;
+  border-radius:12px;
+  background:#f7faf8;
+}
+.ai-search label{
+  display:block;
+  margin:0 0 8px;
+  font-weight:700;
+}
+.ai-search textarea{
+  display:block;
+  width:100%;
+  min-height:84px;
+  padding:11px 12px;
+  border:1px solid #b9c9bd;
+  border-radius:8px;
+  background:#fff;
+  color:#17241c;
+  font:inherit;
+  resize:vertical;
+}
+.ai-search button{
+  width:100%;
+  margin-top:10px;
+}
+.ai-search button:disabled{
+  opacity:.65;
+  cursor:wait;
+}
+.ai-disclaimer{
+  margin:9px 0 0;
+  color:#59685e;
+  font-size:.82rem;
+  line-height:1.45;
+}
+.ai-status{
+  margin-top:12px;
+  color:#24583b;
+  font-size:.9rem;
+  line-height:1.5;
+}
+.ai-answer{
+  margin-top:8px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  line-height:1.6;
+}
+.ai-answer:not(:empty){
+  padding:12px;
+  border-radius:8px;
+  border:1px solid #d7e2da;
+  background:#fff;
+}
