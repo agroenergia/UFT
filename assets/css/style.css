@@ -874,7 +874,7 @@ main,
 @media(max-width:620px){.site-header{position:relative}.header-inner{gap:8px}.site-header nav{overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;padding-bottom:3px}.site-header nav a{white-space:nowrap;font-size:12px;padding:8px 10px}.header-search input{font-size:16px;min-height:44px}.header-search button{min-height:44px}.ai-rich-grid{grid-template-columns:1fr}.ai-response-wrap{width:calc(100% - 20px)}.portal-tools{flex-direction:column;align-items:stretch}.portal-tools select,.portal-tools button{width:100%}.journal-card{padding:16px}.journal-card h3{overflow-wrap:anywhere}}
 
 /* Proveniência e espera da pesquisa */
-.ai-provenance-legend{font-size:12px;color:#55665b;line-height:1.6;margin:8px 0 18px}.origin-internal,.origin-external{display:inline-block;border:1px solid #c6d8ce;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap;background:#e8f4eb;color:#12543a}.origin-external{background:#f3f0e8;border-color:#e1d7c3;color:#665023}.external-link-note{display:block;font-size:11px;color:#6b6252;margin-top:5px;line-height:1.5}.ai-loading{display:flex;align-items:center;gap:14px;margin:12px 0;padding:16px;background:#eff7f1;border:1px solid #c7ded0;border-radius:12px;color:#144a35}.ai-loading[hidden]{display:none}.ai-loading strong{display:block;font-size:15px}.ai-loading p{margin:4px 0 0;font-size:13px}.ai-spinner{display:block;width:26px;height:26px;flex:none;border-radius:50%;border:3px solid #b6d8c4;border-top-color:#0a6447;animation:ai-spin 1s linear infinite}@keyframes ai-spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.ai-spinner{animation:none;border-style:dotted}}.ai-rich-card .origin-internal{margin:2px 0 8px}.journal-actions .external-link-note{margin-top:7px}
+.origin-internal,.origin-external{display:inline-block;border:1px solid #c6d8ce;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap;background:#e8f4eb;color:#12543a}.origin-external{background:#f3f0e8;border-color:#e1d7c3;color:#665023}.external-link-note{display:block;font-size:11px;color:#6b6252;margin-top:5px;line-height:1.5}.ai-loading{display:flex;align-items:center;gap:14px;margin:12px 0;padding:16px;background:#eff7f1;border:1px solid #c7ded0;border-radius:12px;color:#144a35}.ai-loading[hidden]{display:none}.ai-loading strong{display:block;font-size:15px}.ai-loading p{margin:4px 0 0;font-size:13px}.ai-spinner{display:block;width:26px;height:26px;flex:none;border-radius:50%;border:3px solid #b6d8c4;border-top-color:#0a6447;animation:ai-spin 1s linear infinite}@keyframes ai-spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.ai-spinner{animation:none;border-style:dotted}}.ai-rich-card .origin-internal{margin:2px 0 8px}.journal-actions .external-link-note{margin-top:7px}
 
 
 /* RigorAtlas — azul dos rios, luz do Tocantins e verde da agroenergia. */
@@ -905,7 +905,7 @@ body{overflow-x:clip}
 .site-header nav a.on,.site-header nav a:hover{color:#fff;background:#245a80}
 .catalog-section,.compare-section,.suggest-section,.journal-card{scroll-margin-top:118px}
 .ai-response-wrap{padding-top:2px}
-.ai-provenance-legend{font-size:11px;color:#596f80}
+
 .discovery-banner{
   max-width:none;width:100%;margin:22px 0 54px;padding:36px;
   display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,1fr);
@@ -1090,7 +1090,7 @@ body{padding-bottom:100px}
 .site-header nav{gap:3px}
 .site-header nav a{font-size:12px}
 .ai-response-wrap{position:relative}
-.ai-provenance-legend{padding:10px 12px;border-left:3px solid #91c9dc;background:#f5f9fb;border-radius:0 7px 7px 0}
+
 .ai-web-discovery{position:relative;margin:28px 0 36px;padding:22px;border:1px solid transparent;border-radius:16px;background:linear-gradient(135deg,#eff7fb,#fffdf6 60%,#f1f8f2) padding-box,linear-gradient(120deg,#135b88,#69b7d2,#e8ba4b,#60a579) border-box;box-shadow:0 8px 22px rgba(18,63,101,.07)}
 .external-stage-kicker{display:inline-block;margin:0 0 9px;padding:5px 9px;border-radius:999px;background:#123f65;color:#fff;font-size:9px;font-weight:800;letter-spacing:.1em}
 .ai-web-discovery h3{font-size:22px;margin:0 0 8px;color:#123f65}
@@ -1230,3 +1230,28 @@ main{padding-bottom:80px}
 .catalog-criterion{display:inline-block;padding:4px 8px;border-radius:7px;font-size:11px;font-weight:700}
 .ai-full-record-row dd,.detail-field dd{overflow-wrap:anywhere}
 @media(min-width:1000px){.portal-toolbar{grid-template-columns:2fr repeat(3,minmax(130px,1fr))}.portal-toolbar>input{min-width:0}}
+
+
+/* No celular, priorizar o painel visual e as revistas em destaque. */
+@media(max-width:700px){
+  .discovery-banner{grid-template-areas:"guide" "featured" "copy";margin-top:12px;padding-top:18px;gap:20px}
+  .banner-guide{grid-area:guide}
+  .banner-featured{grid-area:featured;padding-top:18px}
+  .banner-copy{grid-area:copy;border-top:1px solid #c6dce9;padding-top:20px}
+  .banner-copy .banner-kicker{margin-bottom:10px}
+  .discovery-banner h1{font-size:30px;margin-bottom:12px}
+  .banner-copy .banner-lead{margin:0}
+  .banner-copy .banner-actions{margin-top:16px}
+  .banner-copy .banner-prompts{margin-top:16px}
+}
+
+@media(max-width:700px){
+  .banner-guide ol{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .banner-guide li{flex-direction:column;gap:6px}
+  .banner-guide li>span{width:24px;height:24px}
+  .banner-guide strong{font-size:13px}
+  .banner-featured{display:grid;grid-template-columns:minmax(0,1fr)}
+  .banner-featured .featured-heading{grid-row:1}
+  .banner-featured .featured-journals{grid-row:2;margin-top:14px}
+  .banner-featured .featured-criteria{grid-row:3;margin:12px 0 0}
+}
