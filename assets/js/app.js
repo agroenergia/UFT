@@ -111,8 +111,7 @@ async function init(){
  $("ai-question").addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter")askAI();});
  $("limpar").onclick=limpar;
  $("pdf-download").onclick=pdf;
- $("csv").onclick=()=>{const cols=["titulo","editora","issn","area","qualis","sjr","h","percentil","acesso","taxa","dias","atualizado"];const linhas=[cols.join(";"),...filtradas().map(r=>cols.map(c=>'"'+String(r[c]??"").replaceAll('"','""')+'"').join(";"))];const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+linhas.join("
-")],{type:"text/csv;charset=utf-8"}));a.download="revistas-ppgad.csv";a.click();URL.revokeObjectURL(a.href);};
+ $("csv").onclick=()=>{const cols=["titulo","editora","issn","area","qualis","sjr","h","percentil","acesso","taxa","dias","atualizado"];const linhas=[cols.join(";"),...filtradas().map(r=>cols.map(c=>'"'+String(r[c]??"").replaceAll('"','""')+'"').join(";"))];const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+linhas.join("\\n")],{type:"text/csv;charset=utf-8"}));a.download="revistas-ppgad.csv";a.click();URL.revokeObjectURL(a.href);};
  render();
 }
 init().catch(error=>{$("lista").innerHTML='<p class="empty">'+esc(error.message)+"</p>";console.error(error)});
