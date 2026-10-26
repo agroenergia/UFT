@@ -1314,3 +1314,14 @@ main{padding-bottom:80px}
   .pdf-panel{padding:18px}
   .floating-actions{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
+
+
+/* Duas cores alternadas para os menus e blocos funcionais. */
+:root{--menu-bg-odd:#e6f1fb;--menu-bg-even:#eaf4e5}
+main>section:nth-of-type(odd){background:var(--menu-bg-odd);border-color:#cbdde5}
+main>section:nth-of-type(even){background:var(--menu-bg-even);border-color:#cbdde5}
+.site-header nav a:nth-child(odd),.site-flow .flow-step:nth-child(odd){background:var(--menu-bg-odd);color:#123f65}
+.site-header nav a:nth-child(even),.site-flow .flow-step:nth-child(even){background:var(--menu-bg-even);color:#123f65}
+.site-header nav a.on{box-shadow:inset 0 -2px 0 #15619b}
+.site-header nav a:hover{text-decoration:underline;text-underline-offset:3px}
+.site-flow .flow-step{border-color:#c6dbe3}
