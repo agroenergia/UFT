@@ -1406,3 +1406,8 @@ main>.site-stage,main>.discovery-banner,.journal-card{scroll-margin-top:12px}
  #sugerir .suggest-submit{min-height:48px;font-size:15px}
  #pdf .pdf-actions a,#pdf .pdf-actions button{font-size:15px}
 }
+
+/* Align the desktop header with the main content as one centered group. */
+@media(min-width:901px){
+ .site-header .header-inner{width:min(1180px,calc(100% - 32px));max-width:1180px;margin-inline:auto;grid-template-columns:max-content minmax(0,1fr);justify-content:center;gap:24px}
+}
