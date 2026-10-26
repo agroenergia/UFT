@@ -1077,3 +1077,8 @@ body{overflow-x:clip}
 .ai-web-paper{border-top:1px solid #e1eaf0;padding-top:7px}
 .ai-web-paper a{display:inline;color:#155c90;background:transparent;padding:0;margin:0;text-decoration:underline;font-weight:500;overflow-wrap:anywhere}
 .ai-web-paper span{font-size:10px;color:#6d7f8b}
+
+/* Acesso à ficha completa e versão pronta para PDF */
+.journal-card-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.journal-card-actions .journal-record-link{background:#123f65;color:#fff;border:1px solid #123f65}
+.journal-card-actions .journal-record-link:hover{background:#0d3150;border-color:#0d3150}
