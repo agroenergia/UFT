@@ -76,7 +76,7 @@
     "enquadramentoConfirmar": 2,
     "documentosEquipe": 33,
     "revistasComCamposConferidosOnline": 66,
-    "camposConferidosOnline": 179
+    "camposConferidosOnline": 180
   },
   "notasImportacao": [
     "A classificação Seleção da planilha reproduz o recorte informado pela equipe. Não certifica percentil CAPES, qualidade editorial ou aceite do artigo.",
@@ -370,7 +370,7 @@
       "url": "https://www.sciencedirect.com/journal/biomass-and-bioenergy",
       "tier": "ALTO",
       "citescore": 8.9,
-      "fatorImpacto": 7.0,
+      "fatorImpacto": 7,
       "check": {
         "pergunta": "O foco é conversão ou aproveitamento energético de biomassa?",
         "obrigatorios": "Balanço energético; caracterização da biomassa",
@@ -438,7 +438,7 @@
       "indicadoresPlanilha": {
         "sjr": "Q1/Q2",
         "citescore": 8.9,
-        "fatorImpacto": 7.0,
+        "fatorImpacto": 7,
         "anoQuartil": 2025,
         "anoOutrosIndicadores": "Não informado nas planilhas"
       },
@@ -465,7 +465,7 @@
       "pendenciasConferencia": [
         {
           "campo": "Fator de impacto",
-          "valorPlanilha": 7.0,
+          "valorPlanilha": 7,
           "valorObservadoOnline": 5.8,
           "url": "https://www.sciencedirect.com/special-issue/10SRHXD4D54",
           "consultadoEm": "2026-10-26",
@@ -730,7 +730,7 @@
         {
           "campo": "Fator de impacto",
           "valorPlanilha": 10.7,
-          "valorObservadoOnline": 10.0,
+          "valorObservadoOnline": 10,
           "url": "https://www.sciencedirect.com/science/journal/09596526/vsi/10RLQZ7PN6P",
           "consultadoEm": "2026-10-26",
           "motivo": "Divergência sem ano de referência inequívoco; valor original preservado, confirmar edição do JCR."
@@ -1541,7 +1541,7 @@
         "citescore": 7.8,
         "fatorImpacto": 3.9,
         "prazoPrimeiraDecisaoPlanilha": "16 dias",
-        "taxaAceitacaoPercentual": 30.0,
+        "taxaAceitacaoPercentual": 30,
         "anoQuartil": 2025,
         "anoOutrosIndicadores": "Não informado nas planilhas"
       },
@@ -1704,7 +1704,7 @@
       "alinhamento": "Sistemas agrícolas e ambiente",
       "url": "https://www.sciencedirect.com/journal/agriculture-ecosystems-and-environment",
       "tier": "COMPLEMENTAR",
-      "citescore": 13.0,
+      "citescore": 13,
       "fatorImpacto": 7.7,
       "check": null,
       "fontesCadastro": [
@@ -1757,7 +1757,7 @@
       "enquadramento": "Seleção da planilha",
       "indicadoresPlanilha": {
         "sjr": "Q1",
-        "citescore": 13.0,
+        "citescore": 13,
         "fatorImpacto": 7.7,
         "anoQuartil": 2025,
         "anoOutrosIndicadores": "Não informado nas planilhas"
@@ -1777,7 +1777,7 @@
           "url": "https://www.sciencedirect.com/journal/agriculture-ecosystems-and-environment/vol/409/suppl/C",
           "consultadoEm": "2026-10-26",
           "campos": {
-            "citescore": 13.0
+            "citescore": 13
           },
           "observacao": "CiteScore observado no portal oficial. O ano do indicador não foi explicitado no trecho."
         }
@@ -3741,7 +3741,7 @@
       "alinhamento": "Políticas de alimentos e agricultura",
       "url": "https://www.sciencedirect.com/journal/food-policy",
       "tier": "NÃO ATRIBUÍDO",
-      "citescore": 11.0,
+      "citescore": 11,
       "fatorImpacto": 6.8,
       "fontesCadastro": [
         {
@@ -3775,7 +3775,7 @@
       "enquadramento": "Seleção da planilha",
       "indicadoresPlanilha": {
         "sjr": "Q1",
-        "citescore": 11.0,
+        "citescore": 11,
         "fatorImpacto": 6.8,
         "anoQuartil": 2025,
         "anoOutrosIndicadores": "Não informado nas planilhas"
@@ -3795,7 +3795,7 @@
           "url": "https://www.sciencedirect.com/journal/food-policy/about/announcements/outstanding-reviewer-awards-2025",
           "consultadoEm": "2026-10-26",
           "campos": {
-            "citescore": 11.0
+            "citescore": 11
           },
           "observacao": "CiteScore observado no portal oficial. O ano do indicador não foi explicitado no trecho."
         }
@@ -3804,7 +3804,7 @@
         {
           "campo": "Fator de impacto",
           "valorPlanilha": 6.8,
-          "valorObservadoOnline": 6.0,
+          "valorObservadoOnline": 6,
           "url": "https://www.sciencedirect.com/journal/food-policy/about/announcements/outstanding-reviewer-awards-2025",
           "consultadoEm": "2026-10-26",
           "motivo": "Divergência sem ano de referência inequívoco; valor original preservado, confirmar edição do JCR."
@@ -3971,7 +3971,7 @@
       "sjr": "Q1",
       "idioma": "Inglês",
       "custo": "APC exibida para artigos gerais: USD 2.382. Protocolos têm valores distintos; acordos e assistência podem reduzir a cobrança. Confirmar no envio.",
-      "alinhamento": "Acesso aberto; não publica revisões sistemáticas de literatura",
+      "alinhamento": "Multidisciplinar: pesquisa original, revisões sistemáticas e meta-análises rigorosas",
       "url": "https://journals.plos.org/plosone/",
       "tier": "NÃO ATRIBUÍDO",
       "citescore": null,
@@ -4043,7 +4043,8 @@
           "campos": {
             "tiposArtigo": "Pesquisa original, revisões sistemáticas e meta-análises, métodos e protocolos conforme as regras do periódico",
             "observacoes": "Aceita revisões sistemáticas e meta-análises rigorosas; revisar os requisitos de PRISMA. Revisões narrativas não equivalem a revisão sistemática.",
-            "urlInstrucoes": "https://journals.plos.org/plosone/s/submission-guidelines"
+            "urlInstrucoes": "https://journals.plos.org/plosone/s/submission-guidelines",
+            "alinhamento": "Multidisciplinar: pesquisa original, revisões sistemáticas e meta-análises rigorosas"
           },
           "observacao": "Corrige a anotação da planilha que excluía revisões sistemáticas."
         },
@@ -4075,6 +4076,12 @@
           "anterior": "APC USD 2.477 (com política de isenção)",
           "atual": "APC exibida para artigos gerais: USD 2.382. Protocolos têm valores distintos; acordos e assistência podem reduzir a cobrança. Confirmar no envio.",
           "url": "https://plos.org/publish/fees/"
+        },
+        {
+          "campo": "alinhamento",
+          "anterior": "Acesso aberto; não publica revisões sistemáticas de literatura",
+          "atual": "Multidisciplinar: pesquisa original, revisões sistemáticas e meta-análises rigorosas",
+          "url": "https://journals.plos.org/plosone/s/what-we-publish"
         }
       ],
       "urlInstrucoes": "https://journals.plos.org/plosone/s/submission-guidelines",

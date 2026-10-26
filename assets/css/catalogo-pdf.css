@@ -1,0 +1,46 @@
+*{box-sizing:border-box}
+body{margin:0;background:#edf4f8;color:#17364d;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.report-page{width:min(1080px,calc(100% - 36px));margin:0 auto;padding:24px 0 44px}
+.report-head{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid #d4e1e9;padding-bottom:14px}
+.report-brand{display:flex;align-items:center;gap:10px;color:#173e5c;text-decoration:none}
+.brand-mark{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#155c90;color:white;font-weight:800;font-size:20px}
+.report-brand span:last-child{display:flex;flex-direction:column}.report-brand strong{font-size:18px}.report-brand small{font-size:10px;color:#5e7686}
+.report-kicker{font-size:10px;letter-spacing:.1em;font-weight:750;color:#2c6b4d}
+.report-title{margin:20px 0;padding:24px;border:1px solid #c8dfe9;border-radius:14px;background:linear-gradient(120deg,#e4f1fa,#fffcf3)}
+.report-title h1{font:600 clamp(24px,4vw,34px)/1.2 Georgia,serif;margin:0 0 10px;color:#143e5e}
+.report-title p{font-size:13px;color:#526e80;margin:0}
+.report-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.report-actions button,.report-actions>a{padding:9px 13px;border:1px solid #bfd4e2;border-radius:8px;font:600 12px system-ui,sans-serif;text-decoration:none;color:#155c90;background:#fff}
+.report-actions button{color:#fff;background:#155c90;border-color:#155c90;cursor:pointer}.report-actions button:disabled{opacity:.5;cursor:wait}
+#report-status{font-size:12px;color:#526e80;margin:14px 0}
+.catalog-report-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.report-journal{min-width:0;padding:18px;border:1px solid #cbdfe9;border-radius:12px;background:#fff;break-inside:avoid;page-break-inside:avoid}
+.report-card-head{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.report-number{font-size:17px;font-weight:800;color:#187cba}
+.report-status-label{font-size:10px;color:#3d6d55}
+.report-journal h2{font-size:17px;line-height:1.3;color:#173e5c;margin:8px 0 4px;overflow-wrap:anywhere}
+.report-area{font-size:11px;color:#627a89;margin:0 0 10px}
+.report-metrics{display:flex;flex-wrap:wrap;gap:5px}.report-metrics span{font-size:10px;padding:4px 6px;border-radius:5px;background:#eef5f8;color:#34576c}
+.report-scope{font-size:12px;line-height:1.5;margin:11px 0;color:#344f63}
+.report-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;border-top:1px solid #e2ebf0;padding-top:10px;margin:10px 0}
+.report-field{min-width:0}.report-field.wide{grid-column:1/-1}.report-field dt{font-size:10px;font-weight:700;color:#527084}.report-field dd{font-size:11px;margin:2px 0 0;color:#334f63;overflow-wrap:anywhere}
+.report-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}.report-links a{font-size:11px;color:#155c90;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.report-footer{margin-top:20px;border-top:1px solid #d3e0e8;padding-top:12px;font-size:10px;color:#657d8c}
+@media(max-width:650px){.catalog-report-list{grid-template-columns:1fr}.report-page{width:calc(100% - 24px)}.report-title{padding:20px 16px}.report-head{align-items:flex-start;flex-direction:column}}
+@media print{
+ @page{size:A4;margin:14mm;@bottom-right{content:counter(page);font:8pt Arial,sans-serif;color:#667}}
+ body{background:#fff;font:9pt/1.4 Arial,sans-serif}
+ .report-page{width:100%;padding:0}.report-head{padding-bottom:8px}
+ .report-title{margin:12px 0;padding:0 0 12px;border:0;border-bottom:1px solid #aaa;border-radius:0;background:white}
+ .report-title h1{font-size:22pt}.report-title p,#report-status{font-size:9pt}
+ .report-actions{display:none!important}
+ .catalog-report-list{display:block}
+ .report-journal{margin:0 0 10px;padding:11px 13px;border:1px solid #bbb;border-radius:7px}
+ .report-number{font-size:11pt}.report-status-label{font-size:8pt}
+ .report-journal h2{font-size:12pt;margin:5px 0 3px}
+ .report-area,.report-metrics span,.report-links a{font-size:8pt}
+ .report-scope{font-size:9pt;margin:7px 0}
+ .report-fields{gap:5px 14px;padding-top:7px;margin:7px 0}
+ .report-field dt{font-size:8pt}.report-field dd{font-size:9pt}
+ .report-links{margin-top:7px}.report-footer{font-size:8pt}
+}

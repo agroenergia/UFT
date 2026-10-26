@@ -14,7 +14,7 @@ Foram cadastrados 68 títulos únicos: 40 na seleção da planilha, 26 fora do r
 
 O enquadramento reproduz a seleção bibliométrica informada pela equipe nas planilhas. Não certifica percentil CAPES, aceitação de manuscrito ou qualidade editorial. Estar fora do recorte não significa ser uma revista predatória. As duas planilhas não contêm uma lista nominal de revistas predatórias.
 
-Há 179 campos documentados em consultas online envolvendo 66 registros. Esse total inclui endereços, identidade editorial, taxas, políticas e indicadores; não significa que todos os indicadores dos registros foram revalidados. Cada consulta traz URL, data e campos específicos.
+Há 180 campos documentados em consultas online envolvendo 66 registros. Esse total inclui endereços, identidade editorial, taxas, políticas e indicadores; não significa que todos os indicadores dos registros foram revalidados. Cada consulta traz URL, data e campos específicos.
 
 Foram corrigidas informações como taxas de revistas que a planilha indicava como gratuitas, o aceite de revisões sistemáticas pela PLOS ONE e a distinção entre JIF e JIF de cinco anos em Earth Science Informatics. Os dados de origem foram preservados. Valores monetários mantêm a moeda original, sem conversão cambial.
 

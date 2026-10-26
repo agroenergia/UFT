@@ -1255,3 +1255,62 @@ main{padding-bottom:80px}
   .banner-featured .featured-journals{grid-row:2;margin-top:14px}
   .banner-featured .featured-criteria{grid-row:3;margin:12px 0 0}
 }
+
+
+/* Navegação e catálogo com texto essencial. */
+.site-guide .section-heading{margin-bottom:14px}
+.site-flow .flow-step{display:flex;flex-direction:column;justify-content:center;min-height:112px;padding:14px;gap:4px}
+.site-flow .flow-kicker,.site-flow .flow-step strong{grid-column:auto}
+.catalog-heading{align-items:center}
+.catalog-summary{margin:0;color:#526c7d;font-size:12px}
+.catalog-section .portal-tools{justify-content:flex-end;align-items:center;margin:10px 0 14px;flex-direction:row}
+.catalog-section .sort-control{display:flex;flex-direction:row;align-items:center;gap:9px}
+.catalog-section .sort-control select{min-width:174px;width:auto;max-width:230px;min-height:38px;font-size:12px}
+.journal-grid .journal-card{padding:16px}
+.journal-card h3{font-size:18px;margin:9px 0 4px}
+.journal-card .journal-area{font-size:11px;margin:0 0 10px}
+.journal-card .criterion-badge{font-size:10px;padding:3px 8px}
+.journal-card .journal-metrics{gap:6px;margin:10px 0}
+.journal-card .journal-metrics span{font-size:11px;padding:4px 7px}
+.journal-card .journal-cost{font-size:12px;margin:8px 0}
+.journal-card .journal-card-actions{margin:9px 0 0;gap:16px}
+.journal-card .journal-card-actions a,.journal-card .journal-card-actions a:hover{background:transparent;border:0;border-radius:0;box-shadow:none;color:#15619b;font-size:12px;font-weight:600;padding:5px 0;min-height:0;text-decoration:underline;text-underline-offset:3px}
+#comparar{margin-top:24px;padding:18px}
+#comparar .section-heading{margin-bottom:10px}
+#comparar h2{font-size:26px;margin:0}
+#comparar .scroll{min-height:0;margin:0}
+.compare-hint{margin:0;font-size:13px;color:#526c7d}
+.compare-hint a{text-decoration:underline;text-underline-offset:3px}
+.contact-panel{display:grid;grid-template-columns:minmax(200px,.75fr) minmax(0,1.7fr);gap:28px;align-items:start;padding:22px;margin-top:24px}
+.contact-panel .suggest-header h2{font-size:26px;margin:0 0 8px}
+.contact-panel .suggest-header p{font-size:13px}
+.contact-email{display:inline-block;font-size:12px;color:#15619b;margin-top:12px;overflow-wrap:anywhere}
+.contact-panel .suggest-form{margin:0}
+.contact-panel .suggest-grid{gap:10px 14px}
+.contact-panel .field label{font-size:12px;margin-bottom:4px}
+.contact-panel .suggest-form input{min-height:40px;padding:8px 10px;font-size:14px}
+.contact-panel .suggest-form textarea{min-height:82px;padding:8px 10px;font-size:14px}
+.contact-panel .suggest-actions{margin-top:10px}
+.contact-panel .suggest-submit{min-width:150px;min-height:40px;font-size:13px}
+.pdf-panel{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px;margin-top:24px}
+.pdf-panel h2{font-size:26px;margin:0 0 7px}
+.pdf-panel .suggest-header p{font-size:13px}
+.pdf-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.text-link{display:inline-block;background:transparent;border:0;padding:6px 0;color:#15619b;text-decoration:underline;text-underline-offset:3px;font-size:12px;cursor:pointer}
+@media(max-width:900px){.contact-panel{grid-template-columns:1fr;gap:16px}.pdf-panel{align-items:flex-start;flex-direction:column}}
+@media(max-width:700px){
+  .site-flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .site-flow .flow-step{min-height:106px;padding:12px}
+  .site-flow .flow-step:last-child{grid-column:1/-1;min-height:80px}
+  .catalog-heading{align-items:flex-start}
+  .catalog-summary{font-size:11px}
+  .catalog-section .sort-control{width:100%;justify-content:space-between}
+  .catalog-section .sort-control select{flex:1;max-width:240px;min-width:0}
+  .contact-panel{padding:18px;gap:14px}
+  .contact-panel .suggest-form input,.contact-panel .suggest-form textarea{font-size:16px}
+  .contact-panel .suggest-grid{grid-template-columns:1fr}
+  .contact-panel .suggest-actions{justify-content:flex-end}
+  .contact-panel .suggest-submit{width:auto}
+  .pdf-panel{padding:18px}
+  .floating-actions{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
