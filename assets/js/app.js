@@ -1,3 +1,5 @@
+import {metricLabels,filterIds,metrics,matchesCriteria,metricText,csvCell,researchPolicy} from "./criteria.js";
+const currentCriteria=()=>Object.fromEntries(filterIds.map(id=>[id,document.getElementById(id)?.value||""]));
 const DATA_URL="./assets/data/revistas.json";const $=id=>document.getElementById(id);const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));const fmt=v=>v===null||v===undefined||v===""?"Não informado":String(v);const safeUrl=u=>{try{const x=new URL(u);return ["https:","http:"].includes(x.protocol)?x.href:""}catch{return""}};let ALL=[],BASE="",SELECTED=new Set();function field(r,k){return r[k]??null}function priority(r){return {"ALTO":0,"MÉDIO":1,"COMPLEMENTAR":2}[r.tier]??3}let CATALOG_TOP10=false,CATALOG_VISIBLE=6;
 const isSelection=r=>!r.criterioPlanilha||r.criterioPlanilha.status==="selecao";
 const selectionCatalog=()=>ALL.filter(isSelection);
@@ -12,29 +14,25 @@ function matchesCost(r,filter){
 function compactCost(r){return {sem_apc:"Sem APC",rota_assinatura:"Rota de assinatura",apc:"Com taxa",confirmar:"Valor a confirmar"}[r.modeloCusto]||"Valor a confirmar"}
 function compactStatus(r){return {selecao:"Na seleção",abaixo:"Fora do recorte",confirmar:"A confirmar"}[r.criterioPlanilha?.status]||"A confirmar"}
 function render(){
-  const q=normalizeSearchText($("q").value.trim()),score=Number($("score").value)||0;
-  let arr=ALL.filter(r=>{
-    const searchText=normalizeSearchText([r.titulo,r.area,r.alinhamento,r.observacoes,r.editora,r.issn,r.escopo,...(r.check?Object.values(r.check):[])].join(" "));
-    return (!$("criterio").value||r.criterioPlanilha?.status===$("criterio").value)&&(!q||searchText.includes(q))&&(!$("area").value||r.area===$("area").value)&&(!$("sjr").value||r.sjr===$("sjr").value)&&(!$("idioma").value||String(r.idioma||"").includes($("idioma").value))&&matchesCost(r,$("custo").value)&&(!score||(Number(r.citescore)||0)>=score);
-  });
+  let arr=searchCatalog();
   const order=$("ord").value;
-  arr.sort((a,b)=>order==="nome"?a.titulo.localeCompare(b.titulo,"pt-BR"):order==="tier"?priority(a)-priority(b)||((Number(b.citescore)||0)-(Number(a.citescore)||0)):((Number(b.citescore)||0)-(Number(a.citescore)||0))||a.titulo.localeCompare(b.titulo,"pt-BR"));
+  arr.sort((a,b)=>order==="percentil"?((metrics(b).maiorPercentil??-1)-(metrics(a).maiorPercentil??-1)||a.titulo.localeCompare(b.titulo,"pt-BR")):order==="nome"?a.titulo.localeCompare(b.titulo,"pt-BR"):order==="tier"?priority(a)-priority(b)||((Number(b.citescore)||0)-(Number(a.citescore)||0)):((Number(b.citescore)||0)-(Number(a.citescore)||0))||a.titulo.localeCompare(b.titulo,"pt-BR"));
   if(CATALOG_TOP10)arr=arr.filter(r=>isSelection(r)&&r.citescore!==null&&r.citescore!==""&&Number.isFinite(Number(r.citescore))).slice(0,10);
   $("count").textContent=arr.length+" resultados";
   const visible=arr.slice(0,CATALOG_VISIBLE);
   const expand=$("catalog-expand"),hasMore=visible.length<arr.length;expand.hidden=arr.length<=6;expand.setAttribute("aria-expanded",String(CATALOG_VISIBLE>6));expand.textContent=hasMore?"Ver mais "+Math.min(6,arr.length-visible.length)+" revistas ("+visible.length+" de "+arr.length+") ↓":"Mostrar apenas 6 registros ↑";
   $("lista").innerHTML=visible.map(r=>{
     const url=safeUrl(r.url_ficha||r.url);
-    const metrics=[["Quartil",r.sjr],["CiteScore",r.citescore],["Impacto",r.fatorImpacto]].filter(([,v])=>v!==null&&v!==undefined&&v!=="").map(([name,v])=>'<span><b>'+name+'</b> '+esc(v)+'</span>').join("");
+    const metrics=[["Maior percentil",r.maiorPercentil===null?"A confirmar":r.maiorPercentil+"%"],["Quartil",r.sjr],["CiteScore",r.citescore],["Impacto",r.fatorImpacto]].filter(([,v])=>v!==null&&v!==undefined&&v!=="").map(([name,v])=>'<span><b>'+name+'</b> '+esc(v)+'</span>').join("");
     return '<article class="journal-card" id="revista-'+esc(r.id)+'"><div class="journal-card-top"><span class="tier criterion-badge status-'+esc(r.criterioPlanilha?.status||"confirmar")+'">'+esc(compactStatus(r))+'</span><label class="cmp"><input type="checkbox" data-id="'+esc(r.id)+'" '+(SELECTED.has(String(r.id))?"checked":"")+'> Comparar</label></div><h3>'+esc(r.titulo)+'</h3><p class="journal-area">'+esc(r.area||"Área não informada")+'</p><div class="journal-metrics">'+metrics+'</div><p class="journal-cost"><strong>Custo:</strong> '+esc(compactCost(r))+'</p><div class="journal-actions journal-card-actions"><a class="journal-record-link" href="ficha-revista.html?id='+encodeURIComponent(r.id)+'" target="_blank" rel="noopener">Ficha completa ↗</a>'+(url?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+(r.tipoLink?"Fonte externa":"Site da revista")+' ↗</a>':"")+'</div></article>';
   }).join("")||'<p class="empty">Nenhuma revista corresponde aos filtros.</p>';
   renderCompare();
 }
 function renderCompare(){
   const arr=ALL.filter(r=>SELECTED.has(String(r.id)));
-  $("cmp-tabela").innerHTML=arr.length?'<table><caption class="sr-only">Revistas selecionadas no catálogo</caption><thead><tr><th scope="col">Indicador</th>'+arr.map(r=>'<th scope="col">'+esc(r.titulo)+'</th>').join("")+'</tr></thead><tbody>'+[["Área","area"],["Quartil","sjr"],["CiteScore","citescore"],["Impacto","fatorImpacto"],["Idioma","idioma"],["Custo","custo"]].map(([label,key])=>'<tr><th scope="row">'+label+'</th>'+arr.map(r=>'<td>'+esc(fmt(r[key]))+'</td>').join("")+'</tr>').join("")+'</tbody></table>':'<p class="compare-hint">Marque “Comparar” nos cartões do <a href="#revistas">catálogo</a> para visualizar as revistas aqui.</p>';
+  $("cmp-tabela").innerHTML=arr.length?'<table><caption class="sr-only">Revistas selecionadas no catálogo</caption><thead><tr><th scope="col">Indicador</th>'+arr.map(r=>'<th scope="col">'+esc(r.titulo)+'</th>').join("")+'</tr></thead><tbody>'+[["Área","area"],...Object.entries(metricLabels).map(([k,v])=>[v,k]),["Quartil","sjr"],["CiteScore","citescore"],["Impacto","fatorImpacto"],["Idioma","idioma"],["Custo","custo"]].map(([label,key])=>'<tr><th scope="row">'+label+'</th>'+arr.map(r=>'<td>'+esc(metricText(r[key]))+'</td>').join("")+'</tr>').join("")+'</tbody></table>':'<p class="compare-hint">Marque “Comparar” nos cartões do <a href="#revistas">catálogo</a> para visualizar as revistas aqui.</p>';
 }
-const JOURNAL_FIELD_LABELS={id:"Identificador no catálogo",titulo:"Revista",area:"Área",sjr:"Quartil SJR informado",idioma:"Idioma",custo:"Custo informado",alinhamento:"Alinhamento com a pesquisa",url:"Site da revista",url_ficha:"Link da ficha",tier:"Faixa de curadoria",citescore:"CiteScore informado",fatorImpacto:"Fator de impacto informado",issn:"ISSN",editora:"Editora",escopo:"Escopo editorial informado",observacoes:"Observações",check:"Adequação do manuscrito",pergunta:"Pergunta-chave de adequação",obrigatorios:"Requisitos importantes",evitar:"Quando esta revista pode não ser adequada",ano:"Ano do indicador",fonte:"Fonte",fonteIndicador:"Fonte do indicador",baseAtualizada:"Referência da base"};
+const JOURNAL_FIELD_LABELS={...metricLabels,id:"Identificador no catálogo",titulo:"Revista",area:"Área",sjr:"Quartil SJR informado",idioma:"Idioma",custo:"Custo informado",alinhamento:"Alinhamento com a pesquisa",url:"Site da revista",url_ficha:"Link da ficha",tier:"Faixa de curadoria",citescore:"CiteScore informado",fatorImpacto:"Fator de impacto informado",issn:"ISSN",editora:"Editora",escopo:"Escopo editorial informado",observacoes:"Observações",check:"Adequação do manuscrito",pergunta:"Pergunta-chave de adequação",obrigatorios:"Requisitos importantes",evitar:"Quando esta revista pode não ser adequada",ano:"Ano do indicador",fonte:"Fonte",fonteIndicador:"Fonte do indicador",baseAtualizada:"Referência da base"};
 Object.assign(JOURNAL_FIELD_LABELS,{"enquadramento": "Enquadramento na planilha", "criterioPlanilha": "Critério da planilha", "status": "Situação", "regra": "Regra aplicada", "anoQuartil": "Ano do quartil informado", "indicadoresPlanilha": "Indicadores originais da planilha", "anoOutrosIndicadores": "Ano dos demais indicadores", "indiceSjr": "Índice SJR (valor)", "fatorImpacto5Anos": "Fator de impacto de 5 anos", "snip": "SNIP", "articleInfluenceScore": "Article Influence Score", "fontesCadastro": "Fontes de cadastro", "arquivo": "Arquivo de origem", "aba": "Aba", "linha": "Linha", "campos": "Campos", "documentosEquipe": "Documentos da equipe", "tipo": "Tipo", "conferencia": "Situação da conferência", "conferenciasOnline": "Campos conferidos em fontes online", "consultadoEm": "Data da consulta", "anoIndicador": "Ano de referência do indicador", "correcoesDocumentadas": "Correções documentadas", "campo": "Campo", "anterior": "Valor anterior", "atual": "Valor atualizado", "pendenciasConferencia": "Pendências de conferência", "valorPlanilha": "Valor da planilha", "valorObservadoOnline": "Valor observado na fonte online", "motivo": "Motivo da pendência", "atualizadoEm": "Cadastro atualizado em", "statusConferencia": "Situação da conferência", "origemCadastro": "Origem do cadastro", "modeloCusto": "Modelo de custo", "modeloPublicacao": "Modelo de publicação", "tiposArtigo": "Tipos de artigo", "limiteManuscrito": "Limite do manuscrito", "prazoPrimeiraDecisao": "Primeira decisão informada pela editora", "prazoPrimeiraDecisaoPlanilha": "Primeira decisão / estimativa da planilha", "prazoPublicacaoPlanilha": "Prazo de publicação / estimativa da planilha", "taxaAceitacaoPercentual": "Taxa de aceitação (%)", "urlInstrucoes": "Instruções aos autores", "dicasEquipe": "Orientações da equipe", "observacaoVarredura": "Observação da varredura", "situacaoOriginalPlanilha": "Situação original na planilha", "tipoLink": "Tipo de endereço externo", "anotacaoEquipe": "Anotação da equipe", "origem": "Origem geográfica", "observacao": "Observação"});
 JOURNAL_FIELD_LABELS.url="Página do periódico ou fonte de identificação";
 function fullRecordEntries(value,prefix=""){
@@ -79,7 +77,7 @@ function journalQuestionScore(journal,question){
   return score;
 }
 function orderCatalogForQuestion(question){
-  return [...ALL].map(r=>({journal:r,score:journalQuestionScore(r,question)}))
+  return searchCatalog().map(r=>({journal:r,score:journalQuestionScore(r,question)}))
     .sort((a,b)=>Number(isSelection(b.journal))-Number(isSelection(a.journal))||b.score-a.score||(priority(a.journal)-priority(b.journal))||a.journal.titulo.localeCompare(b.journal.titulo,"pt-BR"));
 }
 const PORTAL_TOPIC_GROUPS=[
@@ -105,9 +103,10 @@ function crossrefItemMatches(item,question){
 }
 async function searchCrossref(question){
   const phrase=String(question||"").trim(),terms=termsFromQuestion(phrase);
+  const expandedQuery=phrase+(/biomassa|bioenergia|agroenergia/i.test(phrase)?" biomass bioenergy agriculture":"");
   if(terms.length===0)return {journals:[],error:null,query:phrase,fromYear:new Date().getFullYear()-4};
   const fromYear=new Date().getFullYear()-4;
-  const params=new URLSearchParams({"query.bibliographic":phrase.slice(0,300),filter:"from-pub-date:"+fromYear+"-01-01,type:journal-article",rows:"100",select:"DOI,title,container-title,URL,published,published-print,published-online,publisher,type,subject",sort:"published",order:"desc"});
+  const params=new URLSearchParams({"query.bibliographic":expandedQuery.slice(0,300),filter:"from-pub-date:"+fromYear+"-01-01,type:journal-article",rows:"100",select:"DOI,title,container-title,URL,published,published-print,published-online,publisher,type,subject",sort:"relevance",order:"desc"});
   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),12000);let response;
   try{response=await fetch(CROSSREF_API+"?"+params.toString(),{headers:{Accept:"application/json"},cache:"no-store",signal:controller.signal})}finally{clearTimeout(timeout)}
   if(!response.ok)throw new Error("A busca bibliográfica respondeu com erro HTTP "+response.status);
@@ -123,14 +122,14 @@ async function searchCrossref(question){
   });
   const known=new Set(ALL.map(r=>normalizeSearchText(r.titulo)));
   const journals=[...groups.values()].sort((a,b)=>b.count-a.count||a.title.localeCompare(b.title,"en")).slice(0,6).map(g=>({...g,inCatalog:known.has(normalizeSearchText(g.title)),papers:g.papers.slice(0,2)}));
-  return {journals,error:null,fromYear,query:phrase};
+  return {journals:journals.filter(j=>!j.inCatalog||searchCatalog().some(r=>normalizeSearchText(r.titulo)===normalizeSearchText(j.title))),error:null,fromYear,query:phrase};
 }
 function makeAllCatalogSection(question){
   const details=document.createElement("details");details.className="ai-catalog-expansion";
   const ordered=orderCatalogForQuestion(question),summary=document.createElement("summary");
-  summary.textContent="Ver as "+ordered.length+" revistas cadastradas na base atual";
+  summary.textContent="Ver as "+ordered.length+" revistas nos filtros ativos";
   details.append(summary);
-  const note=document.createElement("p");note.className="ai-catalog-note";note.textContent="Esta é a base completa carregada no site. Os títulos aparecem por proximidade temática estimada com sua pergunta; essa ordem não é um ranking de qualidade nem informa percentil CAPES. Use a seção Catálogo para aplicar filtros.";details.append(note);
+  const note=document.createElement("p");note.className="ai-catalog-note";note.textContent="Esta lista respeita os filtros ativos do catálogo. Os títulos aparecem por proximidade temática estimada com sua pergunta; essa ordem não é um ranking de qualidade nem informa percentil CAPES. Ajuste os filtros na seção Catálogo para ampliar a pesquisa.";details.append(note);
   const grid=document.createElement("div");grid.className="ai-catalog-grid";
   ordered.forEach(({journal:r,score})=>{
     const card=document.createElement("article");card.className="ai-catalog-card";
@@ -153,6 +152,7 @@ function appendCrossrefResults(parent,discovery){
   const internetJournals=discovery&&discovery.journals||[],knownCount=internetJournals.filter(j=>j.inCatalog).length,newCount=internetJournals.filter(j=>!j.inCatalog).length,summary=document.createElement("p");summary.className="ai-result-summary";
   summary.textContent="Na busca pela internet: "+internetJournals.length+" revistas relacionadas · "+knownCount+" já estão na base · "+newCount+" são novas sugestões.";
   section.append(summary);
+  const criteriaNote=document.createElement("p");criteriaNote.textContent="Critérios para conferir: "+filterIds.filter(id=>$(id).value).map(id=>$(id).closest("label").textContent.split(/Qualquer|Sem limite/)[0].trim()+": "+($(id).selectedOptions?.[0]?.textContent||$(id).value)).join(" · ");if(filterIds.some(id=>$(id).value))section.append(criteriaNote);
   const lead=document.createElement("p");lead.className="ai-web-note";
   if(discovery&&discovery.journals&&discovery.journals.length){
     const query=document.createElement("p");query.className="external-search-query";query.append(document.createTextNode("Busca por: "));const strong=document.createElement("strong");strong.textContent=discovery.query||"tema da pergunta";query.append(strong);section.append(query);
@@ -164,6 +164,7 @@ function appendCrossrefResults(parent,discovery){
       const label=document.createElement("span");label.className="external-result-label";label.textContent=journal.inCatalog?"NO CATÁLOGO":"SUGESTÃO DA INTERNET";card.append(label);
       const title=document.createElement("h4");title.textContent=journal.title;card.append(title);
       const badge=document.createElement("span");badge.className=journal.inCatalog?"origin-internal":"origin-external";badge.textContent=journal.inCatalog?"No catálogo":"Conferir antes de usar";card.append(badge);
+      const pending=document.createElement("p");pending.textContent="Candidata a verificar: confirmar Scopus/WoS, percentis CiteScore/JIF e H, estrato, análise antipredatória, escopo, idioma, APC, acordo CAPES e prazo nas fontes oficiais. O Crossref não fornece essas comprovações.";card.append(pending);
       const meta=document.createElement("p");meta.className="external-result-meta";meta.textContent=journal.count+" artigos relacionados"+(journal.publisher?" · "+journal.publisher:"");card.append(meta);
       journal.papers.forEach(paper=>{if(!paper.title)return;const p=document.createElement("p");p.className="ai-web-paper";const link=document.createElement("a");link.href=paper.url;link.target="_blank";link.rel="noopener noreferrer";link.textContent=paper.title+" ↗";p.append(link);const year=document.createElement("span");year.textContent=paper.year?" ("+paper.year+")":"";p.append(year);card.append(p)});
       list.append(card);
@@ -177,7 +178,7 @@ function appendCrossrefResults(parent,discovery){
 function presentAI(raw,question,discovery){
   const el=$("ai-answer");el.replaceChildren();const wrap=document.createElement("div");wrap.className="ai-rich";
   const heading=document.createElement("h3");heading.textContent="Orientação para sua publicação";wrap.append(heading);
-  const matched=ALL.filter(r=>String(raw).toLocaleLowerCase("pt-BR").includes(String(r.titulo).toLocaleLowerCase("pt-BR")));
+  const matched=searchCatalog().filter(r=>String(raw).toLocaleLowerCase("pt-BR").includes(String(r.titulo).toLocaleLowerCase("pt-BR")));
   const baseSection=document.createElement("section");baseSection.className="ai-base-results";
   const baseHeading=document.createElement("h3");baseHeading.textContent="Na base do projeto";baseSection.append(baseHeading);
   const baseSummary=document.createElement("p");baseSummary.className="ai-base-summary";
@@ -187,7 +188,7 @@ function presentAI(raw,question,discovery){
     matched.forEach(r=>{const card=document.createElement("article");card.className="ai-rich-card";const name=document.createElement("h4");name.textContent=r.titulo;card.append(name);card.append(makeFullRecord(r));const origin=document.createElement("span");origin.className="origin-internal";origin.textContent="Base do projeto";card.append(origin);const area=document.createElement("p");area.textContent=r.area||"Área não informada";card.append(area);const metrics=document.createElement("p");metrics.className="ai-rich-metrics";metrics.textContent="SJR: "+fmt(r.sjr)+" · CiteScore: "+fmt(r.citescore);card.append(metrics);const cost=document.createElement("p");cost.textContent="Custo informado: "+fmt(r.custo);card.append(cost);const url=safeUrl(r.url_ficha||r.url);if(url){const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Abrir site da revista ↗";card.append(a);}grid.append(card)});
     baseSection.append(grid);
   }else{
-    const empty=document.createElement("p");empty.className="ai-base-empty";empty.textContent="A orientação não citou um título específico da base. Você ainda pode consultar as "+ALL.length+" revistas cadastradas abaixo.";baseSection.append(empty);
+    const empty=document.createElement("p");empty.className="ai-base-empty";empty.textContent="A orientação não citou um título específico da base. Consulte os registros dos filtros ativos abaixo; amplie os filtros se a lista estiver vazia.";baseSection.append(empty);
   }
   baseSection.append(makeAllCatalogSection(question));wrap.append(baseSection);
   appendCrossrefResults(wrap,discovery);
@@ -197,14 +198,15 @@ function presentAI(raw,question,discovery){
   const note=document.createElement("p");note.className="source-disclaimer";note.textContent="As informações da base refletem o cadastro atual do projeto. Quartil SJR não comprova percentil CAPES nem elegibilidade do artigo; confira indicadores, escopo e taxas nas fontes oficiais.";wrap.append(note);
   el.append(wrap);
 }
+function searchCatalog(){return ALL.filter(r=>matchesCriteria(r,currentCriteria())&&(!$("criterio").value||r.criterioPlanilha?.status===$("criterio").value)&&(!$("area").value||r.area===$("area").value)&&(!$("sjr").value||r.sjr===$("sjr").value)&&(!$("idioma").value||String(r.idioma||"").includes($("idioma").value))&&matchesCost(r,$("custo").value)&&(!$("score").value||Number(r.citescore)>=Number($("score").value))&&(!$("q").value||normalizeSearchText([r.titulo,r.area,r.issn,r.escopo,r.alinhamento,r.observacoes,r.editora,...(r.check?Object.values(r.check):[])].join(" ")).includes(normalizeSearchText($("q").value))))}
 async function askAI(){
   const question=$("ai-question").value.trim(),status=$("ai-status"),answer=$("ai-answer");if(!question)return;
   status.hidden=false;status.textContent="Consultando o catálogo e buscando novas possibilidades na internet…";answer.textContent="";
   $("ai-loading").hidden=false;$("ai-search-button").disabled=true;$("ai-search-button").textContent="Pesquisando…";
-  const webPromise=searchCrossref(question).catch(error=>({journals:[],error:error.message,fromYear:new Date().getFullYear()-4}));
+  const webPromise=searchCrossref(question+" "+$("area").value).catch(error=>({journals:[],error:error.message,fromYear:new Date().getFullYear()-4}));
   let aiText="",aiError="";
   try{
-    const resp=await fetch("https://muddy-field-7b19.michael-oliveira.workers.dev/api/search",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question,catalog:selectionCatalog().map(r=>({titulo:r.titulo,area:r.area,escopo:r.alinhamento||r.observacoes||r.escopo,idioma:r.idioma,sjr:r.sjr,custo:r.custo,citescore:r.citescore,fatorImpacto:r.fatorImpacto,enquadramento:r.enquadramento,conferencia:r.statusConferencia,url:r.url_ficha||r.url}))})});
+    const resp=await fetch("https://muddy-field-7b19.michael-oliveira.workers.dev/api/search",{method:"POST",headers:{"Content-Type":"application/json"},signal:AbortSignal.timeout(30000),body:JSON.stringify({question:researchPolicy+"\nFiltros ativos: "+JSON.stringify(currentCriteria())+"\nPergunta: "+question,catalog:searchCatalog().map(r=>({...Object.fromEntries(Object.keys(metricLabels).map(k=>[k,metrics(r)[k]??null])),evidenciasMetricas:r.evidenciasMetricas,titulo:r.titulo,area:r.area,escopo:r.alinhamento||r.observacoes||r.escopo,idioma:r.idioma,sjr:r.sjr,custo:r.custo,citescore:r.citescore,fatorImpacto:r.fatorImpacto,enquadramento:r.enquadramento,conferencia:r.statusConferencia,url:r.url_ficha||r.url}))})});
     const data=await resp.json().catch(()=>({}));if(!resp.ok)throw Error(data.error||"Falha no serviço de IA");aiText=data.answer||"Sem resposta.";
   }catch(error){aiError=error.message||"Falha no serviço de IA";aiText="O assistente de IA está indisponível nesta tentativa. Consulte as revistas relacionadas do catálogo e as referências bibliográficas recentes abaixo."}
   const discovery=await webPromise;presentAI(aiText,question,discovery);
@@ -213,7 +215,7 @@ async function askAI(){
     "Pesquisa concluída. Use os rótulos “No catálogo” e “Conferir antes de usar” para identificar a origem dos títulos.";
   $("ai-loading").hidden=true;$("ai-search-button").disabled=false;$("ai-search-button").textContent="Pesquisar";
 }
-function exportCsv(){const cols=["titulo","enquadramento","area","editora","issn","sjr","indiceSjr","idioma","custo","modeloPublicacao","alinhamento","escopo","tiposArtigo","citescore","fatorImpacto","fatorImpacto5Anos","snip","taxaAceitacaoPercentual","prazoPrimeiraDecisao","prazoPrimeiraDecisaoPlanilha","prazoPublicacaoPlanilha","url","urlInstrucoes","atualizadoEm","statusConferencia","fontesCadastro","conferenciasOnline","pendenciasConferencia"];const csv=[cols.join(";"),...ALL.map(r=>cols.map(k=>'"'+(typeof r[k]==="object"&&r[k]!==null?JSON.stringify(r[k]):String(r[k]??"")).replaceAll('"','""')+'"').join(";"))].join("\n");const a=document.createElement("a");const u=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.href=u;a.download="rigoratlas-base-completa.csv";a.click();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+function exportCsv(){const cols=[...Object.keys(metricLabels),"titulo","enquadramento","area","editora","issn","sjr","indiceSjr","idioma","custo","modeloPublicacao","alinhamento","escopo","tiposArtigo","citescore","fatorImpacto","fatorImpacto5Anos","snip","taxaAceitacaoPercentual","prazoPrimeiraDecisao","prazoPrimeiraDecisaoPlanilha","url","urlInstrucoes","atualizadoEm","statusConferencia","evidenciasMetricas","fontesCadastro","conferenciasOnline","pendenciasConferencia"];const csv=[['marca',...cols].map(csvCell).join(';'),...ALL.map(r=>['RigorAtlas',...cols.map(k=>r[k])].map(csvCell).join(';'))].join('\r\n');const a=document.createElement("a");const u=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.href=u;a.download="RigorAtlas-catalogo-"+new Date().toISOString().slice(0,10)+".csv";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
 const JOURNAL_COVERS={
   5:"https://ars.els-cdn.com/content/image/X09596526.jpg",
   4:"https://ars.els-cdn.com/content/image/X09601481.jpg",
@@ -227,13 +229,13 @@ function featuredSelection(rows){
 }
 function renderFeatured(){
   const target=$("featured-journals");if(!target)return;
-  target.innerHTML=featuredSelection(ALL).map((r,i)=>'<a class="featured-journal" href="#revista-'+esc(r.id)+'" data-featured-id="'+esc(r.id)+'"><span class="cover-miniature"><span class="cover-fallback" aria-hidden="true"><span>REVISTA</span><b>'+esc(r.titulo)+'</b><i></i></span>'+(JOURNAL_COVERS[r.id]?'<img src="'+esc(JOURNAL_COVERS[r.id])+'" alt="Capa de '+esc(r.titulo)+'" width="66" height="88" loading="lazy" referrerpolicy="no-referrer">':'')+'</span><span class="featured-info"><span class="featured-rank">0'+(i+1)+' · '+esc(fmt(r.sjr))+'</span><strong>'+esc(r.titulo)+'</strong><span class="featured-score">CiteScore <b>'+esc(fmt(r.citescore))+'</b></span><span class="featured-link">Ver no catálogo ↗</span></span></a>').join("");
+  target.innerHTML=featuredSelection(ALL).map((r,i)=>'<a class="featured-journal" href="#revista-'+esc(r.id)+'" data-featured-id="'+esc(r.id)+'"><span class="cover-miniature"><span class="cover-fallback" aria-hidden="true"><span>REVISTA</span><b>'+esc(r.titulo)+'</b><i></i></span>'+(JOURNAL_COVERS[r.id]?'<img src="'+esc(JOURNAL_COVERS[r.id])+'" alt="Capa de '+esc(r.titulo)+'" width="66" height="88" loading="lazy" referrerpolicy="no-referrer">':'')+'</span><span class="featured-info"><span class="featured-rank">0'+(i+1)+' · '+esc(fmt(r.sjr))+'</span><strong>'+esc(r.titulo)+'</strong><span class="featured-score">CiteScore <b>'+esc(fmt(r.citescore))+'</b></span><span class="featured-link">Ver no catálogo ↗</span></span></a>').join("")||"<p>Nenhum destaque disponível na seleção atual.</p>";
   target.querySelectorAll("img").forEach(img=>img.addEventListener("error",()=>{img.hidden=true;img.alt="";}));
   target.addEventListener("click",event=>{
     const link=event.target.closest("[data-featured-id]");if(!link)return;
     const journal=ALL.find(r=>String(r.id)===link.dataset.featuredId);if(!journal)return;
     event.preventDefault();
-    CATALOG_TOP10=false;["criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");$("q").value=journal.titulo;render();
+    CATALOG_TOP10=false;[...filterIds,"criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");$("q").value=journal.titulo;render();
     const card=$("revista-"+journal.id);if(card){card.tabIndex=-1;card.focus({preventScroll:true});card.scrollIntoView({behavior:"smooth",block:"start"});}
   });
 }
@@ -266,18 +268,19 @@ function setupHeaderMenu(){
 }
 
 async function init(){
-  const res=await fetch(DATA_URL,{cache:"no-store"});if(!res.ok)throw Error("Não foi possível carregar a base de revistas");
-  const data=await res.json();ALL=(data.revistas||[]).map((r,i)=>({...r,id:r.id??i+1}));
+  const res=await fetch(DATA_URL,{cache:"no-store",signal:AbortSignal.timeout(15000)});if(!res.ok)throw Error("Não foi possível carregar a base de revistas");
+  const data=await res.json();if(!Array.isArray(data.revistas)||data.revistas.some(r=>!r||typeof r.titulo!=="string"))throw Error("Formato do catálogo inválido");ALL=data.revistas.map((r,i)=>metrics({...r,id:r.id??i+1}));
+  $("metric-coverage").textContent=ALL.filter(r=>r.maiorPercentil!==null).length+" de "+ALL.length+" registros com percentil CiteScore/JIF numérico. Campos ausentes exigem conferência na fonte; quartil e pontuação não foram convertidos em percentil.";
   BASE=data.fonteArquivo||data.baseAtualizada||"base do projeto";
   const checked=ALL.filter(r=>Array.isArray(r.conferenciasOnline)&&r.conferenciasOnline.length).length;
   $("catalog-summary").textContent=ALL.length+" revistas cadastradas · "+checked+" com campos conferidos";$("selecao-option").textContent="Seleção do catálogo ("+selectionCatalog().length+")";
   if(/^#revista-/.test(location.hash)){$("criterio").value="";CATALOG_VISIBLE=Infinity;}
   [...new Set(ALL.map(r=>r.area).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR")).forEach(v=>$("area").add(new Option(v,v)));
   const resetTop10=()=>{CATALOG_TOP10=false;CATALOG_VISIBLE=6;document.querySelectorAll("[data-fast-filter]").forEach(b=>b.setAttribute("aria-pressed","false"))};
-  ["q","criterio","area","sjr","idioma","custo","score","ord"].forEach(id=>$(id).addEventListener("input",()=>{resetTop10();render()}));
-  $("limpar").onclick=()=>{["q","criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");resetTop10();render()};
+  [...filterIds,"q","criterio","area","sjr","idioma","custo","score","ord"].forEach(id=>$(id).addEventListener("input",()=>{resetTop10();render()}));
+  $("limpar").onclick=()=>{[...filterIds,"q","criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");resetTop10();render()};
   document.querySelectorAll("[data-fast-filter]").forEach(button=>button.addEventListener("click",()=>{
-    ["q","criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");
+    [...filterIds,"q","criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");
     CATALOG_TOP10=false;CATALOG_VISIBLE=6;
     const filter=button.dataset.fastFilter;
     if(filter!=="clear"&&filter!=="all")$("criterio").value="selecao";
@@ -295,5 +298,10 @@ async function init(){
   render();renderFeatured();setupBanner();
 }
 setupHeaderMenu();
-init().catch(e=>{$("lista").textContent=e.message;if($("featured-journals"))$("featured-journals").textContent="Não foi possível carregar os destaques. Tente atualizar a página.";console.error(e)});
-
+$("csv").disabled=true;$("ai-search-button").disabled=true;
+init().then(()=>{$("csv").disabled=false;$("ai-search-button").disabled=false}).catch(e=>{
+ const message="Não foi possível carregar os dados agora. Atualize a página para tentar novamente. Se persistir, fale com o administrador.";
+ ["lista","featured-journals","cmp-tabela","catalog-summary","metric-coverage"].forEach(id=>{if($(id))$(id).textContent=message});
+ const retry=document.createElement("button");retry.type="button";retry.textContent="Tentar novamente";retry.onclick=()=>location.reload();$("lista").append(retry);
+ $("ai-status").hidden=false;$("ai-status").textContent="Pesquisa e CSV indisponíveis até o catálogo carregar.";console.error(e);
+});

@@ -1,3 +1,4 @@
+import {metrics as normalizeMetrics,metricLabels,metricText} from "./criteria.js";
 const $=id=>document.getElementById(id),fmt=v=>v===null||v===undefined||v===""?"Não informado":String(v);
 const siteBase=new URL("./",document.querySelector('link[rel="canonical"]').href);
 function safeUrl(value){try{const u=new URL(value);return["https:","http:"].includes(u.protocol)?u.href:""}catch{return""}}
@@ -19,7 +20,7 @@ function renderCatalog(journals,data){
    const scope=r.alinhamento||r.escopo;if(scope)card.append(node("p","report-scope",scope));
    const fields=node("dl","report-fields");
    field(fields,"Editora",r.editora);field(fields,"ISSN",r.issn);field(fields,"Idioma",r.idioma);field(fields,"Modelo",r.modeloPublicacao);
-   field(fields,"Custos",r.custo,true);field(fields,"Tipos de artigo",r.tiposArtigo,true);
+   Object.entries(metricLabels).forEach(([k,v])=>field(fields,v,metricText(normalizeMetrics(r)[k])));field(fields,"Custos",r.custo,true);field(fields,"Tipos de artigo",r.tiposArtigo,true);
    field(fields,"Primeira decisão",r.prazoPrimeiraDecisao||(r.prazoPrimeiraDecisaoPlanilha?"Planilha: "+r.prazoPrimeiraDecisaoPlanilha:null));
    field(fields,"Aceitação informada",r.taxaAceitacaoPercentual==null?null:r.taxaAceitacaoPercentual+"%");
    card.append(fields);
