@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "escopo",
+      "group": "Escolha da revista",
+      "title": "Escopo e tipo de artigo compatíveis",
+      "help": "Leia o escopo, os tipos aceitos e artigos recentes da revista.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "indexacao",
+      "group": "Escolha da revista",
+      "title": "Indexação conferida na fonte",
+      "help": "Confirme Scopus e/ou Web of Science diretamente na base, com data da consulta.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "percentil",
+      "group": "Escolha da revista",
+      "title": "Percentis e regra do programa conferidos",
+      "help": "Registre fonte, ano e categoria de CiteScore/JIF; valide a regra e o estrato com o orientador.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "indice-h",
+      "group": "Escolha da revista",
+      "title": "Percentil do índice H conferido",
+      "help": "Use a posição na categoria SJR; não confunda índice H com percentil.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "editorial",
+      "group": "Escolha da revista",
+      "title": "Transparência editorial avaliada",
+      "help": "Confira identidade, revisão por pares, editores, taxas e alertas. Ausência de alerta não prova qualidade.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "custos",
+      "group": "Escolha da revista",
+      "title": "Custo total e financiamento definidos",
+      "help": "Some APC e outras taxas. Confirme elegibilidade individual se houver acordo ou isenção.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "prazo",
+      "group": "Escolha da revista",
+      "title": "Prazo compatível com o planejamento",
+      "help": "Distinga primeira decisão, aceite e publicação; mantenha margem para atrasos.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "orientador",
+      "group": "Escolha da revista",
+      "title": "Escolha discutida com o orientador",
+      "help": "Valide a revista e alternativas de submissão; registre a decisão.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "contribuicao",
+      "group": "Preparação do manuscrito",
+      "title": "Objetivo e contribuição claros",
+      "help": "Revise a pergunta, os resultados e a contribuição do artigo.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "estrutura",
+      "group": "Preparação do manuscrito",
+      "title": "Estrutura conforme instruções aos autores",
+      "help": "Confira seções, modelo, limite de palavras e tipo de manuscrito.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "resumo",
+      "group": "Preparação do manuscrito",
+      "title": "Título, resumo e palavras-chave revisados",
+      "help": "Confira idioma, tamanho e correspondência com o conteúdo.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "metodos",
+      "group": "Preparação do manuscrito",
+      "title": "Métodos e resultados revisados",
+      "help": "Verifique análises, unidades, tabelas, coerência e possibilidade de reprodução.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "referencias",
+      "group": "Preparação do manuscrito",
+      "title": "Citações e referências conferidas",
+      "help": "Verifique autores, ano, DOI/URL e padrão exigido; inclua somente fontes utilizadas.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "figuras",
+      "group": "Preparação do manuscrito",
+      "title": "Figuras e tabelas prontas",
+      "help": "Confira resolução, legendas, numeração e arquivos separados quando exigidos.",
+      "optional": true,
+      "phase": "before"
+    },
+    {
+      "id": "idioma",
+      "group": "Preparação do manuscrito",
+      "title": "Idioma e redação revisados",
+      "help": "Revise clareza, gramática e terminologia.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "anonimo",
+      "group": "Preparação do manuscrito",
+      "title": "Versão anônima preparada",
+      "help": "Remova identificações somente se a revista exigir avaliação anônima.",
+      "optional": true,
+      "phase": "before"
+    },
+    {
+      "id": "autores",
+      "group": "Autoria, ética e documentos",
+      "title": "Autoria e autor correspondente definidos",
+      "help": "Confirme contribuições, ordem dos autores, afiliações e contato. Autoria depende de contribuição.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "aprovacao",
+      "group": "Autoria, ética e documentos",
+      "title": "Todos os autores aprovaram a versão",
+      "help": "Obtenha concordância sobre o manuscrito e a submissão.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "etica",
+      "group": "Autoria, ética e documentos",
+      "title": "Exigências éticas atendidas",
+      "help": "Confira aprovações, consentimentos e registros aplicáveis. Se não se aplicar, justifique.",
+      "optional": true,
+      "phase": "before"
+    },
+    {
+      "id": "conflitos",
+      "group": "Autoria, ética e documentos",
+      "title": "Conflitos de interesse e financiamento declarados",
+      "help": "Informe o que a revista solicita, inclusive ausência de conflitos quando pertinente.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "dados",
+      "group": "Autoria, ética e documentos",
+      "title": "Dados, código e materiais organizados",
+      "help": "Confira política de disponibilidade e restrições; não exponha dados pessoais ou sigilosos.",
+      "optional": true,
+      "phase": "before"
+    },
+    {
+      "id": "permissoes",
+      "group": "Autoria, ética e documentos",
+      "title": "Permissões de uso obtidas",
+      "help": "Verifique direitos de figuras, tabelas e materiais de terceiros.",
+      "optional": true,
+      "phase": "before"
+    },
+    {
+      "id": "ia",
+      "group": "Autoria, ética e documentos",
+      "title": "Política de uso de IA conferida",
+      "help": "Verifique as regras da revista e declare o uso quando exigido; autores respondem pelo conteúdo.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "carta",
+      "group": "Autoria, ética e documentos",
+      "title": "Carta ao editor e documentos adicionais prontos",
+      "help": "Prepare carta, declarações, destaques e formulários exigidos pela revista.",
+      "optional": true,
+      "phase": "before"
+    },
+    {
+      "id": "originalidade",
+      "group": "Autoria, ética e documentos",
+      "title": "Originalidade e exclusividade verificadas",
+      "help": "Confira reaproveitamento de texto, preprints e versões anteriores; não submeta simultaneamente.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "cadastro",
+      "group": "Conferência antes do envio",
+      "title": "Cadastro no sistema e identificadores revisados",
+      "help": "Confira metadados, afiliações, ORCID quando exigido e autor correspondente.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "arquivos",
+      "group": "Conferência antes do envio",
+      "title": "Arquivos finais revisados",
+      "help": "Abra cada arquivo e confira versões, nomes e anexos exigidos.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "preview",
+      "group": "Conferência antes do envio",
+      "title": "Prévia da submissão conferida",
+      "help": "Confira o PDF gerado pelo sistema, metadados e anexos antes de enviar.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "final",
+      "group": "Conferência antes do envio",
+      "title": "Revisão final com o orientador concluída",
+      "help": "Confirme as pendências antes de autorizar o envio.",
+      "optional": false,
+      "phase": "before"
+    },
+    {
+      "id": "recibo",
+      "group": "Após o envio",
+      "title": "Protocolo de submissão guardado",
+      "help": "Anote identificador, data e comprovante do envio.",
+      "optional": false,
+      "phase": "after"
+    },
+    {
+      "id": "parecer",
+      "group": "Após o envio",
+      "title": "Decisão e revisões acompanhadas",
+      "help": "Registre prazos e responda aos pareceres ponto a ponto quando solicitado.",
+      "optional": false,
+      "phase": "after"
+    },
+    {
+      "id": "provas",
+      "group": "Após o envio",
+      "title": "Provas e condições de publicação conferidas",
+      "help": "Após aceite, revise provas, licença e eventual cobertura do acordo.",
+      "optional": false,
+      "phase": "after"
+    }
+  ],
+  "sources": [
+    {
+      "name": "Fluxograma de escolha da revista e melhorias do site — PDF fornecido pela equipe",
+      "url": ""
+    },
+    {
+      "name": "Think. Check. Submit.",
+      "url": "https://thinkchecksubmit.org/journals/"
+    },
+    {
+      "name": "Ética para autores — Taylor & Francis",
+      "url": "https://authorservices.taylorandfrancis.com/publishing-your-research/writing-your-paper/ethics-for-journal-authors/"
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+import {evaluateJournal} from "./eligibility.js";
+import {journalAssessmentHTML} from "./criteria-ui.js";
 import {metricLabels,filterIds,metrics,matchesCriteria,metricText,csvCell,researchPolicy} from "./criteria.js";
 const currentCriteria=()=>Object.fromEntries(filterIds.map(id=>[id,document.getElementById(id)?.value||""]));
 const DATA_URL="./assets/data/revistas.json";const $=id=>document.getElementById(id);const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));const fmt=v=>v===null||v===undefined||v===""?"Não informado":String(v);const safeUrl=u=>{try{const x=new URL(u);return ["https:","http:"].includes(x.protocol)?x.href:""}catch{return""}};let ALL=[],BASE="",SELECTED=new Set();function field(r,k){return r[k]??null}function priority(r){return {"ALTO":0,"MÉDIO":1,"COMPLEMENTAR":2}[r.tier]??3}let CATALOG_TOP10=false,CATALOG_VISIBLE=6;
@@ -25,7 +27,7 @@ function render(){
   $("lista").innerHTML=visible.map(r=>{
     const url=safeUrl(r.url_ficha||r.url);
     const metrics=[["Maior percentil",r.maiorPercentil===null?"A confirmar":r.maiorPercentil+"%"],["Quartil",r.sjr],["CiteScore",r.citescore],["Impacto",r.fatorImpacto]].filter(([,v])=>v!==null&&v!==undefined&&v!=="").map(([name,v])=>'<span><b>'+name+'</b> '+esc(v)+'</span>').join("");
-    return '<article class="journal-card" id="revista-'+esc(r.id)+'"><div class="journal-card-top"><span class="tier criterion-badge status-'+esc(r.criterioPlanilha?.status||"confirmar")+'">'+esc(compactStatus(r))+'</span><label class="cmp"><input type="checkbox" data-id="'+esc(r.id)+'" '+(SELECTED.has(String(r.id))?"checked":"")+'> Comparar</label></div><h3>'+esc(r.titulo)+'</h3><p class="journal-area">'+esc(r.area||"Área não informada")+'</p><div class="journal-metrics">'+metrics+'</div><p class="journal-cost"><strong>Custo:</strong> '+esc(compactCost(r))+'</p><div class="journal-actions journal-card-actions"><a class="journal-record-link" href="ficha-revista.html?id='+encodeURIComponent(r.id)+'" target="_blank" rel="noopener">Ficha completa ↗</a>'+(url?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+(r.tipoLink?"Fonte externa":"Site da revista")+' ↗</a>':"")+'</div></article>';
+    return '<article class="journal-card" id="revista-'+esc(r.id)+'"><div class="journal-card-top"><span class="tier criterion-badge status-'+esc(r.criterioPlanilha?.status||"confirmar")+'">'+esc(compactStatus(r))+'</span><label class="cmp"><input type="checkbox" data-id="'+esc(r.id)+'" '+(SELECTED.has(String(r.id))?"checked":"")+'> Comparar</label></div><h3>'+esc(r.titulo)+'</h3><p class="journal-area">'+esc(r.area||"Área não informada")+'</p><div class="journal-metrics">'+metrics+'</div><p class="journal-cost"><strong>Custo:</strong> '+esc(compactCost(r))+'</p>'+journalAssessmentHTML(r,esc,$("submission-date").value,$("publication-target").value)+'<div class="journal-actions journal-card-actions"><a class="journal-record-link" href="ficha-revista.html?id='+encodeURIComponent(r.id)+'" target="_blank" rel="noopener">Ficha completa ↗</a>'+(url?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+(r.tipoLink?"Fonte externa":"Site da revista")+' ↗</a>':"")+'</div></article>';
   }).join("")||'<div class="catalog-empty"><h3>Nenhuma revista com essas escolhas</h3><p>Algumas informações ainda estão em conferência. Remova uma escolha acima ou veja o catálogo completo.</p><button type="button" id="empty-clear">Ver todas as revistas</button></div>';
   if($("empty-clear"))$("empty-clear").onclick=()=>$("limpar").click();
   renderCompare();
@@ -39,6 +41,7 @@ function renderActiveFilters(){
   button.type="button";button.textContent=label+" ×";button.setAttribute("aria-label","Remover filtro "+label);
   button.onclick=()=>{field.value="";CATALOG_VISIBLE=6;CATALOG_TOP10=false;render();$(id).focus()};target.append(button);
  }
+ if($("program-only").checked){const button=document.createElement("button");button.type="button";button.textContent="Quatro critérios conferidos ×";button.setAttribute("aria-label","Remover filtro dos quatro critérios");button.onclick=()=>{$("program-only").checked=false;CATALOG_VISIBLE=6;render();$("program-only").focus()};target.append(button)}
  target.hidden=!target.childElementCount;
 }
 function renderCompare(){
@@ -211,7 +214,7 @@ function presentAI(raw,question,discovery){
   const note=document.createElement("p");note.className="source-disclaimer";note.textContent="As informações da base refletem o cadastro atual do projeto. Quartil SJR não comprova percentil CAPES nem elegibilidade do artigo; confira indicadores, escopo e taxas nas fontes oficiais.";wrap.append(note);
   el.append(wrap);
 }
-function searchCatalog(){return ALL.filter(r=>matchesCriteria(r,currentCriteria())&&(!$("criterio").value||r.criterioPlanilha?.status===$("criterio").value)&&(!$("area").value||r.area===$("area").value)&&(!$("sjr").value||r.sjr===$("sjr").value)&&(!$("idioma").value||String(r.idioma||"").includes($("idioma").value))&&matchesCost(r,$("custo").value)&&(!$("score").value||Number(r.citescore)>=Number($("score").value))&&(!$("q").value||normalizeSearchText([r.titulo,r.area,r.issn,r.escopo,r.alinhamento,r.observacoes,r.editora,...(r.check?Object.values(r.check):[])].join(" ")).includes(normalizeSearchText($("q").value))))}
+function searchCatalog(){return ALL.filter(r=>(!$("program-only").checked||evaluateJournal(r).state==="pass")&&matchesCriteria(r,currentCriteria())&&(!$("criterio").value||r.criterioPlanilha?.status===$("criterio").value)&&(!$("area").value||r.area===$("area").value)&&(!$("sjr").value||r.sjr===$("sjr").value)&&(!$("idioma").value||String(r.idioma||"").includes($("idioma").value))&&matchesCost(r,$("custo").value)&&(!$("score").value||Number(r.citescore)>=Number($("score").value))&&(!$("q").value||normalizeSearchText([r.titulo,r.area,r.issn,r.escopo,r.alinhamento,r.observacoes,r.editora,...(r.check?Object.values(r.check):[])].join(" ")).includes(normalizeSearchText($("q").value))))}
 async function askAI(){
   const question=$("ai-question").value.trim(),status=$("ai-status"),answer=$("ai-answer");if(!question)return;
   status.hidden=false;status.textContent="Consultando o catálogo e buscando novas possibilidades na internet…";answer.textContent="";
@@ -248,7 +251,7 @@ function renderFeatured(){
     const link=event.target.closest("[data-featured-id]");if(!link)return;
     const journal=ALL.find(r=>String(r.id)===link.dataset.featuredId);if(!journal)return;
     event.preventDefault();
-    CATALOG_TOP10=false;[...filterIds,"criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");$("q").value=journal.titulo;render();
+    $("program-only").checked=false;CATALOG_TOP10=false;[...filterIds,"criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");$("q").value=journal.titulo;render();
     const card=$("revista-"+journal.id);if(card){card.tabIndex=-1;card.focus({preventScroll:true});card.scrollIntoView({behavior:"smooth",block:"start"});}
   });
 }
@@ -291,7 +294,7 @@ async function init(){
   [...new Set(ALL.map(r=>r.area).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR")).forEach(v=>$("area").add(new Option(v,v)));
   const resetTop10=()=>{CATALOG_TOP10=false;CATALOG_VISIBLE=6;document.querySelectorAll("[data-fast-filter]").forEach(b=>b.setAttribute("aria-pressed","false"))};
   [...filterIds,"q","criterio","area","sjr","idioma","custo","score","ord"].forEach(id=>$(id).addEventListener("input",()=>{resetTop10();render()}));
-  $("limpar").onclick=()=>{[...filterIds,"q","criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");resetTop10();render()};
+  $("limpar").onclick=()=>{$("program-only").checked=false;[...filterIds,"q","criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");resetTop10();render()};
   document.querySelectorAll("[data-fast-filter]").forEach(button=>button.addEventListener("click",()=>{
     [...filterIds,"q","criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");
     CATALOG_TOP10=false;CATALOG_VISIBLE=6;
@@ -304,6 +307,7 @@ async function init(){
     document.querySelectorAll("[data-fast-filter]").forEach(b=>b.setAttribute("aria-pressed",String(filter!=="clear"&&b===button)));
     render();$("lista").scrollIntoView({behavior:"smooth",block:"start"});
   }));
+  ["program-only","submission-date","publication-target"].forEach(id=>$(id).addEventListener("change",()=>{CATALOG_VISIBLE=6;render()}));
   $("catalog-expand").addEventListener("click",()=>{CATALOG_VISIBLE=CATALOG_VISIBLE<$("count").textContent.match(/\d+/)[0]?CATALOG_VISIBLE+6:6;render();if(CATALOG_VISIBLE===6)$("revistas").scrollIntoView({behavior:"smooth",block:"start"})});
   $("lista").addEventListener("change",e=>{const id=e.target.dataset.id;if(!id)return;if(e.target.checked){if(SELECTED.size>=4){e.target.checked=false;alert("Selecione até quatro revistas.");return}SELECTED.add(id)}else SELECTED.delete(id);renderCompare()});
   $("csv").onclick=exportCsv;$("ai-search-form").addEventListener("submit",e=>{e.preventDefault();askAI()});
