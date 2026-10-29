@@ -18,15 +18,28 @@ function render(){
   const order=$("ord").value;
   arr.sort((a,b)=>order==="percentil"?((metrics(b).maiorPercentil??-1)-(metrics(a).maiorPercentil??-1)||a.titulo.localeCompare(b.titulo,"pt-BR")):order==="nome"?a.titulo.localeCompare(b.titulo,"pt-BR"):order==="tier"?priority(a)-priority(b)||((Number(b.citescore)||0)-(Number(a.citescore)||0)):((Number(b.citescore)||0)-(Number(a.citescore)||0))||a.titulo.localeCompare(b.titulo,"pt-BR"));
   if(CATALOG_TOP10)arr=arr.filter(r=>isSelection(r)&&r.citescore!==null&&r.citescore!==""&&Number.isFinite(Number(r.citescore))).slice(0,10);
-  $("count").textContent=arr.length+" resultados";
+  $("count").textContent=arr.length+(arr.length===1?" revista encontrada":" revistas encontradas")+" de "+ALL.length;
+  renderActiveFilters();
   const visible=arr.slice(0,CATALOG_VISIBLE);
   const expand=$("catalog-expand"),hasMore=visible.length<arr.length;expand.hidden=arr.length<=6;expand.setAttribute("aria-expanded",String(CATALOG_VISIBLE>6));expand.textContent=hasMore?"Ver mais "+Math.min(6,arr.length-visible.length)+" revistas ("+visible.length+" de "+arr.length+") ↓":"Mostrar apenas 6 registros ↑";
   $("lista").innerHTML=visible.map(r=>{
     const url=safeUrl(r.url_ficha||r.url);
     const metrics=[["Maior percentil",r.maiorPercentil===null?"A confirmar":r.maiorPercentil+"%"],["Quartil",r.sjr],["CiteScore",r.citescore],["Impacto",r.fatorImpacto]].filter(([,v])=>v!==null&&v!==undefined&&v!=="").map(([name,v])=>'<span><b>'+name+'</b> '+esc(v)+'</span>').join("");
     return '<article class="journal-card" id="revista-'+esc(r.id)+'"><div class="journal-card-top"><span class="tier criterion-badge status-'+esc(r.criterioPlanilha?.status||"confirmar")+'">'+esc(compactStatus(r))+'</span><label class="cmp"><input type="checkbox" data-id="'+esc(r.id)+'" '+(SELECTED.has(String(r.id))?"checked":"")+'> Comparar</label></div><h3>'+esc(r.titulo)+'</h3><p class="journal-area">'+esc(r.area||"Área não informada")+'</p><div class="journal-metrics">'+metrics+'</div><p class="journal-cost"><strong>Custo:</strong> '+esc(compactCost(r))+'</p><div class="journal-actions journal-card-actions"><a class="journal-record-link" href="ficha-revista.html?id='+encodeURIComponent(r.id)+'" target="_blank" rel="noopener">Ficha completa ↗</a>'+(url?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+(r.tipoLink?"Fonte externa":"Site da revista")+' ↗</a>':"")+'</div></article>';
-  }).join("")||'<p class="empty">Nenhuma revista corresponde aos filtros.</p>';
+  }).join("")||'<div class="catalog-empty"><h3>Nenhuma revista com essas escolhas</h3><p>Algumas informações ainda estão em conferência. Remova uma escolha acima ou veja o catálogo completo.</p><button type="button" id="empty-clear">Ver todas as revistas</button></div>';
+  if($("empty-clear"))$("empty-clear").onclick=()=>$("limpar").click();
   renderCompare();
+}
+function renderActiveFilters(){
+ const target=$("active-filters");target.replaceChildren();
+ for(const id of ["q","area","idioma","custo",...filterIds,"sjr","score","criterio"]){
+  const field=$(id);if(!field.value)continue;
+  const button=document.createElement("button"),value=field.selectedOptions?.[0]?.textContent||field.value;
+  const label=(field.dataset.filterLabel||id)+": "+value;
+  button.type="button";button.textContent=label+" ×";button.setAttribute("aria-label","Remover filtro "+label);
+  button.onclick=()=>{field.value="";CATALOG_VISIBLE=6;CATALOG_TOP10=false;render();$(id).focus()};target.append(button);
+ }
+ target.hidden=!target.childElementCount;
 }
 function renderCompare(){
   const arr=ALL.filter(r=>SELECTED.has(String(r.id)));
@@ -152,7 +165,7 @@ function appendCrossrefResults(parent,discovery){
   const internetJournals=discovery&&discovery.journals||[],knownCount=internetJournals.filter(j=>j.inCatalog).length,newCount=internetJournals.filter(j=>!j.inCatalog).length,summary=document.createElement("p");summary.className="ai-result-summary";
   summary.textContent="Na busca pela internet: "+internetJournals.length+" revistas relacionadas · "+knownCount+" já estão na base · "+newCount+" são novas sugestões.";
   section.append(summary);
-  const criteriaNote=document.createElement("p");criteriaNote.textContent="Critérios para conferir: "+filterIds.filter(id=>$(id).value).map(id=>$(id).closest("label").textContent.split(/Qualquer|Sem limite/)[0].trim()+": "+($(id).selectedOptions?.[0]?.textContent||$(id).value)).join(" · ");if(filterIds.some(id=>$(id).value))section.append(criteriaNote);
+  const criteriaNote=document.createElement("p");criteriaNote.textContent="Preferências para conferir: "+filterIds.filter(id=>$(id).value).map(id=>(($(id).dataset.filterLabel||id)+": "+($(id).selectedOptions?.[0]?.textContent||$(id).value))).join(" · ");if(filterIds.some(id=>$(id).value))section.append(criteriaNote);
   const lead=document.createElement("p");lead.className="ai-web-note";
   if(discovery&&discovery.journals&&discovery.journals.length){
     const query=document.createElement("p");query.className="external-search-query";query.append(document.createTextNode("Busca por: "));const strong=document.createElement("strong");strong.textContent=discovery.query||"tema da pergunta";query.append(strong);section.append(query);
@@ -273,7 +286,7 @@ async function init(){
   $("metric-coverage").textContent=ALL.filter(r=>r.maiorPercentil!==null).length+" de "+ALL.length+" registros com percentil CiteScore/JIF numérico. Campos ausentes exigem conferência na fonte; quartil e pontuação não foram convertidos em percentil.";
   BASE=data.fonteArquivo||data.baseAtualizada||"base do projeto";
   const checked=ALL.filter(r=>Array.isArray(r.conferenciasOnline)&&r.conferenciasOnline.length).length;
-  $("catalog-summary").textContent=ALL.length+" revistas cadastradas · "+checked+" com campos conferidos";$("selecao-option").textContent="Seleção do catálogo ("+selectionCatalog().length+")";
+  $("catalog-summary").textContent=ALL.length+" revistas para explorar e comparar";$("selecao-option").textContent="Seleção da equipe ("+selectionCatalog().length+")";
   if(/^#revista-/.test(location.hash)){$("criterio").value="";CATALOG_VISIBLE=Infinity;}
   [...new Set(ALL.map(r=>r.area).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR")).forEach(v=>$("area").add(new Option(v,v)));
   const resetTop10=()=>{CATALOG_TOP10=false;CATALOG_VISIBLE=6;document.querySelectorAll("[data-fast-filter]").forEach(b=>b.setAttribute("aria-pressed","false"))};
