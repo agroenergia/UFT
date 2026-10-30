@@ -14,7 +14,7 @@ function matchesCost(r,filter){
   return true;
 }
 function compactCost(r){return {sem_apc:"Sem APC",rota_assinatura:"Rota de assinatura",apc:"Com taxa",confirmar:"Valor a confirmar"}[r.modeloCusto]||"Valor a confirmar"}
-function compactStatus(r){return {selecao:"Na seleção",abaixo:"Fora do recorte",confirmar:"A confirmar"}[r.criterioPlanilha?.status]||"A confirmar"}
+function compactStatus(r){return r.statusConferencia==='Em conferência'?'Em conferência':({selecao:"Na seleção",abaixo:"Fora do recorte",confirmar:"A confirmar"}[r.criterioPlanilha?.status]||"A confirmar")}
 function render(){
   let arr=searchCatalog();
   const order=$("ord").value;

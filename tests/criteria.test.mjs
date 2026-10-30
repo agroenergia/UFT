@@ -22,8 +22,16 @@ test('combine index, budget, time, agreement and stratum without inferring cover
 test('CSV quotes, formula defense and no column-breaking newlines',()=>{
  assert.equal(csvCell('a;"b"'),'"a;""b"""');assert.equal(csvCell('=1+1'),'"\'=1+1"');assert.equal(csvCell(null),'""');assert.equal(csvCell('a\nb'),'"a\nb"');
 });
-test('68 original records preserved, source date unchanged',async()=>{
+test('118 unique records; 50 Springer candidates cannot pass verified filters',async()=>{
  const data=JSON.parse(await readFile(new URL('../assets/data/revistas.json',import.meta.url)));
- assert.equal(data.revistas.length,68);assert.equal(new Set(data.revistas.map(r=>r.id)).size,68);assert.equal(data.atualizadoEm,'2026-10-26');
+ assert.equal(data.revistas.length,118);assert.equal(new Set(data.revistas.map(r=>String(r.id))).size,118);assert.equal(data.atualizadoEm,'2026-10-30');
+ const batch=data.revistas.filter(r=>String(r.id).startsWith('springer-'));
+ assert.equal(batch.length,50);
+ for(const r of batch){
+  assert.equal(r.statusConferencia,'Em conferência');assert.equal(r.criterioPlanilha.status,'confirmar');
+  for(const f of [{percentil:'50'},{percentilH:'50'},{indexacao:'either'},{apcMax:'0'},{acordoCapes:'sim'},{prazoMax:'365'}])assert.equal(matchesCriteria(r,f),false,r.titulo);
+  assert.equal(metrics(r).maiorPercentil,null);
+  assert.ok(r.conferenciasOnline.length>0);
+ }
  assert.equal(data.revistas.filter(r=>matchesCriteria(r,{percentil:'50'})).length,0);
 });
