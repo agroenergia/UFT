@@ -19,7 +19,7 @@ test('expanded criteria display numeric CiteScore and percentile with sources',a
  const {journalAssessmentHTML}=await import(uri(ui));
  const data=JSON.parse(await readFile(new URL('../assets/data/revistas.json',import.meta.url),'utf8'));
  const html=journalAssessmentHTML(data.revistas.find(r=>r.titulo==='Bragantia'),s=>String(s));
- assert.match(html,/CiteScore 2,9/);assert.match(html,/65%/);assert.match(html,/2025/);assert.match(html,/sourceid\/38490/);assert.doesNotMatch(html,/Conferido/);
+ assert.match(html,/CiteScore 2,9/);assert.match(html,/65%/);assert.match(html,/2025/);assert.match(html,/sourceid\/38490/);assert.match(html,/Notas na Scopus por categoria/);assert.match(html,/Página oficial na Scopus/);assert.doesNotMatch(html,/Conferido/);
 });
 test('comparison exposes original APC and separates decision, acceptance and publication',async()=>{
  const criteria=uri(await load('criteria.js'));

@@ -33,14 +33,16 @@ export function comparisonHTML(records,esc){
  return '<p>Valores com fonte e data disponíveis no cadastro. APC refere-se à opção de acesso aberto; primeira decisão não equivale a publicação. Campos sem evidência permanecem identificados.</p><table><caption class="sr-only">Comparação das revistas selecionadas</caption><thead><tr><th scope="col">Indicador</th>'+records.map(r=>'<th scope="col">'+esc(r.titulo)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(([label,render])=>'<tr><th scope="row">'+label+'</th>'+records.map(r=>'<td>'+render(r)+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
 }
 export function journalCriteriaHTML(r,esc){
- const source=(key)=>{const e=r.evidenciasMetricas?.[key];if(!e||!/^https?:\/\//.test(e.url||''))return '';return ' <small>'+esc([e.anoIndicador,e.categoria].filter(Boolean).join(' · '))+' <a href="'+esc(e.url)+'" target="_blank" rel="noopener noreferrer">Fonte</a>'+(e.urlArquivo?' · <a href="'+esc(e.urlArquivo)+'" target="_blank" rel="noopener noreferrer">Dados consultados</a>':'')+'</small>'};
+ const source=(key)=>{const e=r.evidenciasMetricas?.[key];if(!e||!/^https?:\/\//.test(e.url||''))return '';const label=/scopus\.com\/sourceid\//.test(e.url)?'Página oficial na Scopus ↗':'Fonte ↗';return ' <small>'+esc([e.anoIndicador,e.categoria].filter(Boolean).join(' · '))+' <a href="'+esc(e.url)+'" target="_blank" rel="noopener noreferrer">'+label+'</a>'+(e.urlArquivo?' · <a href="'+esc(e.urlArquivo)+'" target="_blank" rel="noopener noreferrer">Planilha CiteScore</a>':'')+'</small>'};
  const review=evaluateJournal(r);
  const indexes=['indexacaoScopus','indexacaoWos'].filter(k=>r[k]===true&&r.evidenciasMetricas?.[k]);
  const indexed=indexes.length?indexes.map(k=>(k==='indexacaoScopus'?'Scopus — CiteScore '+(numeric(r.citescore)===null?'não disponível':r.citescore.toLocaleString('pt-BR')):'Web of Science')+source(k)).join('; '):'Não localizada nas fontes consultadas';
  const ranks=['percentilCiteScore','percentilJif'].filter(k=>typeof r[k]==='number'&&r.evidenciasMetricas?.[k]);
  const ranked=ranks.length?ranks.map(k=>(k==='percentilCiteScore'?'CiteScore':'JIF')+': '+r[k]+'% — '+(r[k]>=50?'atende ≥ 50':'abaixo de 50')+source(k)).join('; '):'Percentil não disponível nas fontes consultadas';
  const h=review.checks[2].state==='pending'?'Não disponível na fonte consultada':r.percentilH+'% — '+status[review.checks[2].state]+source('percentilH');
- return '<ul class="journal-criteria"><li><strong>Indexação Scopus ou WoS</strong>: '+indexed+'</li><li><strong>Percentil CiteScore/JIF ≥ 50</strong>: '+ranked+'</li><li><strong>Percentil H > 50</strong>: '+h+'</li></ul>';
+ const scopusUrl=r.scopusSourceId?'https://www.scopus.com/sourceid/'+encodeURIComponent(r.scopusSourceId):'';
+ const cats=Array.isArray(r.percentisCiteScorePorCategoria)&&r.percentisCiteScorePorCategoria.length?'<li><strong>Notas na Scopus por categoria ('+esc(r.anoCiteScore||2025)+')</strong>: '+r.percentisCiteScorePorCategoria.map(c=>esc(c.categoria)+': <b>'+esc(c.percentil)+'%</b> ('+esc(c.posicao)+'º de '+esc(c.total)+')').join('; ')+(scopusUrl?' · <a href="'+esc(scopusUrl)+'" target="_blank" rel="noopener noreferrer">Ver notas na Scopus ↗</a>':'')+'</li>':'';
+ return '<ul class="journal-criteria"><li><strong>Indexação Scopus ou WoS</strong>: '+indexed+'</li><li><strong>Percentil CiteScore/JIF ≥ 50</strong>: '+ranked+'</li>'+cats+'<li><strong>Percentil H > 50</strong>: '+h+'</li></ul>';
 }
 export function journalAssessmentHTML(r,esc,start='',target=''){
  const review=evaluateJournal(r),p=metrics(r).maiorPercentil,eta=expectedPublication(r.prazoPublicacaoDias,start,target);
