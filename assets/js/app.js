@@ -112,6 +112,7 @@ function crossrefItemMatches(item,question){
   const title=(item.title||[]).join(" "),journal=(item["container-title"]||[]).join(" "),subjects=(item.subject||[]).join(" ");
   const text=normalizeSearchText([title,journal,subjects].join(" "));
   const inScope=PORTAL_SCOPE_TERMS.some(term=>text.includes(term));
+  if(findJournalsByName(ALL,question).some(r=>normalizeSearchText(r.titulo)===normalizeSearchText(journal)))return true;
   if(!inScope)return false;
   const terms=termsFromQuestion(question);
   const matchedGroup=PORTAL_TOPIC_GROUPS.some(group=>group.some(term=>terms.some(q=>term===q||term.startsWith(q)||q.startsWith(term)))&&group.some(term=>text.includes(term)));
@@ -139,7 +140,7 @@ async function searchCrossref(question){
   });
   const known=new Set(ALL.map(r=>normalizeSearchText(r.titulo)));
   const journals=[...groups.values()].sort((a,b)=>b.count-a.count||a.title.localeCompare(b.title,"en")).slice(0,6).map(g=>({...g,inCatalog:known.has(normalizeSearchText(g.title)),papers:g.papers.slice(0,2)}));
-  return {journals:journals.filter(j=>!j.inCatalog||searchCatalog().some(r=>normalizeSearchText(r.titulo)===normalizeSearchText(j.title))),error:null,fromYear,query:phrase};
+  return {journals:journals.filter(j=>!j.inCatalog||findJournalsByName(ALL,phrase).some(r=>normalizeSearchText(r.titulo)===normalizeSearchText(j.title))||searchCatalog().some(r=>normalizeSearchText(r.titulo)===normalizeSearchText(j.title))),error:null,fromYear,query:phrase};
 }
 function makeAllCatalogSection(question){
   const details=document.createElement("details");details.className="ai-catalog-expansion";
@@ -209,8 +210,8 @@ function presentAI(raw,question,discovery,directMatches=null){
     const empty=document.createElement("p");empty.className="ai-base-empty";empty.textContent="A orientação não citou um título específico da base. Consulte os registros dos filtros ativos abaixo; amplie os filtros se a lista estiver vazia.";baseSection.append(empty);
   }
   baseSection.append(makeAllCatalogSection(question));wrap.append(baseSection);
-  if(!directMatches)appendCrossrefResults(wrap,discovery);
-  if(directMatches){el.append(wrap);return;}
+  if(discovery)appendCrossrefResults(wrap,discovery);
+  if(!discovery){el.append(wrap);return;}
   const details=document.createElement("details");details.className="ai-explanation";details.open=!matched.length;
   const summary=document.createElement("summary");summary.textContent="Ver a explicação completa da orientação";details.append(summary);
   const body=document.createElement("div");body.className="ai-explanation-text";body.textContent=raw;details.append(body);wrap.append(details);
@@ -221,16 +222,16 @@ function searchCatalog(){return ALL.filter(r=>(!$("program-only").checked||evalu
 async function askAI(){
   const question=$("ai-question").value.trim(),status=$("ai-status"),answer=$("ai-answer");if(!question)return;
   const named=findJournalsByName(ALL,question);
-  if(named.length){presentAI("",question,null,named);status.hidden=false;status.textContent="Revistas encontradas pelo nome no catálogo completo. Dados cadastrados e fontes exibidos abaixo; os filtros de tema não restringem esta consulta.";$("ai-loading").hidden=true;return;}
-  status.hidden=false;status.textContent="Consultando o catálogo e buscando novas possibilidades na internet…";answer.textContent="";
+  if(named.length)presentAI("",question,null,named);
+  status.hidden=false;status.textContent="Consultando o catálogo e buscando novas possibilidades na internet…";if(!named.length)answer.textContent="";
   $("ai-loading").hidden=false;$("ai-search-button").disabled=true;$("ai-search-button").textContent="Pesquisando…";
-  const webPromise=searchCrossref(question+" "+$("area").value).catch(error=>({journals:[],error:error.message,fromYear:new Date().getFullYear()-4}));
+  const webPromise=searchCrossref(named.length?question:question+" "+$("area").value).catch(error=>({journals:[],error:error.message,fromYear:new Date().getFullYear()-4}));
   let aiText="",aiError="";
   try{
-    const resp=await fetch("https://muddy-field-7b19.michael-oliveira.workers.dev/api/search",{method:"POST",headers:{"Content-Type":"application/json"},signal:AbortSignal.timeout(30000),body:JSON.stringify({question:researchPolicy+"\nNa primeira resposta, apresente para cada revista: Indexação Scopus ou WoS; Percentil CiteScore/JIF ≥ 50; Percentil H > 50. Não substitua os números pela palavra Conferido. Scopus é a base; mostre a pontuação CiteScore separada do percentil. Use os criteriosConferidos do cadastro; Informe o valor numérico, ano, categoria e URL de evidenciasMetricas para cada indicador. A planilha CiteScore é uma cópia pública identificada na evidência. Para dados sem evidência, escreva Não disponível na fonte consultada. Não converta índice H, SJR ou quartil em percentil H.\n"+"\nFiltros ativos: "+JSON.stringify(currentCriteria())+"\nPergunta: "+question,catalog:searchCatalog().map(r=>({...Object.fromEntries(Object.keys(metricLabels).map(k=>[k,metrics(r)[k]??null])),criteriosConferidos:evaluateJournal(r).checks,evidenciasMetricas:r.evidenciasMetricas,titulo:r.titulo,area:r.area,escopo:r.alinhamento||r.observacoes||r.escopo,idioma:r.idioma,sjr:r.sjr,custo:r.custo,citescore:r.citescore,fatorImpacto:r.fatorImpacto,enquadramento:r.enquadramento,conferencia:r.statusConferencia,url:r.url_ficha||r.url}))})});
+    const resp=await fetch("https://muddy-field-7b19.michael-oliveira.workers.dev/api/search",{method:"POST",headers:{"Content-Type":"application/json"},signal:AbortSignal.timeout(30000),body:JSON.stringify({question:researchPolicy+"\nNa primeira resposta, apresente para cada revista: Indexação Scopus ou WoS; Percentil CiteScore/JIF ≥ 50; Percentil H > 50. Não substitua os números pela palavra Conferido. Scopus é a base; mostre a pontuação CiteScore separada do percentil. Use os criteriosConferidos do cadastro; Informe o valor numérico, ano, categoria e URL de evidenciasMetricas para cada indicador. A planilha CiteScore é uma cópia pública identificada na evidência. Para dados sem evidência, escreva Não disponível na fonte consultada. Não converta índice H, SJR ou quartil em percentil H.\n"+"\nFiltros ativos: "+JSON.stringify(currentCriteria())+"\nPergunta: "+question,catalog:(named.length?named:searchCatalog()).map(r=>({...Object.fromEntries(Object.keys(metricLabels).map(k=>[k,metrics(r)[k]??null])),criteriosConferidos:evaluateJournal(r).checks,evidenciasMetricas:r.evidenciasMetricas,titulo:r.titulo,area:r.area,escopo:r.alinhamento||r.observacoes||r.escopo,idioma:r.idioma,sjr:r.sjr,custo:r.custo,citescore:r.citescore,fatorImpacto:r.fatorImpacto,enquadramento:r.enquadramento,conferencia:r.statusConferencia,url:r.url_ficha||r.url}))})});
     const data=await resp.json().catch(()=>({}));if(!resp.ok)throw Error(data.error||"Falha no serviço de IA");aiText=data.answer||"Sem resposta.";
   }catch(error){aiError=error.message||"Falha no serviço de IA";aiText="O assistente de IA está indisponível nesta tentativa. Consulte as revistas relacionadas do catálogo e as referências bibliográficas recentes abaixo."}
-  const discovery=await webPromise;presentAI(aiText,question,discovery);
+  const discovery=await webPromise;presentAI(aiText,question,discovery,named.length?named:null);
   status.textContent=aiError?"IA indisponível; busca externa e catálogo disponíveis quando carregados. Erro: "+aiError:
     discovery.error?"Busca na internet indisponível nesta tentativa. O catálogo completo continua disponível abaixo.":
     "Pesquisa concluída. Use os rótulos “No catálogo” e “Conferir antes de usar” para identificar a origem dos títulos.";
