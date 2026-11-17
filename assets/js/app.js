@@ -1,5 +1,6 @@
+import {findJournalsByName} from "./journal-search.js";
 import {evaluateJournal} from "./eligibility.js";
-import {journalAssessmentHTML,journalCriteriaHTML} from "./criteria-ui.js?v=20261117fontes";
+import {journalAssessmentHTML,journalCriteriaHTML} from "./criteria-ui.js?v=20261117nomes";
 import {metricLabels,filterIds,metrics,matchesCriteria,metricText,csvCell,researchPolicy} from "./criteria.js";
 const currentCriteria=()=>Object.fromEntries(filterIds.map(id=>[id,document.getElementById(id)?.value||""]));
 const DATA_URL="./assets/data/revistas.json";const $=id=>document.getElementById(id);const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));const fmt=v=>v===null||v===undefined||v===""?"Não informado":String(v);const safeUrl=u=>{try{const x=new URL(u);return ["https:","http:"].includes(x.protocol)?x.href:""}catch{return""}};let ALL=[],BASE="",SELECTED=new Set();function field(r,k){return r[k]??null}function priority(r){return {"ALTO":0,"MÉDIO":1,"COMPLEMENTAR":2}[r.tier]??3}let CATALOG_TOP10=false,CATALOG_VISIBLE=6;
@@ -192,23 +193,24 @@ function appendCrossrefResults(parent,discovery){
   }
   parent.append(section);
 }
-function presentAI(raw,question,discovery){
+function presentAI(raw,question,discovery,directMatches=null){
   const el=$("ai-answer");el.replaceChildren();const wrap=document.createElement("div");wrap.className="ai-rich";
   const heading=document.createElement("h3");heading.textContent="Orientação para sua publicação";wrap.append(heading);
-  const matched=searchCatalog().filter(r=>String(raw).toLocaleLowerCase("pt-BR").includes(String(r.titulo).toLocaleLowerCase("pt-BR")));
+  const matched=directMatches||searchCatalog().filter(r=>String(raw).toLocaleLowerCase("pt-BR").includes(String(r.titulo).toLocaleLowerCase("pt-BR")));
   const baseSection=document.createElement("section");baseSection.className="ai-base-results";
   const baseHeading=document.createElement("h3");baseHeading.textContent="Na base do projeto";baseSection.append(baseHeading);
   const baseSummary=document.createElement("p");baseSummary.className="ai-base-summary";
   baseSummary.textContent=matched.length+(matched.length===1?" revista da base mencionada":" revistas da base mencionadas")+" nesta orientação · "+selectionCatalog().length+" na seleção da planilha · "+ALL.length+" cadastradas no total, incluindo registros fora do recorte ou a confirmar.";baseSection.append(baseSummary);
   if(matched.length){
     const grid=document.createElement("div");grid.className="ai-rich-grid";
-    matched.forEach(r=>{const card=document.createElement("article");card.className="ai-rich-card";const name=document.createElement("h4");name.textContent=r.titulo;card.append(name);card.insertAdjacentHTML("beforeend",journalCriteriaHTML(r,esc));card.append(makeFullRecord(r));const origin=document.createElement("span");origin.className="origin-internal";origin.textContent="Base do projeto";card.append(origin);const area=document.createElement("p");area.textContent=r.area||"Área não informada";card.append(area);const metrics=document.createElement("p");metrics.className="ai-rich-metrics";metrics.textContent="SJR: "+fmt(r.sjr)+" · CiteScore: "+fmt(r.citescore);card.append(metrics);const cost=document.createElement("p");cost.textContent="Custo informado: "+fmt(r.custo);card.append(cost);const url=safeUrl(r.url_ficha||r.url);if(url){const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Abrir site da revista ↗";card.append(a);}grid.append(card)});
+    matched.forEach(r=>{const card=document.createElement("article");card.className="ai-rich-card";const name=document.createElement("h4");name.textContent=r.titulo;card.append(name);const recordLink=document.createElement("a");recordLink.href="ficha-revista.html?id="+encodeURIComponent(r.id);recordLink.textContent="Abrir ficha completa";card.append(recordLink);card.insertAdjacentHTML("beforeend",journalCriteriaHTML(r,esc));card.append(makeFullRecord(r));const origin=document.createElement("span");origin.className="origin-internal";origin.textContent="Base do projeto";card.append(origin);const area=document.createElement("p");area.textContent=r.area||"Área não informada";card.append(area);const metrics=document.createElement("p");metrics.className="ai-rich-metrics";metrics.textContent="SJR: "+fmt(r.sjr)+" · CiteScore: "+fmt(r.citescore);card.append(metrics);const cost=document.createElement("p");cost.textContent="Custo informado: "+fmt(r.custo);card.append(cost);const url=safeUrl(r.url_ficha||r.url);if(url){const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Abrir site da revista ↗";card.append(a);}grid.append(card)});
     baseSection.append(grid);
   }else{
     const empty=document.createElement("p");empty.className="ai-base-empty";empty.textContent="A orientação não citou um título específico da base. Consulte os registros dos filtros ativos abaixo; amplie os filtros se a lista estiver vazia.";baseSection.append(empty);
   }
   baseSection.append(makeAllCatalogSection(question));wrap.append(baseSection);
-  appendCrossrefResults(wrap,discovery);
+  if(!directMatches)appendCrossrefResults(wrap,discovery);
+  if(directMatches){el.append(wrap);return;}
   const details=document.createElement("details");details.className="ai-explanation";details.open=!matched.length;
   const summary=document.createElement("summary");summary.textContent="Ver a explicação completa da orientação";details.append(summary);
   const body=document.createElement("div");body.className="ai-explanation-text";body.textContent=raw;details.append(body);wrap.append(details);
@@ -218,12 +220,14 @@ function presentAI(raw,question,discovery){
 function searchCatalog(){return ALL.filter(r=>(!$("program-only").checked||evaluateJournal(r).state==="pass")&&matchesCriteria(r,currentCriteria())&&(!$("criterio").value||r.criterioPlanilha?.status===$("criterio").value)&&(!$("area").value||r.area===$("area").value)&&(!$("sjr").value||r.sjr===$("sjr").value)&&(!$("idioma").value||String(r.idioma||"").includes($("idioma").value))&&matchesCost(r,$("custo").value)&&(!$("score").value||Number(r.citescore)>=Number($("score").value))&&(!$("q").value||normalizeSearchText([r.titulo,r.area,r.issn,r.escopo,r.alinhamento,r.observacoes,r.editora,...(r.check?Object.values(r.check):[])].join(" ")).includes(normalizeSearchText($("q").value))))}
 async function askAI(){
   const question=$("ai-question").value.trim(),status=$("ai-status"),answer=$("ai-answer");if(!question)return;
+  const named=findJournalsByName(ALL,question);
+  if(named.length){presentAI("",question,null,named);status.hidden=false;status.textContent="Revistas encontradas pelo nome no catálogo completo. Dados cadastrados e fontes exibidos abaixo; os filtros de tema não restringem esta consulta.";$("ai-loading").hidden=true;return;}
   status.hidden=false;status.textContent="Consultando o catálogo e buscando novas possibilidades na internet…";answer.textContent="";
   $("ai-loading").hidden=false;$("ai-search-button").disabled=true;$("ai-search-button").textContent="Pesquisando…";
   const webPromise=searchCrossref(question+" "+$("area").value).catch(error=>({journals:[],error:error.message,fromYear:new Date().getFullYear()-4}));
   let aiText="",aiError="";
   try{
-    const resp=await fetch("https://muddy-field-7b19.michael-oliveira.workers.dev/api/search",{method:"POST",headers:{"Content-Type":"application/json"},signal:AbortSignal.timeout(30000),body:JSON.stringify({question:researchPolicy+"\nNa primeira resposta, apresente para cada revista: Indexação Scopus ou WoS; Percentil CiteScore/JIF ≥ 50; Percentil H > 50. Use os criteriosConferidos do cadastro; Informe o valor numérico, ano, categoria e URL de evidenciasMetricas para cada indicador. A planilha CiteScore é uma cópia pública identificada na evidência. Para dados sem evidência, escreva Não disponível na fonte consultada. Não converta índice H, SJR ou quartil em percentil H.\n"+"\nFiltros ativos: "+JSON.stringify(currentCriteria())+"\nPergunta: "+question,catalog:searchCatalog().map(r=>({...Object.fromEntries(Object.keys(metricLabels).map(k=>[k,metrics(r)[k]??null])),criteriosConferidos:evaluateJournal(r).checks,evidenciasMetricas:r.evidenciasMetricas,titulo:r.titulo,area:r.area,escopo:r.alinhamento||r.observacoes||r.escopo,idioma:r.idioma,sjr:r.sjr,custo:r.custo,citescore:r.citescore,fatorImpacto:r.fatorImpacto,enquadramento:r.enquadramento,conferencia:r.statusConferencia,url:r.url_ficha||r.url}))})});
+    const resp=await fetch("https://muddy-field-7b19.michael-oliveira.workers.dev/api/search",{method:"POST",headers:{"Content-Type":"application/json"},signal:AbortSignal.timeout(30000),body:JSON.stringify({question:researchPolicy+"\nNa primeira resposta, apresente para cada revista: Indexação Scopus ou WoS; Percentil CiteScore/JIF ≥ 50; Percentil H > 50. Não substitua os números pela palavra Conferido. Scopus é a base; mostre a pontuação CiteScore separada do percentil. Use os criteriosConferidos do cadastro; Informe o valor numérico, ano, categoria e URL de evidenciasMetricas para cada indicador. A planilha CiteScore é uma cópia pública identificada na evidência. Para dados sem evidência, escreva Não disponível na fonte consultada. Não converta índice H, SJR ou quartil em percentil H.\n"+"\nFiltros ativos: "+JSON.stringify(currentCriteria())+"\nPergunta: "+question,catalog:searchCatalog().map(r=>({...Object.fromEntries(Object.keys(metricLabels).map(k=>[k,metrics(r)[k]??null])),criteriosConferidos:evaluateJournal(r).checks,evidenciasMetricas:r.evidenciasMetricas,titulo:r.titulo,area:r.area,escopo:r.alinhamento||r.observacoes||r.escopo,idioma:r.idioma,sjr:r.sjr,custo:r.custo,citescore:r.citescore,fatorImpacto:r.fatorImpacto,enquadramento:r.enquadramento,conferencia:r.statusConferencia,url:r.url_ficha||r.url}))})});
     const data=await resp.json().catch(()=>({}));if(!resp.ok)throw Error(data.error||"Falha no serviço de IA");aiText=data.answer||"Sem resposta.";
   }catch(error){aiError=error.message||"Falha no serviço de IA";aiText="O assistente de IA está indisponível nesta tentativa. Consulte as revistas relacionadas do catálogo e as referências bibliográficas recentes abaixo."}
   const discovery=await webPromise;presentAI(aiText,question,discovery);
