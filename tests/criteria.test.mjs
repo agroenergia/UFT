@@ -24,14 +24,16 @@ test('CSV quotes, formula defense and no column-breaking newlines',()=>{
 });
 test('118 unique records; 50 Springer candidates cannot pass verified filters',async()=>{
  const data=JSON.parse(await readFile(new URL('../assets/data/revistas.json',import.meta.url)));
- assert.equal(data.revistas.length,118);assert.equal(new Set(data.revistas.map(r=>String(r.id))).size,118);assert.equal(data.atualizadoEm,'2026-10-30');
+ assert.equal(data.revistas.length,118);assert.equal(new Set(data.revistas.map(r=>String(r.id))).size,118);assert.equal(data.atualizadoEm,'2026-11-17');
  const batch=data.revistas.filter(r=>String(r.id).startsWith('springer-'));
  assert.equal(batch.length,50);
  for(const r of batch){
   assert.equal(r.statusConferencia,'Em conferência');assert.equal(r.criterioPlanilha.status,'confirmar');
-  for(const f of [{percentil:'50'},{percentilH:'50'},{indexacao:'either'},{apcMax:'0'},{acordoCapes:'sim'},{prazoMax:'365'}])assert.equal(matchesCriteria(r,f),false,r.titulo);
-  assert.equal(metrics(r).maiorPercentil,null);
+  for(const f of [{percentilH:'50'},{apcMax:'0'},{acordoCapes:'sim'},{prazoMax:'365'}])assert.equal(matchesCriteria(r,f),false,r.titulo);
+  assert.ok(Number.isFinite(metrics(r).maiorPercentil));
   assert.ok(r.conferenciasOnline.length>0);
  }
- assert.equal(data.revistas.filter(r=>matchesCriteria(r,{percentil:'50'})).length,0);
+ assert.equal(data.revistas.filter(r=>matchesCriteria(r,{percentil:'50'})).length,95);
+ assert.equal(data.revistas.filter(r=>Number.isFinite(r.percentilCiteScore)).length,117);
+ for(const r of data.revistas.filter(r=>Number.isFinite(r.percentilCiteScore))){assert.equal(r.evidenciasMetricas.percentilCiteScore.anoIndicador,2025);assert.ok(r.evidenciasMetricas.percentilCiteScore.urlArquivo);assert.equal(r.percentilCiteScore,Math.max(...r.percentisCiteScorePorCategoria.map(c=>c.percentil)));}
 });
