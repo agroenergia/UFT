@@ -26,7 +26,7 @@ export function comparisonHTML(records,esc){
  ['Submissão até aceite',r=>cell(r,'prazoAceite',undefined,r.fonteEditorial)],
  ['Aceite até publicação online',r=>cell(r,'prazoAceitePublicacao',undefined,r.fonteEditorial)],
  ['Prazo total de publicação',r=>cell(r,'prazoPublicacaoDias',r.prazoPublicacaoDias==null?(r.notaPrazos||missing):r.prazoPublicacaoDias+' dias')],
- ['Cobertura CAPES para o autor',r=>cell(r,'acordoCapes',r.acordoCapes==null?'Elegibilidade individual não verificada':r.acordoCapes)],
+ ['Participação no acordo CAPES',r=>cell(r,'acordoCapes',r.acordoCapes===true?'Título incluído; cobertura depende da elegibilidade do autor, instituição e artigo':r.acordoCapes===false?'Não incluído conforme cadastro':'Participação não documentada')],
  ['Percentil JIF',r=>cell(r,'percentilJif')],['Percentil H',r=>cell(r,'percentilH')],['Estrato informado',r=>cell(r,'estrato')],
  ['Instruções aos autores',r=>evidence(r,'urlInstrucoes',r.urlInstrucoes)||missing]
  ];
