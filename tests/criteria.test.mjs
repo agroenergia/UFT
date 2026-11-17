@@ -22,8 +22,18 @@ test('combine index, budget, time, agreement and stratum without inferring cover
 test('CSV quotes, formula defense and no column-breaking newlines',()=>{
  assert.equal(csvCell('a;"b"'),'"a;""b"""');assert.equal(csvCell('=1+1'),'"\'=1+1"');assert.equal(csvCell(null),'""');assert.equal(csvCell('a\nb'),'"a\nb"');
 });
-test('preserve original 118 records and prevent unverified Springer records from passing filters',async()=>{
+test('preserve original 118 records, verify 270 CAPES Scopus records, and prevent unverified Springer records from passing filters',async()=>{
  const data=JSON.parse(await readFile(new URL('../assets/data/revistas.json',import.meta.url)));
+ assert.equal(data.revistas.length,388);assert.equal(new Set(data.revistas.map(r=>String(r.id))).size,388);
+ const capes=data.revistas.filter(r=>String(r.id).startsWith('capes-scopus-'));
+ assert.equal(capes.length,270);
+ for(const r of capes){
+  assert.ok(r.scopusSourceId);
+  assert.ok(r.percentilCiteScore>=50,r.titulo);
+  assert.equal(r.evidenciasMetricas.percentilCiteScore.url,'https://www.scopus.com/sourceid/'+r.scopusSourceId);
+  assert.equal(r.evidenciasMetricas.percentilCiteScore.anoIndicador,2025);
+  assert.equal(r.percentilCiteScore,Math.max(...r.percentisCiteScorePorCategoria.map(c=>c.percentil)));
+ }
  data.revistas=data.revistas.filter(r=>!String(r.id).startsWith('capes-scopus-'));
  assert.equal(data.revistas.length,118);assert.equal(new Set(data.revistas.map(r=>String(r.id))).size,118);assert.equal(data.atualizadoEm,'2026-11-17');
  const batch=data.revistas.filter(r=>String(r.id).startsWith('springer-'));

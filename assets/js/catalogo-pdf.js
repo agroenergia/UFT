@@ -20,12 +20,15 @@ function renderCatalog(journals,data){
    const scope=r.alinhamento||r.escopo;if(scope)card.append(node("p","report-scope",scope));
    const fields=node("dl","report-fields");
    field(fields,"Editora",r.editora);field(fields,"ISSN",r.issn);field(fields,"Idioma",r.idioma);field(fields,"Modelo",r.modeloPublicacao);
-   Object.entries(metricLabels).forEach(([k,v])=>field(fields,v,metricText(normalizeMetrics(r)[k])));field(fields,"Custos",r.custo,true);field(fields,"Tipos de artigo",r.tiposArtigo,true);
+   Object.entries(metricLabels).forEach(([k,v])=>field(fields,v,metricText(normalizeMetrics(r)[k])));
+   if(Array.isArray(r.percentisCiteScorePorCategoria)&&r.percentisCiteScorePorCategoria.length)field(fields,"Notas na Scopus por categoria ("+(r.anoCiteScore||2025)+")",r.percentisCiteScorePorCategoria.map(c=>c.categoria+": "+c.percentil+"% ("+c.posicao+"º de "+c.total+")").join("; "),true);
+   field(fields,"Custos",r.custo,true);field(fields,"Tipos de artigo",r.tiposArtigo,true);
    field(fields,"Primeira decisão",r.prazoPrimeiraDecisao||(r.prazoPrimeiraDecisaoPlanilha?"Planilha: "+r.prazoPrimeiraDecisaoPlanilha:null));
    field(fields,"Aceitação informada",r.taxaAceitacaoPercentual==null?null:r.taxaAceitacaoPercentual+"%");
    card.append(fields);
    const links=node("div","report-links");
    const record=node("a","","Ficha completa e fontes ↗");record.href=new URL("ficha-revista.html?id="+encodeURIComponent(r.id),siteBase).href;record.target="_blank";record.rel="noopener noreferrer";links.append(record);
+   if(r.scopusSourceId){const scopus=node("a","","Notas na Scopus (oficial) ↗");scopus.href="https://www.scopus.com/sourceid/"+encodeURIComponent(r.scopusSourceId);scopus.target="_blank";scopus.rel="noopener noreferrer";links.append(scopus)}
    const external=safeUrl(r.url_ficha||r.url);if(external){const a=node("a","",r.tipoLink?"Fonte externa ↗":"Página da revista ↗");a.href=external;a.target="_blank";a.rel="noopener noreferrer";links.append(a)}card.append(links);
    list.append(card);
  });
