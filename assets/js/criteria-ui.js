@@ -3,7 +3,14 @@ import {metrics,numeric} from './criteria.js';
 const labels={pass:'Critérios informados atendidos',pending:'Informações a conferir',fail:'Há critério não atendido'};
 const status={pass:'Conferido',pending:'A confirmar',fail:'Não atende'};
 export function journalCriteriaHTML(r,esc){
- return '<ul class="journal-criteria">'+evaluateJournal(r).checks.slice(0,3).map(c=>'<li><strong>'+esc(c.label)+'</strong>: '+status[c.state]+'</li>').join('')+'</ul>';
+ const source=(key)=>{const e=r.evidenciasMetricas?.[key];if(!e||!/^https?:\/\//.test(e.url||''))return '';return ' <small>'+esc([e.anoIndicador,e.categoria].filter(Boolean).join(' · '))+' <a href="'+esc(e.url)+'" target="_blank" rel="noopener noreferrer">Fonte</a>'+(e.urlArquivo?' · <a href="'+esc(e.urlArquivo)+'" target="_blank" rel="noopener noreferrer">Dados consultados</a>':'')+'</small>'};
+ const review=evaluateJournal(r);
+ const indexes=['indexacaoScopus','indexacaoWos'].filter(k=>r[k]===true&&r.evidenciasMetricas?.[k]);
+ const indexed=indexes.length?indexes.map(k=>(k==='indexacaoScopus'?'Scopus':'Web of Science')+source(k)).join('; '):'Não localizada nas fontes consultadas';
+ const ranks=['percentilCiteScore','percentilJif'].filter(k=>typeof r[k]==='number'&&r.evidenciasMetricas?.[k]);
+ const ranked=ranks.length?ranks.map(k=>(k==='percentilCiteScore'?'CiteScore':'JIF')+': '+r[k]+'% — '+(r[k]>=50?'atende ≥ 50':'abaixo de 50')+source(k)).join('; '):'Percentil não disponível nas fontes consultadas';
+ const h=review.checks[2].state==='pending'?'Não disponível na fonte consultada':r.percentilH+'% — '+status[review.checks[2].state]+source('percentilH');
+ return '<ul class="journal-criteria"><li><strong>Indexação Scopus ou WoS</strong>: '+indexed+'</li><li><strong>Percentil CiteScore/JIF ≥ 50</strong>: '+ranked+'</li><li><strong>Percentil H > 50</strong>: '+h+'</li></ul>';
 }
 export function journalAssessmentHTML(r,esc,start='',target=''){
  const review=evaluateJournal(r),p=metrics(r).maiorPercentil,eta=expectedPublication(r.prazoPublicacaoDias,start,target);
