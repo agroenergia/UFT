@@ -2,6 +2,9 @@ import {evaluateJournal,expectedPublication} from './eligibility.js';
 import {metrics,numeric} from './criteria.js';
 const labels={pass:'Critérios informados atendidos',pending:'Informações a conferir',fail:'Há critério não atendido'};
 const status={pass:'Conferido',pending:'A confirmar',fail:'Não atende'};
+export function journalCriteriaHTML(r,esc){
+ return '<ul class="journal-criteria">'+evaluateJournal(r).checks.slice(0,3).map(c=>'<li><strong>'+esc(c.label)+'</strong>: '+status[c.state]+'</li>').join('')+'</ul>';
+}
 export function journalAssessmentHTML(r,esc,start='',target=''){
  const review=evaluateJournal(r),p=metrics(r).maiorPercentil,eta=expectedPublication(r.prazoPublicacaoDias,start,target);
  const cost=numeric(r.apcBRL)===null?'Valor em reais a confirmar':r.apcBRL.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
