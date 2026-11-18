@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RigorAtlas | Escolha sua revista com rigor científico</title>
 <meta name="description" content="Encontre e compare revistas em agroenergia, sustentabilidade e tecnologias digitais. Consulte indicadores, idiomas, custos e tire dúvidas com o assistente do RigorAtlas.">
-<link rel="stylesheet" href="assets/css/style.css?v=20261118v2">
+<link rel="stylesheet" href="assets/css/style.css?v=20261118v3">
 </head>
 <body>
 <header class="site-header">
@@ -21,8 +21,8 @@
     <nav id="primary-navigation" class="header-menu" aria-label="Navegação principal" hidden><a href="#ai-question" data-focus-search>Pesquisar</a><a href="#revistas" class="on">Catálogo</a><a href="#comparar">Comparar</a><a href="#faq">Perguntas Frequentes</a><a href="checklist.html">Checklist de submissão</a><a href="#sugerir">Contato</a><a href="sobre.html">Sobre e fontes</a><a href="privacidade.html">Privacidade</a><a href="#como-funciona">Guia</a><a href="#sinais-alerta">Sinais de alerta</a></nav>
   </div>
 </header>
-<div class="ai-response-wrap"><p class="search-privacy">A pesquisa usa os filtros do catálogo abaixo. Sua pergunta será enviada ao assistente externo e ao Crossref; não inclua dados pessoais ou conteúdo sigiloso. <a href="privacidade.html">Saiba mais</a>.</p>
-  <div id="ai-status" class="ai-status" role="status" aria-live="polite" hidden></div><div id="ai-loading" class="ai-loading" role="status" aria-live="polite" hidden><span class="ai-spinner" aria-hidden="true"></span><div><strong>Estamos preparando sua pesquisa</strong><p>O assistente está analisando as revistas cadastradas. Isso pode levar alguns segundos. Aguarde a resposta aparecer nesta página.</p></div></div>
+<div class="ai-response-wrap"><p class="search-privacy">Este site busca primeiramente em nossa base auditada as principais revistas para te recomendar, mas também traz recursos da plataforma Crossref. A pesquisa pode levar alguns segundos até aparecer na tela, por favor aguarde.</p>
+  <div id="ai-status" class="ai-status" role="status" aria-live="polite" hidden></div><div id="ai-loading" class="ai-loading" role="status" aria-live="polite" hidden><span class="ai-spinner" aria-hidden="true"></span><div><strong>Estamos preparando sua pesquisa</strong><p>Buscando em nossa base auditada e consultando recursos da plataforma Crossref. A pesquisa pode levar alguns segundos até aparecer na tela, por favor aguarde.</p></div></div>
   <div id="ai-answer" class="ai-answer" aria-live="polite"></div>
 </div>
 <main id="inicio">
@@ -32,12 +32,12 @@
     <h1 id="banner-title">Encontre a <em>revista certa.</em></h1>
     <p class="banner-lead">Compare revistas científicas e tire dúvidas sobre onde publicar seu artigo.</p>
     <div class="banner-actions"><a class="banner-primary" href="#revistas">Explorar revistas <span aria-hidden="true">↗</span></a><a class="banner-secondary" href="#ai-question" data-focus-search>Tirar minhas dúvidas <span aria-hidden="true">→</span></a></div>
-    <div class="banner-prompts" aria-label="Exemplos de perguntas"><span>Comece por uma pergunta:</span><button type="button" data-search-prompt="Quais revistas do catálogo aceitam artigos em português?">Aceita português?</button><button type="button" data-search-prompt="Quais revistas do catálogo têm rota de publicação sem taxa ao autor?">Tem opção sem taxa?</button><button type="button" data-search-prompt="Como escolher uma revista do catálogo para meu artigo sobre bioenergia?">Meu artigo combina?</button></div>
+    <div class="banner-prompts" aria-label="Dúvidas frequentes"><span>Comece por uma dúvida:</span><a href="#faq-portugues">Aceita português?</a><a href="#faq-sem-taxa">Tem opção sem taxa?</a><a href="#faq-combina">Meu artigo combina?</a></div>
   </div>
   <aside class="banner-guide" aria-label="Como o portal ajuda você">
     <div class="tocantins-art" aria-hidden="true"><svg viewBox="0 0 320 170" fill="none"><circle cx="224" cy="60" r="38" fill="#f4c84a"/><path d="M0 110C60 30 110 160 185 95S280 90 320 48" stroke="#59b9e5" stroke-width="18"/><path d="M0 146C70 70 115 184 195 125S280 126 320 87" stroke="#187cba" stroke-width="12"/><path d="M0 166C55 117 94 162 142 155" stroke="#6ac698" stroke-width="9"/></svg></div>
     <p class="guide-label">RIGOR CIENTÍFICO, DO PRIMEIRO PASSO À ESCOLHA.</p>
-    <ol><li><span>01</span><div><strong>Descubra</strong><p>Filtre por tema e custo.</p></div></li><li><span>02</span><div><strong>Compare</strong><p>Compare até 4 revistas.</p></div></li><li><span>03</span><div><strong>Esclareça</strong><p>Tire dúvidas com a IA.</p></div></li></ol>
+    <ol><li><span>01</span><div><strong>Descubra</strong><p>Filtre por tema e custo.</p></div></li><li><span>02</span><div><strong>Compare</strong><p>Compare até 4 revistas.</p></div></li><li><span>03</span><div><strong>Esclareça</strong><p>Pesquise temas na base e confira o FAQ.</p></div></li></ol>
     <small>A decisão é sua. Confirme escopo, taxas e indicadores no site de cada revista.</small>
   </aside>
   <div class="banner-featured"><div class="featured-heading"><div><span class="eyebrow">DESTAQUES DO CATÁLOGO</span><h2>5 revistas em destaque</h2></div><a href="#revistas">Ver todas as revistas →</a></div>
@@ -178,6 +178,43 @@
         <p>A <strong>indexação oficial na Scopus e Web of Science</strong> e o <strong>percentil de citação CiteScore / JIF igual ou superior a 50%</strong> (preferencialmente ≥ 80% para alto impacto). Esses dados são auditáveis, atualizados anualmente e contam com links de evidência direta no site oficial da Scopus para cada periódico catalogado.</p>
       </div>
     </details>
+    <details class="faq-item" id="faq-portugues">
+      <summary class="faq-question">
+        <span class="faq-q-text">7. Há revistas no catálogo que aceitam artigos em português?</span>
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </summary>
+      <div class="faq-answer">
+        <p>Sim. Nossa base auditada inclui periódicos que aceitam submissão em português — como <em>Anais da Academia Brasileira de Ciências</em>, <em>Ciência e Agrotecnologia</em>, <em>Química Nova</em>, <em>Revista Brasileira de Meio Ambiente</em> e <em>Revista de Economia Política</em> (além de revistas bilíngues).</p>
+        <p>Para encontrá-los rapidamente, vá até <a href="#revistas">Revistas acadêmicas</a> e selecione <strong>Aceita Português</strong> no filtro <strong>Idioma de submissão</strong>. Antes de submeter, confirme nas instruções aos autores de cada ficha se a publicação final é mantida em português ou se exige tradução para o inglês após o aceite.</p>
+      </div>
+    </details>
+    <details class="faq-item" id="faq-sem-taxa">
+      <summary class="faq-question">
+        <span class="faq-q-text">8. Existe opção de publicação sem taxa ao autor (sem APC)?</span>
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </summary>
+      <div class="faq-answer">
+        <p>Sim! No catálogo há duas principais alternativas para publicar sem pagar taxa de processamento de artigo (APC):</p>
+        <ul class="faq-list">
+          <li><strong>Sem APC ou rota tradicional de assinatura:</strong> 24 periódicos da base oferecem publicação gratuita por modelo tradicional de assinatura (<em>Subscription</em>) ou acesso aberto diamante (<em>Diamond OA</em>). Use o filtro <strong>Forma de publicação / Custo → Sem APC ou pela rota de assinatura (gratuito)</strong> em <a href="#revistas">Revistas acadêmicas</a>.</li>
+          <li><strong>Acordos Read &amp; Publish da CAPES:</strong> 270 periódicos da base contam com acordo CAPES informado. Quando o autor correspondente possui vínculo institucional ativo (ex.: UFT/PPGAD), ORCID validado no <em>meusdados.capes.gov.br</em> e há cota disponível, o APC pode ser coberto integralmente. Use o filtro <strong>Apoio CAPES → Com acordo CAPES informado</strong>.</li>
+        </ul>
+      </div>
+    </details>
+    <details class="faq-item" id="faq-combina">
+      <summary class="faq-question">
+        <span class="faq-q-text">9. Como saber se meu artigo combina com uma revista do catálogo?</span>
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </summary>
+      <div class="faq-answer">
+        <p>Para avaliar se o seu manuscrito se encaixa em um periódico da nossa base:</p>
+        <ol class="faq-steps">
+          <li><strong>Pesquise o tema principal na busca do topo:</strong> digite palavras-chave do seu trabalho (por exemplo, <em>glicose</em>, <em>biomassa</em>, <em>energia solar</em> ou <em>sensoriamento</em>) para receber sugestões da nossa base auditada junto com referências complementares do Crossref.</li>
+          <li><strong>Compare escopo e tipos de artigo:</strong> abra a <strong>Ficha completa</strong> das revistas recomendadas para verificar o escopo editorial, a área de indexação na Scopus e os tipos de manuscrito aceitos.</li>
+          <li><strong>Valide os critérios e prazos:</strong> confira na barra de filtros de <a href="#revistas">Revistas acadêmicas</a> se o periódico atende ao percentil CiteScore/JIF desejado (≥ 50% ou ≥ 80%), idioma, custo e prazo estimado, e valide a escolha final com seu orientador.</li>
+        </ol>
+      </div>
+    </details>
   </div>
 </section>
 <section id="sugerir" class="suggest-section site-stage stage-suggest contact-panel" aria-labelledby="sugerir-titulo">
@@ -186,7 +223,6 @@
 <div class="suggest-grid"><div class="field"><label for="nome">Nome (opcional)</label><input id="nome" name="nome" type="text" autocomplete="name" placeholder="Seu nome" maxlength="160"></div><div class="field"><label for="email">E-mail (opcional, para resposta)</label><input id="email" name="email" type="email" autocomplete="email" placeholder="Seu e-mail" maxlength="254"></div><div class="field field-full"><label for="mensagem">Mensagem</label><textarea id="mensagem" name="mensagem" rows="3" required maxlength="5000" placeholder="Escreva sua sugestão ou dúvida."></textarea></div></div><p>Nome e e-mail são opcionais e usados apenas para atender sua mensagem. O envio utiliza FormSubmit e e-mail. Não envie dados sensíveis. <a href="privacidade.html">Leia o aviso de privacidade e seus direitos</a>.</p><div class="suggest-actions"><button type="submit" class="primary suggest-submit">Enviar mensagem</button></div></form></section>
 <section id="pdf" class="suggest-section site-stage stage-pdf pdf-panel"><div class="suggest-header"><h2>Catálogo completo em PDF</h2><p>Todas as revistas cadastradas, com seus principais dados.</p></div><div class="pdf-actions"><a class="primary pdf-catalog-link" href="catalogo-pdf.html" target="_blank" rel="noopener">Gerar PDF 50+ ↗</a><button id="csv" type="button" class="text-link">Baixar CSV ↗</button></div></section>
 </main>
-<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><img class="footer-logo" src="assets/img/logo-pesquisa-ppgad.svg?v=20261026-2" alt="" aria-hidden="true"><div><strong>RigorAtlas</strong><p>Rigor científico para escolher onde publicar.</p></div></div><div class="footer-objective"><span class="footer-label">Objetivo do projeto</span><p>Este projeto foi desenvolvido para ajudar os alunos do PPGAD/UFT a encontrar, consultar e comparar revistas e informações editoriais, facilitando a escolha de periódicos para a publicação de seus trabalhos científicos.</p></div><div class="project-credits" aria-label="Equipe do projeto"><div class="credits-heading"><span class="footer-label">Quem constrói o RigorAtlas</span><p>Uma iniciativa vinculada ao Programa de Pós-Graduação em Agroenergia Digital da Universidade Federal do Tocantins.</p></div><div class="credit-person"><span class="footer-label">Desenvolvimento e pesquisa</span><strong>Michael Oliveira</strong><small>Desenvolvedor e pesquisador responsável pelo projeto · PPGAD/UFT</small></div><div class="credit-person"><span class="footer-label">Desenvolvimento e pesquisa</span><strong>Neiber Garcia</strong><small>Desenvolvedor e pesquisador responsável pelo projeto · PPGAD/UFT</small></div><div class="credit-person"><span class="footer-label">Orientação acadêmica</span><strong>Prof. Dr. Guilherme Benko Siqueira</strong><small>Orientação do projeto</small></div><div class="credits-contact"><span class="footer-label">Contato do projeto</span><a href="#sugerir">Fale com o administrador</a></div></div><div class="data-provenance" data-provenance role="status">Carregando data e fontes…</div><p><a href="checklist.html">Checklist de submissão</a> · <a href="sobre.html">Sobre e fontes dos dados</a> · <a href="privacidade.html">Privacidade e LGPD</a></p><div class="footer-bottom"><span>Programa de Pós-Graduação em Agroenergia Digital · Universidade Federal do Tocantins</span><span><a class="technical-access" href="acesso.html">Área técnica</a> · Dados de contato adicionais podem ser incluídos quando autorizados pelos participantes.</span></div></div></footer>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><img class="footer-logo" src="assets/img/logo-pesquisa-ppgad.svg?v=20261026-2" alt="" aria-hidden="true"><div><strong>RigorAtlas</strong><p>Rigor científico para escolher onde publicar.</p></div></div><div class="footer-objective"><span class="footer-label">Objetivo do projeto</span><p>Este projeto foi desenvolvido para ajudar os alunos do PPGAD/UFT a encontrar, consultar e comparar revistas e informações editoriais, facilitando a escolha de periódicos para a publicação de seus trabalhos científicos.</p></div><div class="project-credits" aria-label="Equipe do projeto"><div class="credits-heading"><span class="footer-label">Quem constrói o RigorAtlas</span><p>Uma iniciativa vinculada ao Programa de Pós-Graduação em Agroenergia Digital da Universidade Federal do Tocantins.</p></div><div class="credit-person"><span class="footer-label">Desenvolvimento e pesquisa</span><strong>Michael Oliveira</strong><small>Desenvolvedor e pesquisador responsável pelo projeto · PPGAD/UFT</small></div><div class="credit-person"><span class="footer-label">Desenvolvimento e pesquisa</span><strong>Neiber Garcia</strong><small>Desenvolvedor e pesquisador responsável pelo projeto · PPGAD/UFT</small></div><div class="credit-person"><span class="footer-label">Orientação acadêmica</span><strong>Prof. Dr. Guilherme Benko Siqueira</strong><small>Orientação do projeto</small></div><div class="credits-contact"><span class="footer-label">Contato do projeto</span><a href="#sugerir">Fale com o administrador</a></div></div><p><a href="checklist.html">Checklist de submissão</a> · <a href="sobre.html">Sobre e fontes dos dados</a> · <a href="privacidade.html">Privacidade e LGPD</a></p><div class="footer-bottom"><span>Programa de Pós-Graduação em Agroenergia Digital · Universidade Federal do Tocantins</span><span><a class="technical-access" href="acesso.html">Área técnica</a> · Dados de contato adicionais podem ser incluídos quando autorizados pelos participantes.</span></div></div></footer>
 <nav class="floating-actions" aria-label="Atalhos principais"><a href="#ai-question" data-focus-search><span aria-hidden="true">⌕</span><small>Pesquisar</small></a><a href="#revistas"><span aria-hidden="true">▤</span><small>Catálogo</small></a><a href="#comparar"><span aria-hidden="true">⇄</span><small>Comparar</small></a><a href="#faq"><span aria-hidden="true">?</span><small>FAQ</small></a><a href="catalogo-pdf.html" target="_blank" rel="noopener" aria-label="PDF 50+: catálogo completo de revistas" title="PDF 50+: catálogo completo"><span aria-hidden="true">↓</span><small>PDF 50+</small></a><a href="#sugerir" aria-label="Fale com o administrador" title="Fale com o administrador"><span aria-hidden="true">✉</span><small>Contato</small></a></nav>
-<script type="module" src="assets/js/app.js?v=20261118v1"></script>
-<script type="module" src="assets/js/provenance.js?v=20261029"></script></body></html>
+<script type="module" src="assets/js/app.js?v=20261118v3"></script></body></html>
