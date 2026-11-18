@@ -31,12 +31,10 @@ function renderPagination(total,perPage,totalPages){
       summary.textContent="Mostrando "+start+"–"+end+" de "+total+" revistas (Página "+CURRENT_PAGE+" de "+totalPages+")";
     }
   }
-  const firstBtn=$("pagination-first"),prevBtn=$("pagination-prev"),nextBtn=$("pagination-next"),lastBtn=$("pagination-last");
+  const prevBtn=$("pagination-prev"),nextBtn=$("pagination-next");
   const isFirst=CURRENT_PAGE<=1,isLast=CURRENT_PAGE>=totalPages;
-  if(firstBtn){firstBtn.disabled=isFirst;firstBtn.setAttribute("aria-disabled",String(isFirst));}
   if(prevBtn){prevBtn.disabled=isFirst;prevBtn.setAttribute("aria-disabled",String(isFirst));}
   if(nextBtn){nextBtn.disabled=isLast;nextBtn.setAttribute("aria-disabled",String(isLast));}
-  if(lastBtn){lastBtn.disabled=isLast;lastBtn.setAttribute("aria-disabled",String(isLast));}
   const numbersWrap=$("pagination-numbers");
   if(numbersWrap){
     numbersWrap.replaceChildren();
@@ -79,13 +77,12 @@ function render(){
   if(CURRENT_PAGE<1)CURRENT_PAGE=1;
   const startIndex=(CURRENT_PAGE-1)*perPage;
   const visible=arr.slice(startIndex,startIndex+perPage);
-  const expand=$("catalog-expand");if(expand)expand.hidden=true;
   renderPagination(arr.length,perPage,totalPages);
   $("lista").innerHTML=visible.map(r=>{
     const url=safeUrl(r.url_ficha||r.url);
     const scopusUrl=r.scopusSourceId?"https://www.scopus.com/sourceid/"+encodeURIComponent(r.scopusSourceId):"";
     const metrics=[["Maior percentil",r.maiorPercentil===null?"A confirmar":r.maiorPercentil+"%"],["Quartil",r.sjr],["CiteScore",r.citescore],["Impacto",r.fatorImpacto]].filter(([,v])=>v!==null&&v!==undefined&&v!=="").map(([name,v])=>'<span><b>'+name+'</b> '+esc(v)+'</span>').join("");
-    return '<article class="journal-card" id="revista-'+esc(r.id)+'"><div class="journal-card-top"><span class="tier criterion-badge status-'+esc(r.criterioPlanilha?.status||"confirmar")+'">'+esc(compactStatus(r))+'</span><label class="cmp"><input type="checkbox" data-id="'+esc(r.id)+'" '+(SELECTED.has(String(r.id))?"checked":"")+'> Comparar</label></div><h3>'+esc(r.titulo)+'</h3><p class="journal-area">'+esc(r.area||"Área não informada")+'</p><div class="journal-metrics">'+metrics+'</div><p class="journal-cost"><strong>Custo:</strong> '+esc(compactCost(r))+'</p>'+journalCriteriaHTML(r,esc)+journalAssessmentHTML(r,esc,$("submission-date").value,$("publication-target").value)+'<div class="journal-actions journal-card-actions"><a class="journal-record-link" href="ficha-revista.html?id='+encodeURIComponent(r.id)+'" target="_blank" rel="noopener">Ficha completa ↗</a>'+(scopusUrl?'<a class="journal-scopus-link" href="'+esc(scopusUrl)+'" target="_blank" rel="noopener noreferrer">Notas na Scopus (oficial) ↗</a>':"")+(url?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+(r.tipoLink?"Fonte externa":"Site da revista")+' ↗</a>':"")+'</div></article>';
+    return '<article class="journal-card" id="revista-'+esc(r.id)+'"><div class="journal-card-top"><span class="tier criterion-badge status-'+esc(r.criterioPlanilha?.status||"confirmar")+'">'+esc(compactStatus(r))+'</span><label class="cmp"><input type="checkbox" data-id="'+esc(r.id)+'" '+(SELECTED.has(String(r.id))?"checked":"")+'> Comparar</label></div><h3>'+esc(r.titulo)+'</h3><p class="journal-area">'+esc(r.area||"Área não informada")+'</p><div class="journal-metrics">'+metrics+'</div><p class="journal-cost"><strong>Custo:</strong> '+esc(compactCost(r))+'</p>'+journalCriteriaHTML(r,esc)+journalAssessmentHTML(r,esc,$("submission-date")?.value,$("publication-target")?.value)+'<div class="journal-actions journal-card-actions"><a class="journal-record-link" href="ficha-revista.html?id='+encodeURIComponent(r.id)+'" target="_blank" rel="noopener">Ficha completa ↗</a>'+(scopusUrl?'<a class="journal-scopus-link" href="'+esc(scopusUrl)+'" target="_blank" rel="noopener noreferrer">Notas na Scopus (oficial) ↗</a>':"")+(url?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+(r.tipoLink?"Fonte externa":"Site da revista")+' ↗</a>':"")+'</div></article>';
   }).join("")||'<div class="catalog-empty"><h3>Nenhuma revista com essas escolhas</h3><p>Algumas informações ainda estão em conferência. Remova uma escolha acima ou veja o catálogo completo.</p><button type="button" id="empty-clear">Ver todas as revistas</button></div>';
   if($("empty-clear"))$("empty-clear").onclick=()=>$("limpar").click();
   renderCompare();
@@ -276,7 +273,27 @@ function presentAI(raw,question,discovery,directMatches=null){
   const note=document.createElement("p");note.className="source-disclaimer";note.textContent="As informações da base refletem o cadastro atual do projeto. Quartil SJR não comprova percentil CAPES nem elegibilidade do artigo; confira indicadores, escopo e taxas nas fontes oficiais.";wrap.append(note);
   el.append(wrap);
 }
-function searchCatalog(){return ALL.filter(r=>(!$("program-only").checked||evaluateJournal(r).state==="pass")&&matchesCriteria(r,currentCriteria())&&(!$("criterio").value||r.criterioPlanilha?.status===$("criterio").value)&&(!$("area").value||r.area===$("area").value)&&(!$("sjr").value||r.sjr===$("sjr").value)&&(!$("idioma").value||String(r.idioma||"").includes($("idioma").value))&&matchesCost(r,$("custo").value)&&(!$("score").value||Number(r.citescore)>=Number($("score").value))&&(!$("q").value||normalizeSearchText([r.titulo,r.area,r.issn,r.escopo,r.alinhamento,r.observacoes,r.editora,...(r.check?Object.values(r.check):[])].join(" ")).includes(normalizeSearchText($("q").value))))}
+function matchesSjr(r,val){
+  if(!val)return true;
+  if(!r.sjr)return false;
+  if(val==="Q1")return r.sjr==="Q1"||r.sjr==="Q1/Q2";
+  if(val==="Q2")return r.sjr==="Q2"||r.sjr==="Q1/Q2";
+  if(val==="Q1/Q2")return r.sjr==="Q1"||r.sjr==="Q2"||r.sjr==="Q1/Q2";
+  return r.sjr===val;
+}
+function searchCatalog(){
+  return ALL.filter(r=>
+    (!$("program-only")||!$("program-only").checked||evaluateJournal(r).state==="pass"||(r.maiorPercentil>=50&&(r.indexacaoScopus||r.indexacaoWos)))&&
+    matchesCriteria(r,currentCriteria())&&
+    (!$("criterio").value||r.criterioPlanilha?.status===$("criterio").value)&&
+    (!$("area").value||r.area===$("area").value)&&
+    matchesSjr(r,$("sjr").value)&&
+    (!$("idioma").value||String(r.idioma||"").includes($("idioma").value))&&
+    matchesCost(r,$("custo").value)&&
+    (!$("score").value||Number(r.citescore)>=Number($("score").value))&&
+    (!$("q").value||normalizeSearchText([r.titulo,r.area,r.issn,r.escopo,r.alinhamento,r.observacoes,r.editora,...(r.check?Object.values(r.check):[])].join(" ")).includes(normalizeSearchText($("q").value)))
+  );
+}
 async function askAI(){
   const question=$("ai-question").value.trim(),status=$("ai-status"),answer=$("ai-answer");if(!question)return;
   const named=findJournalsByName(ALL,question);
@@ -381,9 +398,8 @@ async function init(){
     document.querySelectorAll("[data-fast-filter]").forEach(b=>b.setAttribute("aria-pressed",String(filter!=="clear"&&b===button)));
     render();$("lista").scrollIntoView({behavior:"smooth",block:"start"});
   }));
-  ["program-only","submission-date","publication-target"].forEach(id=>$(id).addEventListener("change",()=>{CURRENT_PAGE=1;render()}));
+  if($("program-only"))$("program-only").addEventListener("change",()=>{CURRENT_PAGE=1;render()});
   $("per-page-select")?.addEventListener("change",e=>{PER_PAGE=e.target.value==="all"?"all":(parseInt(e.target.value,10)||24);CURRENT_PAGE=1;render()});
-  $("pagination-first")?.addEventListener("click",()=>{if(CURRENT_PAGE>1){CURRENT_PAGE=1;render();$("revistas")?.scrollIntoView({behavior:"smooth",block:"start"})}});
   $("pagination-prev")?.addEventListener("click",()=>{if(CURRENT_PAGE>1){CURRENT_PAGE--;render();$("revistas")?.scrollIntoView({behavior:"smooth",block:"start"})}});
   $("pagination-next")?.addEventListener("click",()=>{
     const perPageVal=$("per-page-select")?$("per-page-select").value:String(PER_PAGE);
@@ -391,13 +407,6 @@ async function init(){
     const totalPages=Math.max(1,Math.ceil(searchCatalog().length/perPage));
     if(CURRENT_PAGE<totalPages){CURRENT_PAGE++;render();$("revistas")?.scrollIntoView({behavior:"smooth",block:"start"})}
   });
-  $("pagination-last")?.addEventListener("click",()=>{
-    const perPageVal=$("per-page-select")?$("per-page-select").value:String(PER_PAGE);
-    const perPage=perPageVal==="all"?Infinity:(parseInt(perPageVal,10)||PER_PAGE);
-    const totalPages=Math.max(1,Math.ceil(searchCatalog().length/perPage));
-    if(CURRENT_PAGE<totalPages){CURRENT_PAGE=totalPages;render();$("revistas")?.scrollIntoView({behavior:"smooth",block:"start"})}
-  });
-  $("catalog-expand")?.addEventListener("click",()=>{render()});
   $("lista").addEventListener("change",e=>{const id=e.target.dataset.id;if(!id)return;if(e.target.checked){if(SELECTED.size>=4){e.target.checked=false;alert("Selecione até quatro revistas.");return}SELECTED.add(id)}else SELECTED.delete(id);renderCompare()});
   $("csv").onclick=exportCsv;$("ai-search-form").addEventListener("submit",e=>{e.preventDefault();askAI()});
   const predatoryToggle=$("predatory-toggle"),predatoryDetails=$("predatory-details");predatoryToggle.addEventListener("click",()=>{const open=predatoryDetails.hidden;predatoryDetails.hidden=!open;predatoryToggle.setAttribute("aria-expanded",String(open));predatoryToggle.textContent=open?"Ocultar sinais de alerta":"Ver sinais de alerta"});

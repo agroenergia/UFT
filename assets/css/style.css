@@ -1367,28 +1367,51 @@ main>.site-stage,main>.discovery-banner,.journal-card{scroll-margin-top:12px}
 .catalog-guide-link a{display:inline;background:transparent;border:0;border-radius:0;padding:0;color:#15619b;font-size:13px;font-weight:400;text-decoration:underline;text-underline-offset:3px;box-shadow:none}
 .catalog-guide-link a:hover,.catalog-guide-link a:focus-visible{background:transparent;color:#104b79;text-decoration:underline}
 .catalog-expand-control{text-align:center;margin:14px 0 0}
-.catalog-expand-control button{font-size:13px;font-weight:400;box-shadow:none}
-.catalog-expand-control button:hover{background:transparent;color:#104b79}
-.catalog-expand-control button[hidden]{display:none}
-
-/* Modern catalog pagination */
-.catalog-pagination{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin:24px 0 10px;padding:14px 18px;background:#fff;border:1px solid #bfd4e3;border-radius:10px;box-shadow:0 2px 8px rgba(18,63,101,.06)}
-.pagination-summary{font-size:14px;color:#35536b;font-weight:600}
-.pagination-pages-wrap{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.pagination-numbers{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
-.pagination-btn,.pagination-num{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:38px;padding:0 10px;font-size:14px;font-weight:600;color:#123f65;background:#f4f8fb;border:1px solid #bfd4e3;border-radius:6px;cursor:pointer;transition:all .15s ease;text-decoration:none}
-.pagination-btn:hover:not(:disabled),.pagination-num:hover:not(:disabled){background:#e6f1fb;border-color:#187cb9;color:#0f385c}
-.pagination-btn:disabled{opacity:.4;cursor:not-allowed;background:#f4f8fb;border-color:#d7e3ec}
-.pagination-num.active{background:#187cb9;color:#fff;border-color:#187cb9;cursor:default;box-shadow:0 2px 4px rgba(24,124,185,.3)}
-.pagination-ellipsis{padding:0 4px;color:#6b879b;font-size:14px}
-.pagination-size label{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#35536b;font-weight:600}
-.pagination-size select{height:36px;padding:0 10px;font-size:13px;border:1px solid #bfd4e3;border-radius:6px;background:#f4f8fb;color:#123f65;cursor:pointer}
-@media(max-width:768px){
- .catalog-pagination{flex-direction:column;align-items:stretch;text-align:center;gap:12px;padding:12px}
- .pagination-pages-wrap{justify-content:center}
- .pagination-numbers{justify-content:center}
- .pagination-size{justify-content:center;display:flex}
+/* Modern intuitive catalog pagination */
+.catalog-pagination{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:28px 0 16px;padding:16px 20px;background:#fff;border:1px solid #c9dbe7;border-radius:12px;box-shadow:0 4px 14px rgba(18,63,101,.06)}
+.pagination-info .pagination-summary{font-size:14px;color:#244b6a;font-weight:600}
+.pagination-controls{display:inline-flex;align-items:center;gap:6px}
+.pagination-btn{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:38px;padding:0 14px;font-size:14px;font-weight:600;color:#123f65;background:#f0f6fa;border:1px solid #bcd1e1;border-radius:8px;cursor:pointer;transition:all .15s ease;text-decoration:none;user-select:none}
+.pagination-btn:hover:not(:disabled){background:#e2f0fa;border-color:#187cb9;color:#0b3457}
+.pagination-btn:disabled{opacity:.35;cursor:not-allowed;background:#f4f7f9;border-color:#d6e2eb}
+.pagination-numbers{display:inline-flex;align-items:center;gap:4px}
+.pagination-num{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:38px;padding:0 8px;font-size:14px;font-weight:600;border-radius:8px;border:1px solid #bcd1e1;background:#f0f6fa;color:#123f65;cursor:pointer;transition:all .15s ease}
+.pagination-num:hover:not(.active){background:#e2f0fa;border-color:#187cb9;color:#0b3457}
+.pagination-num.active{background:#187cb9;color:#fff;border-color:#187cb9;font-weight:700;cursor:default;box-shadow:0 2px 6px rgba(24,124,185,.35)}
+.pagination-ellipsis{padding:0 6px;color:#658298;font-weight:700;font-size:14px}
+.pagination-size label{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#244b6a;font-weight:600}
+.pagination-size select{height:38px;padding:0 10px;font-size:13px;border:1px solid #bcd1e1;border-radius:8px;background:#f0f6fa;color:#123f65;cursor:pointer;font-weight:600}
+@media(max-width:820px){
+ .catalog-pagination{flex-direction:column;align-items:center;text-align:center;gap:14px;padding:16px 12px}
+ .pagination-controls{flex-wrap:wrap;justify-content:center}
 }
+
+/* FAQ / Perguntas Frequentes */
+.faq-section{margin:40px 0 24px}
+.faq-lead-text{max-width:820px;margin:8px 0 20px;font-size:15px;line-height:1.6;color:#35536b}
+.faq-accordion{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.faq-item{background:#fff;border:1px solid #c9dbe7;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(18,63,101,.04);transition:border-color .15s ease}
+.faq-item[open]{border-color:#187cb9;box-shadow:0 4px 16px rgba(18,63,101,.08)}
+.faq-question{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;font-size:16px;font-weight:700;color:#123f65;cursor:pointer;list-style:none;background:#fafcfd}
+.faq-question::-webkit-details-marker{display:none}
+.faq-question:hover{background:#f0f6fa;color:#0b3457}
+.faq-item[open] .faq-question{background:#f0f7fc;border-bottom:1px solid #d9e7f0}
+.faq-icon{font-size:20px;font-weight:700;color:#187cb9;transition:transform .2s ease;flex-shrink:0}
+.faq-item[open] .faq-icon{transform:rotate(45deg)}
+.faq-answer{padding:20px;font-size:14px;line-height:1.7;color:#244b6a}
+.faq-answer p{margin:0 0 12px}
+.faq-answer p:last-child{margin-bottom:0}
+.faq-list{margin:10px 0 14px 20px;padding:0}
+.faq-list li{margin-bottom:8px}
+.faq-steps{margin:10px 0 14px 20px;padding:0}
+.faq-steps li{margin-bottom:10px}
+.faq-tip{background:#e8f4fd;border-left:4px solid #187cb9;padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;margin-top:14px}
+.faq-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.faq-tag{font-size:12px;font-weight:600;padding:4px 10px;background:#e6f1fb;color:#123f65;border-radius:20px;border:1px solid #bfd4e3}
+.faq-checklist-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.faq-check-box{background:#f4f8fb;border:1px solid #d4e3ee;border-radius:10px;padding:14px}
+.faq-check-box strong{display:block;color:#123f65;font-size:14px;margin-bottom:6px}
+.faq-check-box p{font-size:13px;line-height:1.5;margin:0;color:#35536b}
 
 /* Uniform cards retain full content, including sparse records. */
 .journal-grid,.featured-journals,.ai-rich-grid,.ai-catalog-grid,.ai-web-journals,.site-flow{grid-auto-rows:1fr;align-items:stretch}
