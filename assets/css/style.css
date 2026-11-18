@@ -1371,6 +1371,25 @@ main>.site-stage,main>.discovery-banner,.journal-card{scroll-margin-top:12px}
 .catalog-expand-control button:hover{background:transparent;color:#104b79}
 .catalog-expand-control button[hidden]{display:none}
 
+/* Modern catalog pagination */
+.catalog-pagination{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin:24px 0 10px;padding:14px 18px;background:#fff;border:1px solid #bfd4e3;border-radius:10px;box-shadow:0 2px 8px rgba(18,63,101,.06)}
+.pagination-summary{font-size:14px;color:#35536b;font-weight:600}
+.pagination-pages-wrap{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pagination-numbers{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
+.pagination-btn,.pagination-num{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:38px;padding:0 10px;font-size:14px;font-weight:600;color:#123f65;background:#f4f8fb;border:1px solid #bfd4e3;border-radius:6px;cursor:pointer;transition:all .15s ease;text-decoration:none}
+.pagination-btn:hover:not(:disabled),.pagination-num:hover:not(:disabled){background:#e6f1fb;border-color:#187cb9;color:#0f385c}
+.pagination-btn:disabled{opacity:.4;cursor:not-allowed;background:#f4f8fb;border-color:#d7e3ec}
+.pagination-num.active{background:#187cb9;color:#fff;border-color:#187cb9;cursor:default;box-shadow:0 2px 4px rgba(24,124,185,.3)}
+.pagination-ellipsis{padding:0 4px;color:#6b879b;font-size:14px}
+.pagination-size label{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#35536b;font-weight:600}
+.pagination-size select{height:36px;padding:0 10px;font-size:13px;border:1px solid #bfd4e3;border-radius:6px;background:#f4f8fb;color:#123f65;cursor:pointer}
+@media(max-width:768px){
+ .catalog-pagination{flex-direction:column;align-items:stretch;text-align:center;gap:12px;padding:12px}
+ .pagination-pages-wrap{justify-content:center}
+ .pagination-numbers{justify-content:center}
+ .pagination-size{justify-content:center;display:flex}
+}
+
 /* Uniform cards retain full content, including sparse records. */
 .journal-grid,.featured-journals,.ai-rich-grid,.ai-catalog-grid,.ai-web-journals,.site-flow{grid-auto-rows:1fr;align-items:stretch}
 .journal-grid>.journal-card{display:flex;flex-direction:column;height:100%;box-sizing:border-box}

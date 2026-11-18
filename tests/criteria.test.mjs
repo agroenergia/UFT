@@ -7,8 +7,14 @@ test('missing metrics never pass thresholds or mean zero APC',()=>{
  for(const f of [{percentil:'50'},{percentilH:'50'},{indexacao:'either'},{apcMax:'0'},{acordoCapes:'nao'},{prazoMax:'180'}])assert.equal(matchesCriteria({},f),false);
  assert.equal(metrics({citescore:99,sjr:'Q1',fatorImpacto:15}).maiorPercentil,null);
 });
-test('distinct thresholds: greater than H50; at least CiteScore/JIF50',()=>{
+test('distinct thresholds: greater than H50; at least CiteScore/JIF50; percentile ranges',()=>{
  assert.equal(matchesCriteria({percentilCiteScore:49,percentilJif:50},{percentil:'50'}),true);
+ assert.equal(matchesCriteria({percentilCiteScore:92},{percentil:'90-100'}),true);
+ assert.equal(matchesCriteria({percentilCiteScore:88},{percentil:'90-100'}),false);
+ assert.equal(matchesCriteria({percentilCiteScore:88},{percentil:'75-89'}),true);
+ assert.equal(matchesCriteria({percentilCiteScore:74},{percentil:'75-89'}),false);
+ assert.equal(matchesCriteria({percentilCiteScore:45},{percentil:'0-49'}),true);
+ assert.equal(matchesCriteria({percentilCiteScore:50},{percentil:'0-49'}),false);
  assert.equal(matchesCriteria({percentilH:50},{percentilH:'50'}),false);
  assert.equal(matchesCriteria({percentilH:50.1},{percentilH:'50'}),true);
  assert.equal(metrics({percentilCiteScore:101,percentilJif:80}).maiorPercentil,80);

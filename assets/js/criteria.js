@@ -8,7 +8,13 @@ export function matchesCriteria(record,f={}){const r=metrics(record);
  if(f.indexacao==='scopus'&&r.indexacaoScopus!==true)return false;
  if(f.indexacao==='wos'&&r.indexacaoWos!==true)return false;
  if(f.indexacao==='either'&&r.indexacaoScopus!==true&&r.indexacaoWos!==true)return false;
- if(f.percentil&&(r.maiorPercentil===null||r.maiorPercentil<Number(f.percentil)))return false;
+ if(f.percentil){
+  if(r.maiorPercentil===null)return false;
+  if(String(f.percentil).includes('-')){
+   const [min,max]=String(f.percentil).split('-').map(Number);
+   if(r.maiorPercentil<min||r.maiorPercentil>max)return false;
+  }else if(r.maiorPercentil<Number(f.percentil))return false;
+ }
  if(f.estrato&&r.estrato!==f.estrato)return false;
  if(f.percentilH&&(percentile(r.percentilH)===null||r.percentilH<=50))return false;
  if(f.apcMax!==undefined&&f.apcMax!==''&&(numeric(r.apcBRL)===null||r.apcBRL>Number(f.apcMax)))return false;
