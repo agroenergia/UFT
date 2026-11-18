@@ -1,6 +1,6 @@
 // Somente valores documentados. Ausência de dados nunca equivale a zero ou aprovação.
-export const metricLabels={indexacaoScopus:'Indexação Scopus',indexacaoWos:'Indexação WoS',percentilCiteScore:'Percentil CiteScore (%)',percentilJif:'Percentil JIF (%)',maiorPercentil:'Maior percentil informado (%)',estrato:'Estrato A1–A8 informado',percentilH:'Percentil do índice H (%)',apcBRL:'APC em R$ (sem taxas extras)',acordoCapes:'Acordo CAPES informado',prazoPublicacaoDias:'Submissão até publicação (dias)',prazoPublicacaoPlanilha:'Prazo de publicação na planilha'};
-export const filterIds=['indexacao','percentil','estrato','percentilH','apcMax','acordoCapes','prazoMax'];
+export const metricLabels={indexacaoScopus:'Indexação Scopus',indexacaoWos:'Indexação WoS',percentilCiteScore:'Percentil CiteScore (%)',percentilJif:'Percentil JIF (%)',maiorPercentil:'Maior percentil informado (%)',percentilH:'Percentil do índice H (%)',apcBRL:'APC em R$ (sem taxas extras)',acordoCapes:'Acordo CAPES informado',prazoPublicacaoDias:'Submissão até publicação (dias)',prazoPublicacaoPlanilha:'Prazo de publicação na planilha'};
+export const filterIds=['indexacao','percentil','acordoCapes'];
 export function numeric(v){return typeof v==='number'&&Number.isFinite(v)&&v>=0?v:null}
 export function percentile(v){const n=numeric(v);return n!==null&&n<=100?n:null}
 export function metrics(r){const p=[percentile(r.percentilCiteScore),percentile(r.percentilJif)].filter(v=>v!==null);return {...r,maiorPercentil:p.length?Math.max(...p):null}}
@@ -18,7 +18,8 @@ export function matchesCriteria(record,f={}){const r=metrics(record);
  if(f.estrato&&r.estrato!==f.estrato)return false;
  if(f.percentilH&&(percentile(r.percentilH)===null||r.percentilH<=50))return false;
  if(f.apcMax!==undefined&&f.apcMax!==''&&(numeric(r.apcBRL)===null||r.apcBRL>Number(f.apcMax)))return false;
- if(f.acordoCapes&&r.acordoCapes!==(f.acordoCapes==='sim'))return false;
+ if(f.acordoCapes==='sim'&&r.acordoCapes!==true)return false;
+ if(f.acordoCapes==='nao'&&(r.acordoCapes===undefined||r.acordoCapes===true))return false;
  if(f.prazoMax&&(numeric(r.prazoPublicacaoDias)===null||r.prazoPublicacaoDias>Number(f.prazoMax)))return false;
  return true;
 }
