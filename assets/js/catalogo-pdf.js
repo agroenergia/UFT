@@ -16,11 +16,12 @@ function renderCatalog(journals,data){
    const head=node("div","report-card-head");head.append(node("span","report-number",String(index+1).padStart(2,"0")),node("span","report-status-label",r.enquadramento||"A confirmar"));card.append(head);
    card.append(node("h2","",r.titulo));if(r.area)card.append(node("p","report-area",r.area));
    const metrics=node("div","report-metrics");
-   [["Quartil",r.sjr],["CiteScore",r.citescore],["Impacto",r.fatorImpacto]].forEach(([label,value])=>metrics.append(node("span","",label+": "+fmt(value))));card.append(metrics);
+   [["Quartil SJR",r.sjr],["CiteScore",r.citescore],["JIF (WoS)",r.fatorImpacto],["Coleção WoS",r.colecaoWos]].forEach(([label,value])=>metrics.append(node("span","",label+": "+fmt(value))));card.append(metrics);
    const scope=r.alinhamento||r.escopo;if(scope)card.append(node("p","report-scope",scope));
    const fields=node("dl","report-fields");
    field(fields,"Editora",r.editora);field(fields,"ISSN",r.issn);field(fields,"Idioma",r.idioma);field(fields,"Modelo",r.modeloPublicacao);
    Object.entries(metricLabels).forEach(([k,v])=>field(fields,v,metricText(normalizeMetrics(r)[k])));
+   if(r.classificadorWos)field(fields,"Classificador WoS (JCR)",r.classificadorWos,true);
    if(Array.isArray(r.percentisCiteScorePorCategoria)&&r.percentisCiteScorePorCategoria.length)field(fields,"Notas na Scopus por categoria ("+(r.anoCiteScore||2025)+")",r.percentisCiteScorePorCategoria.map(c=>c.categoria+": "+c.percentil+"% ("+c.posicao+"º de "+c.total+")").join("; "),true);
    field(fields,"Custos",r.custo,true);field(fields,"Tipos de artigo",r.tiposArtigo,true);
    field(fields,"Primeira decisão",r.prazoPrimeiraDecisao||(r.prazoPrimeiraDecisaoPlanilha?"Planilha: "+r.prazoPrimeiraDecisaoPlanilha:null));

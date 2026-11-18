@@ -13,10 +13,12 @@ export function comparisonHTML(records,esc){
  ['Editora',r=>cell(r,'editora')],['ISSN',r=>cell(r,'issn')],['Idioma',r=>cell(r,'idioma')],
  ['Indexação Scopus',r=>cell(r,'indexacaoScopus',undefined,r.scopusSourceId?'https://www.scopus.com/sourceid/'+r.scopusSourceId:null)],
  ['Indexação Web of Science',r=>cell(r,'indexacaoWos',r.colecaoWos||r.indexacaoWos)],
+ ['Classificador WoS (Quartil / Percentil JIF)',r=>esc(r.quartilJif?(r.quartilJif+(r.percentilJif!=null?' · '+r.percentilJif+'%':'')+(r.categoriaWos?' ('+r.categoriaWos+')':'')):r.classificadorWos||missing)],
+ ['Categoria Web of Science',r=>cell(r,'categoriaWos')],
  ['CiteScore (pontuação)',r=>cell(r,'citescore',r.citescore==null?null:r.citescore+' · '+(r.anoCiteScore||'ano não documentado'))],
  ['Percentis CiteScore por categoria',r=>cell(r,'percentilCiteScore',r.percentisCiteScorePorCategoria?.length?r.percentisCiteScorePorCategoria.map(c=>c.percentil+'% · '+c.categoria+' · posição '+c.posicao+'/'+c.total+' ('+c.ano+')').join('; '):r.percentilCiteScore==null?null:r.percentilCiteScore+'%')],
  ['Maior percentil disponível',r=>esc(metrics(r).maiorPercentil==null?missing:metrics(r).maiorPercentil+'%')],
- ['Fator de impacto JIF (pontuação)',r=>cell(r,'fatorImpacto',r.fatorImpacto==null?null:r.fatorImpacto+' · '+(r.anoFatorImpacto||r.evidenciasMetricas?.fatorImpacto?.anoIndicador||'ano não documentado'),r.fonteEditorial)],
+ ['Fator de impacto JIF — WoS (pontuação)',r=>cell(r,'fatorImpacto',r.fatorImpacto==null?null:r.fatorImpacto+' · '+(r.anoFatorImpacto||r.evidenciasMetricas?.fatorImpacto?.anoIndicador||'ano não documentado'),r.fonteEditorial)],
  ['Quartil SJR informado',r=>cell(r,'sjr')],
  ['Modelo de publicação',r=>cell(r,'modeloPublicacao',undefined,r.fonteEditorial)],
  ['APC de acesso aberto (moeda original)',r=>cell(r,'apcOriginal',apcText(r),r.fonteAPC)],
@@ -36,13 +38,26 @@ export function journalCriteriaHTML(r,esc){
  const source=(key)=>{const e=r.evidenciasMetricas?.[key];if(!e||!/^https?:\/\//.test(e.url||''))return '';const label=/scopus\.com\/sourceid\//.test(e.url)?'Página oficial na Scopus ↗':'Fonte ↗';return ' <small>'+esc([e.anoIndicador,e.categoria].filter(Boolean).join(' · '))+' <a href="'+esc(e.url)+'" target="_blank" rel="noopener noreferrer">'+label+'</a>'+(e.urlArquivo?' · <a href="'+esc(e.urlArquivo)+'" target="_blank" rel="noopener noreferrer">Planilha CiteScore</a>':'')+'</small>'};
  const review=evaluateJournal(r);
  const indexes=['indexacaoScopus','indexacaoWos'].filter(k=>r[k]===true&&r.evidenciasMetricas?.[k]);
- const indexed=indexes.length?indexes.map(k=>(k==='indexacaoScopus'?'Scopus — CiteScore '+(numeric(r.citescore)===null?'não disponível':r.citescore.toLocaleString('pt-BR')):'Web of Science')+source(k)).join('; '):'Não localizada nas fontes consultadas';
+ const shortCol=r.colecaoWos?String(r.colecaoWos).replace('Science Citation Index Expanded (SCIE)','SCIE'):'';
+ const jifVal=numeric(r.fatorImpacto);
+ const wosSummary='Web of Science'+(shortCol?' ('+esc(shortCol)+')':'')+(jifVal!==null?' — JIF '+jifVal.toLocaleString('pt-BR')+(r.anoFatorImpacto?' ('+esc(r.anoFatorImpacto)+')':''):'');
+ const indexed=indexes.length?indexes.map(k=>(k==='indexacaoScopus'?'Scopus — CiteScore '+(numeric(r.citescore)===null?'não disponível':r.citescore.toLocaleString('pt-BR')):wosSummary)+source(k)).join('; '):(r.indexacaoWos===true?wosSummary:'Não localizada nas fontes consultadas');
  const ranks=['percentilCiteScore','percentilJif'].filter(k=>typeof r[k]==='number'&&r.evidenciasMetricas?.[k]);
  const ranked=ranks.length?ranks.map(k=>(k==='percentilCiteScore'?'CiteScore':'JIF')+': '+r[k]+'% — '+(r[k]>=50?'atende ≥ 50':'abaixo de 50')+source(k)).join('; '):'Percentil não disponível nas fontes consultadas';
  const scopusUrl=r.scopusSourceId?'https://www.scopus.com/sourceid/'+encodeURIComponent(r.scopusSourceId):'';
  const cats=Array.isArray(r.percentisCiteScorePorCategoria)&&r.percentisCiteScorePorCategoria.length?'<li><strong>Notas na Scopus por categoria ('+esc(r.anoCiteScore||2025)+')</strong>: '+r.percentisCiteScorePorCategoria.map(c=>esc(c.categoria)+': <b>'+esc(c.percentil)+'%</b> ('+esc(c.posicao)+'º de '+esc(c.total)+')').join('; ')+(scopusUrl?' · <a href="'+esc(scopusUrl)+'" target="_blank" rel="noopener noreferrer">Ver notas na Scopus ↗</a>':'')+'</li>':'';
+ let wosItem='';
+ if(r.indexacaoWos===true||jifVal!==null){
+  const wosParts=[];
+  if(shortCol)wosParts.push('Coleção <b>'+esc(shortCol)+'</b>');
+  if(jifVal!==null)wosParts.push('JIF <b>'+jifVal.toLocaleString('pt-BR')+'</b>'+(r.anoFatorImpacto?' ('+esc(r.anoFatorImpacto)+')':''));
+  if(r.quartilJif)wosParts.push('Quartil JIF <b>'+esc(r.quartilJif)+'</b>'+(r.categoriaWos?' ('+esc(r.categoriaWos)+')':''));
+  if(typeof r.percentilJif==='number')wosParts.push('Percentil JIF <b>'+esc(r.percentilJif)+'%</b>'+(r.posicaoJif&&r.totalJif?' ('+esc(r.posicaoJif)+'º de '+esc(r.totalJif)+')':''));
+  else wosParts.push('Classificador WoS: Quartil JIF (Q1–Q4) e Percentil JIF por categoria');
+  wosItem='<li><strong>Classificador na Web of Science (WoS / JCR)</strong>: '+wosParts.join(' · ')+' <small><a href="https://mjl.clarivate.com/" target="_blank" rel="noopener noreferrer">WoS MJL ↗</a> · <a href="https://jcr.clarivate.com/" target="_blank" rel="noopener noreferrer">JCR Clarivate (CAPES) ↗</a></small></li>';
+ }
  const hItem=review.checks[2].state!=='pending'?'<li><strong>Percentil H > 50</strong>: '+r.percentilH+'% — '+status[review.checks[2].state]+source('percentilH')+'</li>':'';
- return '<ul class="journal-criteria"><li><strong>Indexação Scopus ou WoS</strong>: '+indexed+'</li><li><strong>Percentil CiteScore/JIF ≥ 50</strong>: '+ranked+'</li>'+cats+hItem+'</ul>';
+ return '<ul class="journal-criteria"><li><strong>Indexação Scopus ou WoS</strong>: '+indexed+'</li><li><strong>Percentil CiteScore/JIF ≥ 50</strong>: '+ranked+'</li>'+cats+wosItem+hItem+'</ul>';
 }
 export function journalAssessmentHTML(r,esc,start='',target=''){
  const review=evaluateJournal(r),p=metrics(r).maiorPercentil,eta=expectedPublication(r.prazoPublicacaoDias,start,target);
