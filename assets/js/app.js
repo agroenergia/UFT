@@ -285,13 +285,13 @@ function searchCatalog(){
   return ALL.filter(r=>
     (!$("program-only")||!$("program-only").checked||evaluateJournal(r).state==="pass"||(r.maiorPercentil>=50&&(r.indexacaoScopus||r.indexacaoWos)))&&
     matchesCriteria(r,currentCriteria())&&
-    (!$("criterio").value||r.criterioPlanilha?.status===$("criterio").value)&&
-    (!$("area").value||r.area===$("area").value)&&
-    matchesSjr(r,$("sjr").value)&&
-    (!$("idioma").value||String(r.idioma||"").includes($("idioma").value))&&
-    matchesCost(r,$("custo").value)&&
-    (!$("score").value||Number(r.citescore)>=Number($("score").value))&&
-    (!$("q").value||normalizeSearchText([r.titulo,r.area,r.issn,r.escopo,r.alinhamento,r.observacoes,r.editora,...(r.check?Object.values(r.check):[])].join(" ")).includes(normalizeSearchText($("q").value)))
+    (!$("criterio")?.value||r.criterioPlanilha?.status===$("criterio").value)&&
+    (!$("area")?.value||r.area===$("area").value)&&
+    matchesSjr(r,$("sjr")?.value)&&
+    (!$("idioma")?.value||String(r.idioma||"").includes($("idioma").value))&&
+    matchesCost(r,$("custo")?.value)&&
+    (!$("score")?.value||Number(r.citescore)>=Number($("score").value))&&
+    (!$("q")?.value||normalizeSearchText([r.titulo,r.area,r.issn,r.escopo,r.alinhamento,r.observacoes,r.editora,...(r.check?Object.values(r.check):[])].join(" ")).includes(normalizeSearchText($("q").value)))
   );
 }
 async function askAI(){
@@ -332,17 +332,20 @@ function renderFeatured(){
     const link=event.target.closest("[data-featured-id]");if(!link)return;
     const journal=ALL.find(r=>String(r.id)===link.dataset.featuredId);if(!journal)return;
     event.preventDefault();
-    $("program-only").checked=false;CATALOG_TOP10=false;[...filterIds,"criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");$("q").value=journal.titulo;render();
+    if($("program-only"))$("program-only").checked=false;
+    CATALOG_TOP10=false;
+    [...filterIds,"criterio","area","sjr","idioma","custo","score"].forEach(id=>{const el=$(id);if(el)el.value=""});
+    if($("q"))$("q").value=journal.titulo;
+    render();
     const card=$("revista-"+journal.id);if(card){card.tabIndex=-1;card.focus({preventScroll:true});card.scrollIntoView({behavior:"smooth",block:"start"});}
   });
 }
 function setupBanner(){
   document.querySelectorAll("[data-search-prompt]").forEach(button=>button.addEventListener("click",()=>{
-    $("ai-question").value=button.dataset.searchPrompt;
-    $("ai-question").focus({preventScroll:true});$("ai-question").scrollIntoView({behavior:"smooth",block:"center"});
+    if($("ai-question")){$("ai-question").value=button.dataset.searchPrompt;$("ai-question").focus({preventScroll:true});$("ai-question").scrollIntoView({behavior:"smooth",block:"center"});}
   }));
   document.querySelectorAll("[data-focus-search]").forEach(link=>link.addEventListener("click",event=>{
-    event.preventDefault();$("ai-question").focus({preventScroll:true});$("ai-question").scrollIntoView({behavior:"smooth",block:"center"});
+    event.preventDefault();if($("ai-question")){$("ai-question").focus({preventScroll:true});$("ai-question").scrollIntoView({behavior:"smooth",block:"center"});}
   }));
 }
 
@@ -367,12 +370,13 @@ function setupHeaderMenu(){
 async function init(){
   const res=await fetch(DATA_URL,{cache:"no-store",signal:AbortSignal.timeout(15000)});if(!res.ok)throw Error("Não foi possível carregar a base de revistas");
   const data=await res.json();if(!Array.isArray(data.revistas)||data.revistas.some(r=>!r||typeof r.titulo!=="string"))throw Error("Formato do catálogo inválido");ALL=data.revistas.map((r,i)=>metrics({...r,id:r.id??i+1}));
-  $("metric-coverage").textContent=ALL.filter(r=>r.maiorPercentil!==null).length+" de "+ALL.length+" registros com percentil CiteScore/JIF numérico. Campos ausentes exigem conferência na fonte; quartil e pontuação não foram convertidos em percentil.";
+  if($("metric-coverage"))$("metric-coverage").textContent=ALL.filter(r=>r.maiorPercentil!==null).length+" de "+ALL.length+" registros com percentil CiteScore/JIF numérico. Campos ausentes exigem conferência na fonte; quartil e pontuação não foram convertidos em percentil.";
   BASE=data.fonteArquivo||data.baseAtualizada||"base do projeto";
-  const checked=ALL.filter(r=>Array.isArray(r.conferenciasOnline)&&r.conferenciasOnline.length).length;
-  $("catalog-summary").textContent=ALL.length+" revistas para explorar e comparar";$("selecao-option").textContent="Seleção da equipe ("+selectionCatalog().length+")";
+  if($("catalog-summary"))$("catalog-summary").textContent=ALL.length+" revistas para explorar e comparar";
+  if($("selecao-option"))$("selecao-option").textContent="Seleção da equipe ("+selectionCatalog().length+")";
+  try{renderFeatured();}catch(e){console.error("Erro em renderFeatured:",e);}
   if(/^#revista-/.test(location.hash)){
-    $("criterio").value="";
+    if($("criterio"))$("criterio").value="";
     const targetId=location.hash.replace("#revista-","");
     const catalogList=searchCatalog();
     const idx=catalogList.findIndex(r=>String(r.id)===targetId);
@@ -382,21 +386,23 @@ async function init(){
       CURRENT_PAGE=Math.floor(idx/perPage)+1;
     }
   }
-  [...new Set(ALL.map(r=>r.area).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR")).forEach(v=>$("area").add(new Option(v,v)));
+  if($("area")){
+    [...new Set(ALL.map(r=>r.area).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR")).forEach(v=>$("area").add(new Option(v,v)));
+  }
   const resetCatalogPagination=()=>{CATALOG_TOP10=false;CURRENT_PAGE=1;document.querySelectorAll("[data-fast-filter]").forEach(b=>b.setAttribute("aria-pressed","false"))};
-  [...filterIds,"q","criterio","area","sjr","idioma","custo","score","ord"].forEach(id=>$(id).addEventListener("input",()=>{resetCatalogPagination();render()}));
-  $("limpar").onclick=()=>{$("program-only").checked=false;[...filterIds,"q","criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");resetCatalogPagination();render()};
+  [...filterIds,"q","criterio","area","sjr","idioma","custo","score","ord"].forEach(id=>$(id)?.addEventListener("input",()=>{resetCatalogPagination();render()}));
+  if($("limpar"))$("limpar").onclick=()=>{if($("program-only"))$("program-only").checked=false;[...filterIds,"q","criterio","area","sjr","idioma","custo","score"].forEach(id=>{const el=$(id);if(el)el.value=""});resetCatalogPagination();render()};
   document.querySelectorAll("[data-fast-filter]").forEach(button=>button.addEventListener("click",()=>{
-    [...filterIds,"q","criterio","area","sjr","idioma","custo","score"].forEach(id=>$(id).value="");
+    [...filterIds,"q","criterio","area","sjr","idioma","custo","score"].forEach(id=>{const el=$(id);if(el)el.value=""});
     resetCatalogPagination();
     const filter=button.dataset.fastFilter;
-    if(filter!=="clear"&&filter!=="all")$("criterio").value="selecao";
-    if(filter==="q1")$("sjr").value="Q1";
-    if(filter==="sem")$("custo").value="sem";
-    if(filter==="portugues")$("idioma").value="Português";
-    if(filter==="top10"){CATALOG_TOP10=true;$("ord").value="citescore"}
+    if(filter!=="clear"&&filter!=="all"&&$("criterio"))$("criterio").value="selecao";
+    if(filter==="q1"&&$("sjr"))$("sjr").value="Q1";
+    if(filter==="sem"&&$("custo"))$("custo").value="sem";
+    if(filter==="portugues"&&$("idioma"))$("idioma").value="Português";
+    if(filter==="top10"){CATALOG_TOP10=true;if($("ord"))$("ord").value="citescore"}
     document.querySelectorAll("[data-fast-filter]").forEach(b=>b.setAttribute("aria-pressed",String(filter!=="clear"&&b===button)));
-    render();$("lista").scrollIntoView({behavior:"smooth",block:"start"});
+    render();$("lista")?.scrollIntoView({behavior:"smooth",block:"start"});
   }));
   if($("program-only"))$("program-only").addEventListener("change",()=>{CURRENT_PAGE=1;render()});
   $("per-page-select")?.addEventListener("change",e=>{PER_PAGE=e.target.value==="all"?"all":(parseInt(e.target.value,10)||24);CURRENT_PAGE=1;render()});
@@ -407,16 +413,22 @@ async function init(){
     const totalPages=Math.max(1,Math.ceil(searchCatalog().length/perPage));
     if(CURRENT_PAGE<totalPages){CURRENT_PAGE++;render();$("revistas")?.scrollIntoView({behavior:"smooth",block:"start"})}
   });
-  $("lista").addEventListener("change",e=>{const id=e.target.dataset.id;if(!id)return;if(e.target.checked){if(SELECTED.size>=4){e.target.checked=false;alert("Selecione até quatro revistas.");return}SELECTED.add(id)}else SELECTED.delete(id);renderCompare()});
-  $("csv").onclick=exportCsv;$("ai-search-form").addEventListener("submit",e=>{e.preventDefault();askAI()});
-  const predatoryToggle=$("predatory-toggle"),predatoryDetails=$("predatory-details");predatoryToggle.addEventListener("click",()=>{const open=predatoryDetails.hidden;predatoryDetails.hidden=!open;predatoryToggle.setAttribute("aria-expanded",String(open));predatoryToggle.textContent=open?"Ocultar sinais de alerta":"Ver sinais de alerta"});
-  render();renderFeatured();setupBanner();
+  $("lista")?.addEventListener("change",e=>{const id=e.target.dataset.id;if(!id)return;if(e.target.checked){if(SELECTED.size>=4){e.target.checked=false;alert("Selecione até quatro revistas.");return}SELECTED.add(id)}else SELECTED.delete(id);renderCompare()});
+  if($("csv"))$("csv").onclick=exportCsv;
+  if($("ai-search-form"))$("ai-search-form").addEventListener("submit",e=>{e.preventDefault();askAI()});
+  const predatoryToggle=$("predatory-toggle"),predatoryDetails=$("predatory-details");
+  if(predatoryToggle&&predatoryDetails)predatoryToggle.addEventListener("click",()=>{const open=predatoryDetails.hidden;predatoryDetails.hidden=!open;predatoryToggle.setAttribute("aria-expanded",String(open));predatoryToggle.textContent=open?"Ocultar sinais de alerta":"Ver sinais de alerta"});
+  try{render();}catch(e){console.error("Erro em render:",e);}
+  setupBanner();
 }
 setupHeaderMenu();
-$("csv").disabled=true;$("ai-search-button").disabled=true;
-init().then(()=>{$("csv").disabled=false;$("ai-search-button").disabled=false}).catch(e=>{
+if($("csv"))$("csv").disabled=true;
+if($("ai-search-button"))$("ai-search-button").disabled=true;
+init().then(()=>{if($("csv"))$("csv").disabled=false;if($("ai-search-button"))$("ai-search-button").disabled=false}).catch(e=>{
  const message="Não foi possível carregar os dados agora. Atualize a página para tentar novamente. Se persistir, fale com o administrador.";
- ["lista","featured-journals","cmp-tabela","catalog-summary","metric-coverage"].forEach(id=>{if($(id))$(id).textContent=message});
- const retry=document.createElement("button");retry.type="button";retry.textContent="Tentar novamente";retry.onclick=()=>location.reload();$("lista").append(retry);
- $("ai-status").hidden=false;$("ai-status").textContent="Pesquisa e CSV indisponíveis até o catálogo carregar.";console.error(e);
+ const targets = (ALL && ALL.length) ? ["lista","cmp-tabela"] : ["lista","featured-journals","cmp-tabela","catalog-summary","metric-coverage"];
+ targets.forEach(id=>{if($(id))$(id).textContent=message});
+ const retry=document.createElement("button");retry.type="button";retry.textContent="Tentar novamente";retry.onclick=()=>location.reload();if($("lista"))$("lista").append(retry);
+ if($("ai-status")){$("ai-status").hidden=false;$("ai-status").textContent="Pesquisa e CSV indisponíveis até o catálogo carregar.";}
+ console.error(e);
 });
