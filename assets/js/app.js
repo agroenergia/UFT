@@ -2,6 +2,8 @@ import {findJournalsByName,findSmartCatalogMatches,expandSearchTerms} from "./jo
 import {evaluateJournal} from "./eligibility.js";
 import {journalAssessmentHTML,journalCriteriaHTML,comparisonHTML} from "./criteria-ui.js?v=20261118v4";
 import {metricLabels,filterIds,metrics,matchesCriteria,metricText,csvCell,researchPolicy} from "./criteria.js";
+import {downloadJournalsXls} from "./xls-export.js?v=20261118v7";
+import {recordCustomAction} from "./visitor-tracker.js?v=20261118v7";
 const currentCriteria=()=>Object.fromEntries(filterIds.map(id=>[id,document.getElementById(id)?.value||""]));
 const DATA_URL="./assets/data/revistas.json";const $=id=>document.getElementById(id);const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));const fmt=v=>v===null||v===undefined||v===""?"Não informado":String(v);const safeUrl=u=>{try{const x=new URL(u);return ["https:","http:"].includes(x.protocol)?x.href:""}catch{return""}};let ALL=[],BASE="",SELECTED=new Set();function field(r,k){return r[k]??null}function priority(r){return {"ALTO":0,"MÉDIO":1,"COMPLEMENTAR":2}[r.tier]??3}let CATALOG_TOP10=false,CURRENT_PAGE=1,PER_PAGE=24;
 const isSelection=r=>!r.criterioPlanilha||r.criterioPlanilha.status==="selecao";
@@ -313,6 +315,7 @@ async function askAI(){
     ?"Pesquisa concluída na base auditada. Os recursos da plataforma Crossref não ficaram disponíveis nesta tentativa."
     :"Pesquisa concluída na base auditada e na plataforma Crossref.";
   $("ai-loading").hidden=true;$("ai-search-button").disabled=false;$("ai-search-button").textContent="Pesquisar";
+  recordCustomAction("Pesquisou: "+question);
   window.dispatchEvent(new CustomEvent("rigoratlas:announce",{detail:{message:"Pesquisa concluída para "+question+". "+initialMatches.length+" revistas principais recomendadas na base auditada."}}));
 }
 function exportCsv(){const cols=[...Object.keys(metricLabels),"titulo","enquadramento","area","editora","issn","sjr","indiceSjr","idioma","custo","modeloPublicacao","alinhamento","escopo","tiposArtigo","citescore","fatorImpacto","fatorImpacto5Anos","snip","taxaAceitacaoPercentual","prazoPrimeiraDecisao","prazoPrimeiraDecisaoPlanilha","url","urlInstrucoes","atualizadoEm","statusConferencia","evidenciasMetricas","fontesCadastro","conferenciasOnline","pendenciasConferencia"];const csv=[['marca',...cols].map(csvCell).join(';'),...ALL.map(r=>['RigorAtlas',...cols.map(k=>r[k])].map(csvCell).join(';'))].join('\r\n');const a=document.createElement("a");const u=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.href=u;a.download="RigorAtlas-catalogo-"+new Date().toISOString().slice(0,10)+".csv";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
@@ -457,6 +460,7 @@ async function init(){
   });
   $("lista")?.addEventListener("change",e=>{const id=e.target.dataset.id;if(!id)return;if(e.target.checked){if(SELECTED.size>=4){e.target.checked=false;alert("Selecione até quatro revistas.");return}SELECTED.add(id)}else SELECTED.delete(id);renderCompare()});
   if($("csv"))$("csv").onclick=exportCsv;
+  if($("download-all-xls"))$("download-all-xls").onclick=()=>{const stamp=new Date().toISOString().slice(0,10);downloadJournalsXls(ALL,`RigorAtlas-base-completa-${ALL.length}-revistas-${stamp}.xls`);recordCustomAction(`Download XLS completo (${ALL.length} revistas)`);};
   if($("ai-search-form"))$("ai-search-form").addEventListener("submit",e=>{e.preventDefault();askAI()});
   const predatoryToggle=$("predatory-toggle"),predatoryDetails=$("predatory-details");
   if(predatoryToggle&&predatoryDetails)predatoryToggle.addEventListener("click",()=>{const open=predatoryDetails.hidden;predatoryDetails.hidden=!open;predatoryToggle.setAttribute("aria-expanded",String(open));predatoryToggle.textContent=open?"Ocultar sinais de alerta":"Ver sinais de alerta"});
@@ -465,8 +469,9 @@ async function init(){
 }
 setupHeaderMenu();
 if($("csv"))$("csv").disabled=true;
+if($("download-all-xls"))$("download-all-xls").disabled=true;
 if($("ai-search-button"))$("ai-search-button").disabled=true;
-init().then(()=>{if($("csv"))$("csv").disabled=false;if($("ai-search-button"))$("ai-search-button").disabled=false}).catch(e=>{
+init().then(()=>{if($("csv"))$("csv").disabled=false;if($("download-all-xls"))$("download-all-xls").disabled=false;if($("ai-search-button"))$("ai-search-button").disabled=false}).catch(e=>{
  const message="Não foi possível carregar os dados agora. Atualize a página para tentar novamente. Se persistir, fale com o administrador.";
  const targets = (ALL && ALL.length) ? ["lista","cmp-tabela"] : ["lista","featured-journals","cmp-tabela","catalog-summary","metric-coverage"];
  targets.forEach(id=>{if($(id))$(id).textContent=message});

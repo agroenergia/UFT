@@ -33,6 +33,36 @@
 </head>
 <body>
 <main class="access-page">
+  <section id="visitas" class="access-card" aria-labelledby="visitas-title" style="margin-bottom:22px">
+    <div class="admin-head">
+      <div>
+        <span class="eyebrow">Marcador de Visitas</span>
+        <h1 id="visitas-title">Registro de Acessos (.txt / .json)</h1>
+        <p id="visit-summary">Carregando histórico de visitas registradas…</p>
+      </div>
+      <a class="btn" href="./">← Voltar ao portal</a>
+    </div>
+    <div class="admin-toolbar">
+      <div class="group">
+        <button id="visit-dl-txt" class="primary-admin" type="button">⬇ Baixar Bloco de Notas (.txt)</button>
+        <button id="visit-dl-json" type="button">⬇ Baixar JSON (.json)</button>
+        <button id="visit-copy-json" type="button">Copiar JSON</button>
+      </div>
+      <div class="group">
+        <button id="visit-refresh" type="button">Atualizar</button>
+        <button id="visit-clear" class="danger-admin" type="button">Limpar histórico local</button>
+      </div>
+    </div>
+    <div class="admin-table-wrap">
+      <table class="admin-table" style="min-width:760px">
+        <thead><tr>
+          <th>#</th><th>Início</th><th>Páginas vistas</th><th>Dispositivo / Navegador</th><th>Tela</th><th>Origem</th><th>Ações</th>
+        </tr></thead>
+        <tbody id="visit-log-body"></tbody>
+      </table>
+    </div>
+    <p class="admin-note"><strong>Como funciona no GitHub Pages:</strong> como o site é hospedado de forma estática no GitHub Pages, cada navegador registra seus próprios acessos em armazenamento local (<code>rigoratlas_visits_v1</code>) e permite exportar tudo em Bloco de Notas (<code>.txt</code>) ou <code>.json</code>.</p>
+  </section>
   <section class="access-card">
     <div id="login-view" class="access-login">
       <span class="eyebrow">Área técnica</span>
@@ -110,8 +140,8 @@ async function loadData(){
 function row(r,i){
  return "<tr>"+
  [["titulo","text"],["editora","text"],["issn","text"],["area","text"],["escopo","textarea"],["qualis","text"],["sjr","text"],["h","number"],["percentil","number"],["acesso","text"],["taxa","number"],["dias","number"],["url_ficha","url"],["url_instrucoes","url"],["atualizado","text"]]
- .map(([k,t])=>"<td><"+(t==="textarea"?"textarea":"input")+" data-i=""+i+"" data-k=""+k+"" type=""+(t==="textarea"?"":t)+"">"+(t==="textarea"?esc(r[k]):"")+"</"+(t==="textarea"?"textarea":"input")+"></td>").join("")+
- "<td><button type="button" class="delete" data-i=""+i+"">Excluir</button></td></tr>";
+ .map(([k,t])=>`<td><${t==="textarea"?"textarea":"input"} data-i="${i}" data-k="${k}"${t==="textarea"?"":` type="${t}"`}>${t==="textarea"?esc(r[k]):""}</${t==="textarea"?"textarea":"input"}></td>`).join("")+
+ `<td><button type="button" class="delete" data-i="${i}">Excluir</button></td></tr>`;
 }
 
 function render(){
@@ -156,6 +186,36 @@ if(sessionStorage.getItem("ppgad_admin_auth")==="1"){
  $("login-view").style.display="none";$("admin-panel").style.display="block";
  loadData().then(render).catch(e=>{$("admin-panel").innerHTML="<p>"+esc(e.message)+"</p>"});
 }
+</script>
+<script type="module">
+import {getVisitData,downloadVisitsTxt,downloadVisitsJson,clearVisitLog} from "./assets/js/visitor-tracker.js?v=20261118v7";
+const $v=id=>document.getElementById(id);
+const escV=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function renderVisits(){
+  const d=getVisitData();
+  if($v("visit-summary"))$v("visit-summary").textContent=`Total de visitas registradas neste navegador: ${d.totalVisitas} · Registros armazenados: ${d.registros.length}`;
+  const body=$v("visit-log-body");
+  if(!body)return;
+  body.innerHTML=d.registros.map(r=>`<tr>
+    <td>${escV(r.numero)}</td>
+    <td>${escV(r.dataHoraBR)}</td>
+    <td>${escV((r.paginas||[]).join(" → "))}</td>
+    <td>${escV(r.dispositivo)} · ${escV(r.navegadorSistema)}</td>
+    <td>${escV(r.resolucao)}</td>
+    <td>${escV(r.origem)}</td>
+    <td>${escV((r.acoes||[]).join(" | ")||"—")}</td>
+  </tr>`).join("")||'<tr><td colspan="7">Nenhuma visita registrada ainda neste navegador.</td></tr>';
+}
+$v("visit-dl-txt")?.addEventListener("click",downloadVisitsTxt);
+$v("visit-dl-json")?.addEventListener("click",downloadVisitsJson);
+$v("visit-copy-json")?.addEventListener("click",async()=>{
+  try{await navigator.clipboard.writeText(JSON.stringify(getVisitData(),null,2));alert("Registro JSON copiado.");}catch{}
+});
+$v("visit-refresh")?.addEventListener("click",renderVisits);
+$v("visit-clear")?.addEventListener("click",()=>{
+  if(confirm("Limpar todo o registro local de visitas?")){clearVisitLog();renderVisits();}
+});
+renderVisits();
 </script>
 </body>
 </html>
