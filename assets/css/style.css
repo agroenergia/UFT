@@ -1153,7 +1153,7 @@ body{padding-bottom:100px}
 .stage-pdf .suggest-header p{margin-bottom:4px}
 .pdf-topten-link{display:inline-flex;align-items:center;min-height:44px;margin-top:16px;padding:10px 15px;border-radius:9px;background:#155c90;color:#fff;text-decoration:none;font-size:13px;font-weight:700}
 .pdf-help{display:block;margin-top:9px;color:#587384;font-size:11px}
-.floating-actions{position:fixed;right:14px;bottom:16px;z-index:120;display:grid;gap:7px;width:108px;padding:8px;border:1px solid #d3e3ec;border-radius:14px;background:rgba(255,255,255,.95);box-shadow:0 8px 26px rgba(15,51,73,.2);backdrop-filter:blur(12px)}
+.floating-actions{position:fixed;left:14px;top:var(--header-offset,114px);right:auto;bottom:auto;z-index:120;display:grid;gap:7px;width:108px;max-height:calc(100dvh - var(--header-offset,114px) - 16px);overflow-y:auto;padding:8px;border:1px solid #d3e3ec;border-radius:14px;background:rgba(255,255,255,.95);box-shadow:0 8px 26px rgba(15,51,73,.2);backdrop-filter:blur(12px)}
 .floating-actions a{display:flex;align-items:center;gap:8px;min-height:38px;padding:5px 8px;border-radius:8px;color:#164a6b;text-decoration:none}
 .floating-actions a:hover{background:#e9f3f8}
 .floating-actions a:first-child{background:#123f65;color:#fff}
@@ -1180,7 +1180,7 @@ main{padding-bottom:80px}
   .sort-control{align-items:flex-start;flex-direction:column}
   .sort-control select{width:100%}
   .site-header nav{flex-wrap:wrap}
-  .floating-actions{left:8px;right:8px;bottom:7px;width:auto;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;padding:5px;border-radius:13px}
+  .floating-actions{left:8px;right:8px;bottom:7px;top:auto;width:auto;max-height:none;overflow-y:visible;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;padding:5px;border-radius:13px}
   .floating-actions a{justify-content:center;flex-direction:column;gap:1px;min-width:0;min-height:48px;padding:4px}
   .floating-actions a>span{font-size:16px;line-height:1.1}
   .floating-actions small{font-size:9px}
@@ -1491,3 +1491,4 @@ main>.site-stage,main>.discovery-banner,.journal-card{scroll-margin-top:12px}
 @media(max-width:560px){.catalog-filter-panel{padding:16px}.catalog-filter-list{grid-template-columns:1fr;gap:18px}.catalog-filter-field select,.catalog-filter-field input{font-size:16px}.catalog-results-bar{align-items:stretch;flex-direction:column}.catalog-results-bar label{justify-content:space-between}.catalog-results-bar select{max-width:68%}.catalog-filter-heading button{width:100%}}
 @media print{.catalog-filter-panel,.active-filters,.catalog-results-bar{display:none!important}}
 .program-filter{padding:14px;background:#f2f7f4;border-radius:10px;margin-top:18px}.program-filter>label{display:flex;gap:10px;align-items:center;font-weight:600;line-height:1.5}.program-filter small{display:block;line-height:1.6;margin-top:8px;color:#52665b}.planning-dates{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px}.planning-dates label{display:flex;flex-direction:column;gap:6px;font-size:13px}.planning-dates input{padding:8px;border:1px solid #b7c9c0;border-radius:7px;min-height:44px}.journal-assessment{padding:12px 0;border-top:1px solid #d6e1da;margin:12px 0}.journal-assessment summary{cursor:pointer}.criteria-state{display:inline-block;padding:6px 9px;border-radius:7px;font-size:13px;font-weight:700}.criteria-state.pending{color:#684800;background:#fff3cc}.criteria-state.pass{color:#174e30;background:#e5f4e9}.criteria-state.fail{color:#812828;background:#fce8e8}.journal-assessment p,.journal-assessment li{font-size:13px;line-height:1.6}.journal-assessment ul{padding-left:20px}.percentile-scale{height:18px;position:relative;margin:8px 0 28px;background:#e1e9e4;border-radius:4px}.percentile-scale>div{height:100%;background:#30754f;border-radius:4px}.percentile-scale>span{position:absolute;top:0;border-left:2px solid #53685d;height:22px;padding-top:20px;font-size:11px}.mark-50{left:50%}.mark-80{left:80%}
+@media(min-width:701px) and (max-width:1456px){body:has(.floating-actions) .ai-response-wrap,body:has(.floating-actions) main#inicio,body:has(.floating-actions) .footer-inner{width:min(1180px,calc(100% - 156px));margin-left:138px;margin-right:auto}}
