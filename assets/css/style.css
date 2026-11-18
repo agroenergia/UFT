@@ -1495,15 +1495,81 @@ main>.site-stage,main>.discovery-banner,.journal-card{scroll-margin-top:12px}
 .faq-section,.faq-item,#apresentacao{scroll-margin-top:var(--header-offset,114px)}
 .faq-video-banner{margin:14px 0 18px;padding:12px 16px;border:1px solid #bcd4e4;border-radius:12px;background:#ffffff;color:#123f65;font-size:14px;line-height:1.5;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .faq-video-banner a{color:#1b6d49;font-weight:700;text-decoration:underline;text-underline-offset:3px}
-.video-guide-heading{align-items:flex-end;gap:20px;margin-bottom:18px}
-.video-guide-lead{margin:0;max-width:620px;font-size:14px;line-height:1.6;color:#3d586b}
-.video-guide-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,0.9fr);gap:22px;align-items:start}
-.video-frame{margin:0;background:#ffffff;border:1px solid #c6dbe5;border-radius:16px;padding:14px;box-shadow:0 8px 22px #0f3d610f}
-.video-frame video{display:block;width:100%;aspect-ratio:16/9;border-radius:10px;background:#0a3854}
-.video-caption{margin-top:10px;font-size:12.5px;color:#4a6578;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.video-caption a{color:#15619b;font-weight:600;text-decoration:underline;text-underline-offset:3px}
-.video-chapters{background:#ffffff;border:1px solid #c6dbe5;border-radius:16px;padding:18px 20px;color:#15364d}
-.video-chapters h3{margin:0 0 12px;font-size:17px;color:#0e3d5f}
-.video-chapters ol{margin:0;padding-left:18px;display:grid;gap:10px;font-size:13.5px;line-height:1.5}
-.video-chapters li strong{color:#1b6d49}
-@media(max-width:960px){.video-guide-layout{grid-template-columns:1fr}.video-guide-heading{align-items:flex-start}}
+
+/* Barra de acessibilidade (conforto visual para autismo, modo foco, alto contraste e leitor em áudio). */
+.skip-link{position:fixed;top:-120px;left:16px;z-index:2000;background:#103650;color:#fff;padding:12px 18px;border-radius:10px;font-weight:700;text-decoration:none;border:3px solid #f1c44b;transition:top .15s}
+.skip-link:focus{top:14px}
+.a11y-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;padding:10px 14px;margin:10px 0 4px;background:#f4f9fc;border:1px solid #c5dbe7;border-radius:14px}
+.a11y-group{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.a11y-title{font-size:11px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;color:#1b4f72;margin-right:2px}
+.a11y-btn{appearance:none;display:inline-flex;align-items:center;gap:5px;min-height:36px;padding:6px 11px;border-radius:9px;border:1px solid #b5cddb;background:#fff;color:#123f65;font-size:12px;font-weight:650;cursor:pointer;line-height:1.2}
+.a11y-btn[hidden]{display:none!important}
+.a11y-btn:hover{background:#eaf4fb;border-color:#15619b}
+.a11y-btn[aria-pressed="true"]{background:#155c90;border-color:#103d61;color:#fff;box-shadow:0 2px 6px rgba(16,61,97,.18)}
+.a11y-btn-audio[aria-pressed="true"]{background:#1b6d49;border-color:#114a31;color:#fff}
+.a11y-btn-sm{min-width:38px;justify-content:center;padding:6px 8px}
+.a11y-btn-ghost{background:transparent;color:#4a6578}
+.a11y-rate{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#194c6d;font-weight:600}
+.a11y-rate select{min-height:36px;padding:4px 8px;border:1px solid #b5cddb;border-radius:8px;background:#fff;color:#123f65;font-size:12px}
+.a11y-speaking{outline:4px solid #1b6d49!important;outline-offset:4px!important;background:#fefbe8!important;box-shadow:0 0 0 6px rgba(27,109,73,.16)!important}
+
+/* Hero com vídeo em destaque. */
+.discovery-banner{grid-template-columns:minmax(0,0.95fr) minmax(360px,1.35fr);align-items:start}
+.banner-video-hero{grid-area:auto;background:#ffffff;border:1px solid #bcd4e4;border-radius:18px;padding:16px;box-shadow:0 10px 26px rgba(16,61,97,.08)}
+.hero-video-head{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.hero-video-badge{display:inline-block;align-self:flex-start;padding:4px 9px;border-radius:999px;background:#e5f4ec;color:#175a3c;font-size:10px;font-weight:750;letter-spacing:.07em}
+.hero-video-title{margin:0;font-size:18px;line-height:1.3;color:#103a5a}
+.hero-video-figure{margin:0}
+.hero-video-figure video{display:block;width:100%;aspect-ratio:16/9;border-radius:12px;background:#0a3854}
+.video-chapter-strip{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.video-chapter-btn{appearance:none;padding:6px 10px;border-radius:999px;border:1px solid #c3d9e6;background:#f4f9fc;color:#134366;font-size:11.5px;font-weight:650;cursor:pointer;min-height:32px}
+.video-chapter-btn:hover,.video-chapter-btn[aria-pressed="true"]{background:#155c90;border-color:#155c90;color:#fff}
+.hero-video-foot{margin:10px 0 0;font-size:12px;color:#4a6578;line-height:1.5}
+.hero-video-foot a{color:#155c90;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.featured-cs{font-weight:500;color:#526d80}
+
+@media(max-width:1023px){
+  .discovery-banner{grid-template-columns:minmax(0,1fr);gap:22px}
+}
+@media(max-width:700px){
+  .discovery-banner{grid-template-areas:"copy" "video" "featured";grid-template-columns:minmax(0,1fr);padding:20px 16px;gap:18px}
+  .banner-copy{grid-area:copy;border-top:0;padding-top:0}
+  .banner-video-hero{grid-area:video;padding:12px}
+  .banner-featured{grid-area:featured;padding-top:16px}
+  .featured-journal .featured-rank{display:inline-block}
+  .a11y-bar{padding:10px;gap:8px}
+  .a11y-btn{font-size:11.5px;padding:6px 9px}
+}
+
+/* Modo Conforto Visual para Autismo (cores neutras cálidas, baixo estímulo e sem animações). */
+html[data-a11y-calm="true"],html[data-a11y-calm="true"] body{scroll-behavior:auto!important;background:#f3f1ea!important;color:#23312b!important}
+html[data-a11y-calm="true"] *,html[data-a11y-calm="true"] *::before,html[data-a11y-calm="true"] *::after{transition:none!important;animation:none!important}
+html[data-a11y-calm="true"] .site-header{background:#344e5c!important;border-bottom-color:#5b7769!important}
+html[data-a11y-calm="true"] .discovery-banner,html[data-a11y-calm="true"] main>section:nth-of-type(odd){background:#ecebe2!important;border-color:#d2d4c8!important}
+html[data-a11y-calm="true"] main>section:nth-of-type(even){background:#e7ede8!important;border-color:#cad4cb!important}
+html[data-a11y-calm="true"] .journal-card,html[data-a11y-calm="true"] .featured-journal,html[data-a11y-calm="true"] .banner-video-hero,html[data-a11y-calm="true"] .catalog-filter-panel,html[data-a11y-calm="true"] .faq-item,html[data-a11y-calm="true"] .a11y-bar,html[data-a11y-calm="true"] .flow-step{background:#faf9f4!important;border-color:#cfd4ca!important;box-shadow:none!important}
+html[data-a11y-calm="true"] .discovery-banner::before{background:#7d9b8e!important}
+html[data-a11y-calm="true"] .banner-primary,html[data-a11y-calm="true"] #ai-search-button{background:#3c695b!important;border-color:#3c695b!important}
+html[data-a11y-calm="true"] p,html[data-a11y-calm="true"] li{line-height:1.75!important}
+
+/* Modo Foco (redução de distração periférica, espaçamento legível e contorno nítido no elemento ativo). */
+html[data-a11y-focus="true"] body{letter-spacing:.012em;word-spacing:.05em}
+html[data-a11y-focus="true"] *:focus-visible{outline:4px solid #155c90!important;outline-offset:4px!important}
+html[data-a11y-focus="true"] .journal-grid .journal-card,html[data-a11y-focus="true"] .featured-journals .featured-journal,html[data-a11y-focus="true"] .faq-accordion .faq-item,html[data-a11y-focus="true"] .site-flow .flow-step{opacity:.74}
+html[data-a11y-focus="true"] .journal-card:hover,html[data-a11y-focus="true"] .journal-card:focus-within,html[data-a11y-focus="true"] .journal-card.a11y-card-active,html[data-a11y-focus="true"] .featured-journal:hover,html[data-a11y-focus="true"] .featured-journal:focus-visible,html[data-a11y-focus="true"] .featured-journal.a11y-card-active,html[data-a11y-focus="true"] .faq-item[open],html[data-a11y-focus="true"] .faq-item:focus-within,html[data-a11y-focus="true"] .faq-item.a11y-card-active,html[data-a11y-focus="true"] .flow-step:hover,html[data-a11y-focus="true"] .flow-step:focus-visible,html[data-a11y-focus="true"] .flow-step.a11y-card-active{opacity:1!important;outline:3px solid #1b6d49!important;outline-offset:3px!important;box-shadow:0 8px 20px rgba(16,61,97,.12)!important}
+
+/* Alto Contraste para baixa visão. */
+html[data-a11y-contrast="true"],html[data-a11y-contrast="true"] body{background:#ffffff!important;color:#000000!important}
+html[data-a11y-contrast="true"] .site-header,html[data-a11y-contrast="true"] .site-footer{background:#000000!important;color:#ffffff!important}
+html[data-a11y-contrast="true"] .discovery-banner,html[data-a11y-contrast="true"] main>section,html[data-a11y-contrast="true"] .journal-card,html[data-a11y-contrast="true"] .featured-journal,html[data-a11y-contrast="true"] .banner-video-hero,html[data-a11y-contrast="true"] .faq-item,html[data-a11y-contrast="true"] .catalog-filter-panel,html[data-a11y-contrast="true"] .a11y-bar{background:#ffffff!important;color:#000000!important;border:2px solid #000000!important}
+html[data-a11y-contrast="true"] a,html[data-a11y-contrast="true"] h1,html[data-a11y-contrast="true"] h2,html[data-a11y-contrast="true"] h3,html[data-a11y-contrast="true"] p,html[data-a11y-contrast="true"] li,html[data-a11y-contrast="true"] small,html[data-a11y-contrast="true"] span{color:#000000!important}
+html[data-a11y-contrast="true"] .site-header *,html[data-a11y-contrast="true"] .site-footer *{color:#ffffff!important}
+html[data-a11y-contrast="true"] .site-header input{background:#ffffff!important;color:#000000!important;border:2px solid #ffff00!important}
+html[data-a11y-contrast="true"] .banner-primary,html[data-a11y-contrast="true"] .a11y-btn[aria-pressed="true"],html[data-a11y-contrast="true"] #ai-search-button{background:#000000!important;color:#ffff00!important;border:2px solid #ffff00!important}
+html[data-a11y-contrast="true"] .banner-primary *,html[data-a11y-contrast="true"] .a11y-btn[aria-pressed="true"] *{color:#ffff00!important}
+
+/* Escala de texto. */
+html[data-a11y-scale="112"] body{font-size:18px}
+html[data-a11y-scale="125"] body{font-size:20px}
+html[data-a11y-scale="112"] .journal-card p,html[data-a11y-scale="112"] .faq-answer p,html[data-a11y-scale="112"] .banner-lead{font-size:1.08em}
+html[data-a11y-scale="125"] .journal-card p,html[data-a11y-scale="125"] .faq-answer p,html[data-a11y-scale="125"] .banner-lead{font-size:1.18em}

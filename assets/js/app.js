@@ -313,6 +313,7 @@ async function askAI(){
     ?"Pesquisa concluída na base auditada. Os recursos da plataforma Crossref não ficaram disponíveis nesta tentativa."
     :"Pesquisa concluída na base auditada e na plataforma Crossref.";
   $("ai-loading").hidden=true;$("ai-search-button").disabled=false;$("ai-search-button").textContent="Pesquisar";
+  window.dispatchEvent(new CustomEvent("rigoratlas:announce",{detail:{message:"Pesquisa concluída para "+question+". "+initialMatches.length+" revistas principais recomendadas na base auditada."}}));
 }
 function exportCsv(){const cols=[...Object.keys(metricLabels),"titulo","enquadramento","area","editora","issn","sjr","indiceSjr","idioma","custo","modeloPublicacao","alinhamento","escopo","tiposArtigo","citescore","fatorImpacto","fatorImpacto5Anos","snip","taxaAceitacaoPercentual","prazoPrimeiraDecisao","prazoPrimeiraDecisaoPlanilha","url","urlInstrucoes","atualizadoEm","statusConferencia","evidenciasMetricas","fontesCadastro","conferenciasOnline","pendenciasConferencia"];const csv=[['marca',...cols].map(csvCell).join(';'),...ALL.map(r=>['RigorAtlas',...cols.map(k=>r[k])].map(csvCell).join(';'))].join('\r\n');const a=document.createElement("a");const u=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.href=u;a.download="RigorAtlas-catalogo-"+new Date().toISOString().slice(0,10)+".csv";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
 const JOURNAL_COVERS={
@@ -322,13 +323,42 @@ const JOURNAL_COVERS={
   10:"https://ars.els-cdn.com/content/image/X03014797.jpg",
   14:"https://ars.els-cdn.com/content/image/X01678809.jpg"
 };
+function scopusPercentile(r){
+  const m=metrics(r).maiorPercentil;
+  if(m!==null&&m!==undefined&&Number.isFinite(Number(m)))return Number(m);
+  if(r.percentilCiteScore!==null&&r.percentilCiteScore!==undefined&&Number.isFinite(Number(r.percentilCiteScore)))return Number(r.percentilCiteScore);
+  return null;
+}
 function featuredSelection(rows){
-  return rows.filter(r=>isSelection(r)&&r.citescore!==null && r.citescore!=="" && Number.isFinite(Number(r.citescore)))
-    .sort((a,b)=>Number(b.citescore)-Number(a.citescore)||a.titulo.localeCompare(b.titulo,"pt-BR")).slice(0,5);
+  const eligible=rows.filter(r=>r.indexacaoScopus===true&&scopusPercentile(r)!==null&&scopusPercentile(r)>50);
+  if(!eligible.length)return [];
+  const used=new Set();
+  const pick=cands=>{
+    const item=cands.find(r=>!used.has(String(r.id)));
+    if(item)used.add(String(item.id));
+    return item||null;
+  };
+  const near50=eligible
+    .filter(r=>scopusPercentile(r)<=58)
+    .sort((a,b)=>(scopusPercentile(a)-scopusPercentile(b))||((isSelection(b)?1:0)-(isSelection(a)?1:0))||((b.acordoCapes?1:0)-(a.acordoCapes?1:0))||a.titulo.localeCompare(b.titulo,"pt-BR"));
+  const entry50=pick(near50.filter(isSelection).concat(near50));
+  const near75=eligible
+    .filter(r=>scopusPercentile(r)===75)
+    .sort((a,b)=>((isSelection(b)?1:0)-(isSelection(a)?1:0))||((b.sjr?1:0)-(a.sjr?1:0))||((Number(b.citescore)||0)-(Number(a.citescore)||0))||a.titulo.localeCompare(b.titulo,"pt-BR"));
+  const mid75=pick(near75.length?near75:eligible.slice().sort((a,b)=>Math.abs(scopusPercentile(a)-75)-Math.abs(scopusPercentile(b)-75)));
+  const topHigh=eligible
+    .slice()
+    .sort((a,b)=>(scopusPercentile(b)-scopusPercentile(a))||((isSelection(b)?1:0)-(isSelection(a)?1:0))||((Number(b.citescore)||0)-(Number(a.citescore)||0))||a.titulo.localeCompare(b.titulo,"pt-BR"));
+  const highs=[pick(topHigh),pick(topHigh),pick(topHigh)].filter(Boolean);
+  return [entry50,mid75,...highs].filter(Boolean).map(r=>{
+    const pct=scopusPercentile(r);
+    const faixa=pct>=90?"Alto nível":pct===75?"Patamar 75%":"Faixa > 50%";
+    return {journal:r,pct,faixa};
+  });
 }
 function renderFeatured(){
   const target=$("featured-journals");if(!target)return;
-  target.innerHTML=featuredSelection(ALL).map((r,i)=>'<a class="featured-journal" href="#revista-'+esc(r.id)+'" data-featured-id="'+esc(r.id)+'"><span class="cover-miniature"><span class="cover-fallback" aria-hidden="true"><span>REVISTA</span><b>'+esc(r.titulo)+'</b><i></i></span>'+(JOURNAL_COVERS[r.id]?'<img src="'+esc(JOURNAL_COVERS[r.id])+'" alt="Capa de '+esc(r.titulo)+'" width="66" height="88" loading="lazy" referrerpolicy="no-referrer">':'')+'</span><span class="featured-info"><span class="featured-rank">0'+(i+1)+' · '+esc(fmt(r.sjr))+'</span><strong>'+esc(r.titulo)+'</strong><span class="featured-score">CiteScore <b>'+esc(fmt(r.citescore))+'</b></span><span class="featured-link">Ver no catálogo ↗</span></span></a>').join("")||"<p>Nenhum destaque disponível na seleção atual.</p>";
+  target.innerHTML=featuredSelection(ALL).map(({journal:r,pct,faixa},i)=>'<a class="featured-journal" href="#revista-'+esc(r.id)+'" data-featured-id="'+esc(r.id)+'"><span class="cover-miniature"><span class="cover-fallback" aria-hidden="true"><span>SCOPUS '+esc(pct)+'%</span><b>'+esc(r.titulo)+'</b><i></i></span>'+(JOURNAL_COVERS[r.id]?'<img src="'+esc(JOURNAL_COVERS[r.id])+'" alt="Capa de '+esc(r.titulo)+'" width="66" height="88" loading="lazy" referrerpolicy="no-referrer">':'')+'</span><span class="featured-info"><span class="featured-rank">0'+(i+1)+' · '+esc(faixa)+'</span><strong>'+esc(r.titulo)+'</strong><span class="featured-score">Percentil Scopus <b>'+esc(pct)+'%</b>'+(r.citescore!==null&&r.citescore!==undefined?' <small class="featured-cs">· CiteScore '+esc(fmt(r.citescore))+'</small>':'')+'</span><span class="featured-link">Ver no catálogo ↗</span></span></a>').join("")||"<p>Nenhum destaque disponível na seleção atual.</p>";
   target.querySelectorAll("img").forEach(img=>img.addEventListener("error",()=>{img.hidden=true;img.alt="";}));
   target.addEventListener("click",event=>{
     const link=event.target.closest("[data-featured-id]");if(!link)return;

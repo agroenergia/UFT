@@ -4,9 +4,10 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RigorAtlas | Escolha sua revista com rigor científico</title>
 <meta name="description" content="Encontre e compare revistas em agroenergia, sustentabilidade e tecnologias digitais. Consulte indicadores, idiomas, custos e tire dúvidas com o assistente do RigorAtlas.">
-<link rel="stylesheet" href="assets/css/style.css?v=20261118v4">
+<link rel="stylesheet" href="assets/css/style.css?v=20261118v6">
 </head>
 <body>
+<a class="skip-link" href="#inicio">Ir para o conteúdo principal</a>
 <header class="site-header">
   <div class="header-inner">
     <a class="brand-lockup" href="#inicio" aria-label="RigorAtlas — início"><img class="ppgad-logo" src="assets/img/logo-pesquisa-ppgad.svg?v=20261026-2" alt="Símbolo do portal de pesquisa: lupa, globo e folhas verdes"><span class="brand-text"><strong>Rigor<span>Atlas</span></strong><small>Pesquisa Científica</small></span></a>
@@ -21,27 +22,62 @@
     <nav id="primary-navigation" class="header-menu" aria-label="Navegação principal" hidden><a href="#ai-question" data-focus-search>Pesquisar</a><a href="#apresentacao">Vídeo guia (5 min)</a><a href="#revistas" class="on">Catálogo</a><a href="#comparar">Comparar</a><a href="#faq">Perguntas Frequentes</a><a href="checklist.html">Checklist de submissão</a><a href="#sugerir">Contato</a><a href="sobre.html">Sobre e fontes</a><a href="privacidade.html">Privacidade</a><a href="#como-funciona">Guia</a><a href="#sinais-alerta">Sinais de alerta</a></nav>
   </div>
 </header>
-<div class="ai-response-wrap"><p class="search-privacy">Este site busca primeiramente em nossa base auditada as principais revistas para te recomendar, mas também traz recursos da plataforma Crossref. A pesquisa pode levar alguns segundos até aparecer na tela, por favor aguarde.</p>
+<div class="ai-response-wrap">
+  <section class="a11y-bar" aria-label="Acessibilidade: conforto sensorial para autismo, modo foco e leitor automático em áudio">
+    <div class="a11y-group">
+      <span class="a11y-title">Acessibilidade</span>
+      <button type="button" id="a11y-calm" class="a11y-btn" aria-pressed="false" title="Cores suaves de baixo brilho e sem animações para conforto sensorial e autismo (Alt+C)">Conforto visual (Autismo)</button>
+      <button type="button" id="a11y-focus" class="a11y-btn" aria-pressed="false" title="Realce de foco, espaçamento ampliado e redução de distrações visuais (Alt+F)">Modo Foco</button>
+      <button type="button" id="a11y-contrast" class="a11y-btn" aria-pressed="false" title="Alto contraste para baixa visão">Alto contraste</button>
+      <button type="button" id="a11y-font-dec" class="a11y-btn a11y-btn-sm" aria-label="Diminuir tamanho da fonte">A-</button>
+      <button type="button" id="a11y-font-inc" class="a11y-btn a11y-btn-sm" aria-label="Aumentar tamanho da fonte">A+</button>
+    </div>
+    <div class="a11y-group a11y-audio-group">
+      <button type="button" id="a11y-auto-read" class="a11y-btn a11y-btn-audio" aria-pressed="false" title="Ativar leitura automática em áudio em português ao focar, clicar ou pesquisar (Alt+L)">🔊 Leitor automático ao navegar</button>
+      <button type="button" id="a11y-read-page" class="a11y-btn" aria-pressed="false" title="Ouvir os blocos da página em sequência (Alt+P)">▶ Ouvir página</button>
+      <button type="button" id="a11y-stop" class="a11y-btn" hidden aria-label="Parar leitura em áudio">■ Parar áudio</button>
+      <label class="a11y-rate"><span>Voz</span><select id="a11y-rate" aria-label="Velocidade do leitor em áudio"><option value="0.9">0.9x</option><option value="1" selected>1.0x</option><option value="1.15">1.15x</option><option value="1.3">1.3x</option></select></label>
+      <button type="button" id="a11y-reset" class="a11y-btn a11y-btn-ghost">Padrão</button>
+    </div>
+    <div id="a11y-live" class="sr-only" role="status" aria-live="polite"></div>
+  </section>
+  <p class="search-privacy">Este site busca primeiramente em nossa base auditada as principais revistas para te recomendar, mas também traz recursos da plataforma Crossref. A pesquisa pode levar alguns segundos até aparecer na tela, por favor aguarde.</p>
   <div id="ai-status" class="ai-status" role="status" aria-live="polite" hidden></div><div id="ai-loading" class="ai-loading" role="status" aria-live="polite" hidden><span class="ai-spinner" aria-hidden="true"></span><div><strong>Estamos preparando sua pesquisa</strong><p>Buscando em nossa base auditada e consultando recursos da plataforma Crossref. A pesquisa pode levar alguns segundos até aparecer na tela, por favor aguarde.</p></div></div>
   <div id="ai-answer" class="ai-answer" aria-live="polite"></div>
 </div>
 <main id="inicio">
 <section class="intro discovery-banner" aria-labelledby="banner-title">
   <div class="banner-copy">
-    <p class="banner-kicker"><span aria-hidden="true"></span> CIÊNCIA COM DIREÇÃO · PALMAS, TOCANTINS</p>
-    <h1 id="banner-title">Encontre a <em>revista certa.</em></h1>
-    <p class="banner-lead">Compare revistas científicas e tire dúvidas sobre onde publicar seu artigo.</p>
-    <div class="banner-actions"><a class="banner-primary" href="#revistas">Explorar revistas <span aria-hidden="true">↗</span></a><a class="banner-secondary" href="#ai-question" data-focus-search>Tirar minhas dúvidas <span aria-hidden="true">→</span></a><a class="banner-secondary" href="#apresentacao">▶ Vídeo guia (5 min)</a></div>
-    <div class="banner-prompts" aria-label="Dúvidas frequentes"><span>Comece por uma dúvida:</span><a href="#faq-portugues">Aceita português?</a><a href="#faq-sem-taxa">Tem opção sem taxa?</a><a href="#faq-combina">Meu artigo combina?</a></div>
+    <p class="banner-kicker"><span aria-hidden="true"></span> CIÊNCIA COM DIREÇÃO · PALMAS, TOCANTINS · PPGAD/UFT</p>
+    <h1 id="banner-title">Conheça o funcionamento do site <em>neste vídeo</em> para fazer a sua pesquisa.</h1>
+    <p class="banner-lead">Assista ao guia completo de 5 minutos e domine a pesquisa na base auditada e Crossref, a comparação de revistas, as regras do PPGAD/UFT e CAPES, o combate às revistas predatórias e o contato direto com os programadores.</p>
+    <div class="banner-actions"><button type="button" class="banner-primary" id="hero-play-btn">▶ Assistir ao vídeo agora</button><a class="banner-secondary" href="#revistas">Explorar revistas <span aria-hidden="true">↗</span></a><a class="banner-secondary" href="#ai-question" data-focus-search>Pesquisar tema <span aria-hidden="true">→</span></a></div>
+    <div class="banner-prompts" aria-label="Dúvidas frequentes"><span>Comece por uma dúvida (FAQ):</span><a href="#faq-portugues">Aceita português?</a><a href="#faq-sem-taxa">Tem opção sem taxa?</a><a href="#faq-combina">Meu artigo combina?</a></div>
   </div>
-  <aside class="banner-guide" aria-label="Como o portal ajuda você">
-    <div class="tocantins-art" aria-hidden="true"><svg viewBox="0 0 320 170" fill="none"><circle cx="224" cy="60" r="38" fill="#f4c84a"/><path d="M0 110C60 30 110 160 185 95S280 90 320 48" stroke="#59b9e5" stroke-width="18"/><path d="M0 146C70 70 115 184 195 125S280 126 320 87" stroke="#187cba" stroke-width="12"/><path d="M0 166C55 117 94 162 142 155" stroke="#6ac698" stroke-width="9"/></svg></div>
-    <p class="guide-label">RIGOR CIENTÍFICO, DO PRIMEIRO PASSO À ESCOLHA.</p>
-    <ol><li><span>01</span><div><strong>Descubra</strong><p>Filtre por tema e custo.</p></div></li><li><span>02</span><div><strong>Compare</strong><p>Compare até 4 revistas.</p></div></li><li><span>03</span><div><strong>Esclareça</strong><p>Pesquise temas na base e confira o FAQ.</p></div></li></ol>
-    <small>A decisão é sua. Confirme escopo, taxas e indicadores no site de cada revista.</small>
-  </aside>
-  <div class="banner-featured"><div class="featured-heading"><div><span class="eyebrow">DESTAQUES DO CATÁLOGO</span><h2>5 revistas em destaque</h2></div><a href="#revistas">Ver todas as revistas →</a></div>
-    <p id="featured-criteria" class="featured-criteria">Os 5 maiores CiteScores informados entre os títulos da seleção da planilha. A ficha completa identifica as fontes, os anos disponíveis e os campos a confirmar. Pontuação não é recomendação automática de submissão.</p>
+  <div id="apresentacao" class="banner-video-hero" aria-labelledby="hero-video-title">
+    <div class="hero-video-head">
+      <span class="hero-video-badge">VÍDEO DE APRESENTAÇÃO · 5 MIN 11 S</span>
+      <h2 id="hero-video-title" class="hero-video-title">Guia prático passo a passo do RigorAtlas</h2>
+    </div>
+    <figure class="hero-video-figure">
+      <video id="hero-video" controls preload="metadata" poster="assets/img/video-poster.jpg" playsinline aria-label="Conheça o funcionamento do site RigorAtlas neste vídeo de 5 minutos para fazer a sua pesquisa">
+        <source src="assets/video/apresentacao-rigoratlas.mp4" type="video/mp4">
+        <track kind="subtitles" srclang="pt-BR" label="Português (Brasil)" src="assets/video/apresentacao-rigoratlas.vtt" default>
+        <p>Seu navegador não suporta reprodução direta de vídeo MP4. <a href="assets/video/apresentacao-rigoratlas.mp4" download>Baixar apresentação em vídeo (MP4)</a>.</p>
+      </video>
+    </figure>
+    <div class="video-chapter-strip" role="group" aria-label="Ir diretamente para um capítulo do vídeo">
+      <button type="button" class="video-chapter-btn" data-seek="0">0:00 Visão geral</button>
+      <button type="button" class="video-chapter-btn" data-seek="34">0:34 Pesquisa</button>
+      <button type="button" class="video-chapter-btn" data-seek="84">1:24 Comparar</button>
+      <button type="button" class="video-chapter-btn" data-seek="128">2:08 PPGAD &amp; CAPES</button>
+      <button type="button" class="video-chapter-btn" data-seek="201">3:21 Predatórias</button>
+      <button type="button" class="video-chapter-btn" data-seek="260">4:20 Contato</button>
+    </div>
+    <p class="hero-video-foot">Com áudio em português, legendas integradas (CC) e destaques visuais · <a href="assets/video/apresentacao-rigoratlas.mp4" download>Baixar MP4 ↗</a> · <a href="https://invideo.io/@michael-595074/rigoratlas-uft-apresentacao-5-min" target="_blank" rel="noopener noreferrer">Projeto invideo ↗</a></p>
+  </div>
+  <div class="banner-featured"><div class="featured-heading"><div><span class="eyebrow">DESTAQUES POR PERCENTIL SCOPUS</span><h2>5 revistas em destaque (&gt; 50% na Scopus)</h2></div><a href="#revistas">Ver todas as revistas →</a></div>
+    <p id="featured-criteria" class="featured-criteria">Exibição por faixas de Percentil na Scopus acima do piso de 50%: inclui 1 revista na faixa inicial (&gt; 50%), 1 no patamar de 75% e 3 revistas de alto nível (99%). A ficha completa identifica as fontes, os indicadores na Web of Science e os campos a confirmar.</p>
     <div id="featured-journals" class="featured-journals" aria-describedby="featured-criteria"><p>Carregando destaques do catálogo…</p></div>
     <noscript><p>Ative o JavaScript para carregar as cinco revistas em destaque e usar os filtros do catálogo.</p></noscript>
   </div>
@@ -54,35 +90,6 @@
     <a class="flow-step" href="#revistas"><span class="flow-kicker">Ficha completa</span><strong>Entenda todos os detalhes de uma revista</strong></a>
     <a class="flow-step" href="#comparar"><span class="flow-kicker">Comparação</span><strong>Selecione uma ou mais revistas e compare</strong></a>
     <a class="flow-step" href="#faq"><span class="flow-kicker">Acordos CAPES</span><strong>Perguntas frequentes e regras de publicação</strong></a>
-  </div>
-</section>
-<section id="apresentacao" class="video-guide site-stage stage-video" aria-labelledby="video-guide-title">
-  <div class="section-heading video-guide-heading">
-    <div>
-      <span class="eyebrow">APRESENTAÇÃO EM VÍDEO · 5 MINUTOS</span>
-      <h2 id="video-guide-title">Conheça o RigorAtlas na prática</h2>
-    </div>
-    <p class="video-guide-lead">Assista ao passo a passo completo: pesquisa inteligente na base auditada, comparação de duas revistas selecionadas, dinâmica de publicação no PPGAD/UFT e Acordos CAPES, prevenção contra periódicos predatórios e contato com os programadores responsáveis.</p>
-  </div>
-  <div class="video-guide-layout">
-    <figure class="video-frame">
-      <video controls preload="metadata" poster="assets/img/video-poster.jpg" playsinline aria-label="Vídeo de apresentação de 5 minutos do portal RigorAtlas">
-        <source src="assets/video/apresentacao-rigoratlas.mp4" type="video/mp4">
-        <p>Seu navegador não suporta reprodução direta de vídeo MP4. <a href="assets/video/apresentacao-rigoratlas.mp4" download>Baixar apresentação em vídeo (MP4)</a>.</p>
-      </video>
-      <figcaption class="video-caption">Duração: 5 min 11 s · <a href="assets/video/apresentacao-rigoratlas.mp4" download>Baixar apresentação (MP4) ↗</a> · <a href="https://invideo.io/@michael-595074/rigoratlas-uft-apresentacao-5-min" target="_blank" rel="noopener noreferrer">Abrir projeto no invideo ↗</a></figcaption>
-    </figure>
-    <aside class="video-chapters" aria-label="Roteiro do vídeo de apresentação">
-      <h3>Capítulos do vídeo</h3>
-      <ol>
-        <li><strong>0:00 — Visão geral:</strong> 388 revistas auditadas (387 Scopus e 347 Web of Science)</li>
-        <li><strong>0:34 — Pesquisa inteligente:</strong> busca na base interna (ex.: glicose) e Crossref</li>
-        <li><strong>1:24 — Comparação (#comparar):</strong> duas ou mais revistas lado a lado, CiteScore e Quartis JIF</li>
-        <li><strong>2:08 — Dinâmica PPGAD/UFT:</strong> percentis ≥ 50%/80%, Acordos CAPES, ORCID e Checklist</li>
-        <li><strong>3:21 — Revistas predatórias:</strong> 7 sinais de alerta, Think. Check. Submit. e DOAJ/COPE</li>
-        <li><strong>4:20 — Contato e equipe:</strong> formulário ao administrador e créditos PPGAD/UFT</li>
-      </ol>
-    </aside>
   </div>
 </section>
 <section class="catalog-section site-stage stage-catalog" id="revistas" aria-labelledby="titulo-revistas"><div class="section-heading catalog-heading"><div><span class="eyebrow">Catálogo</span><h2 id="titulo-revistas">Revistas acadêmicas</h2></div><p id="catalog-summary" class="catalog-summary" aria-live="polite">Carregando catálogo…</p></div>
@@ -270,4 +277,5 @@
 </main>
 <footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><img class="footer-logo" src="assets/img/logo-pesquisa-ppgad.svg?v=20261026-2" alt="" aria-hidden="true"><div><strong>RigorAtlas</strong><p>Rigor científico para escolher onde publicar.</p></div></div><div class="footer-objective"><span class="footer-label">Objetivo do projeto</span><p>Este projeto foi desenvolvido para ajudar os alunos do PPGAD/UFT a encontrar, consultar e comparar revistas e informações editoriais, facilitando a escolha de periódicos para a publicação de seus trabalhos científicos.</p></div><div class="project-credits" aria-label="Equipe do projeto"><div class="credits-heading"><span class="footer-label">Quem constrói o RigorAtlas</span><p>Uma iniciativa vinculada ao Programa de Pós-Graduação em Agroenergia Digital da Universidade Federal do Tocantins.</p></div><div class="credit-person"><span class="footer-label">Desenvolvimento e pesquisa</span><strong>Michael Oliveira</strong><small>Desenvolvedor e pesquisador responsável pelo projeto · PPGAD/UFT</small></div><div class="credit-person"><span class="footer-label">Desenvolvimento e pesquisa</span><strong>Neiber Garcia</strong><small>Desenvolvedor e pesquisador responsável pelo projeto · PPGAD/UFT</small></div><div class="credit-person"><span class="footer-label">Orientação acadêmica</span><strong>Prof. Dr. Guilherme Benko Siqueira</strong><small>Orientação do projeto</small></div><div class="credits-contact"><span class="footer-label">Contato do projeto</span><a href="#sugerir">Fale com o administrador</a></div></div><p><a href="checklist.html">Checklist de submissão</a> · <a href="sobre.html">Sobre e fontes dos dados</a> · <a href="privacidade.html">Privacidade e LGPD</a></p><div class="footer-bottom"><span>Programa de Pós-Graduação em Agroenergia Digital · Universidade Federal do Tocantins</span><span><a class="technical-access" href="acesso.html">Área técnica</a> · Dados de contato adicionais podem ser incluídos quando autorizados pelos participantes.</span></div></div></footer>
 <nav class="floating-actions" aria-label="Atalhos principais"><a href="#ai-question" data-focus-search><span aria-hidden="true">⌕</span><small>Pesquisar</small></a><a href="#revistas"><span aria-hidden="true">▤</span><small>Catálogo</small></a><a href="#comparar"><span aria-hidden="true">⇄</span><small>Comparar</small></a><a href="#faq"><span aria-hidden="true">?</span><small>FAQ</small></a><a href="catalogo-pdf.html" target="_blank" rel="noopener" aria-label="PDF 50+: catálogo completo de revistas" title="PDF 50+: catálogo completo"><span aria-hidden="true">↓</span><small>PDF 50+</small></a><a href="#sugerir" aria-label="Fale com o administrador" title="Fale com o administrador"><span aria-hidden="true">✉</span><small>Contato</small></a></nav>
-<script type="module" src="assets/js/app.js?v=20261118v4"></script></body></html>
+<script type="module" src="assets/js/app.js?v=20261118v5"></script>
+<script type="module" src="assets/js/accessibility.js?v=20261118v6"></script></body></html>
