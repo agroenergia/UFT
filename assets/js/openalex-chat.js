@@ -1,4 +1,5 @@
 import { findSmartCatalogMatches, expandSearchTerms } from './journal-search.js';
+import { downloadPublicationPdf } from './pdf-export.js?v=20261118v15';
 
 const OPENALEX_WORKS = 'https://api.openalex.org/works';
 const OPENALEX_SOURCES = 'https://api.openalex.org/sources';
@@ -343,6 +344,7 @@ async function queryOpenAlex(queryText) {
       doi: safeHref(w.doi || w.id),
       citedBy: Number(w.cited_by_count || 0),
       journalTitle: src.display_name || 'Periódico não informado',
+      journalUrl: safeHref(src.homepage_url),
       publisher: src.host_organization_name || '',
       issns,
       authors,
@@ -539,10 +541,12 @@ function mergeAndDedupeArticles(groups, rawQuery) {
         const existing = byKey.get(key);
         // Merge richer metadata (ISSNs, publisher, citations, CAPES rec)
         if (!existing.publisher && art.publisher) existing.publisher = art.publisher;
+        if (!existing.journalUrl && art.journalUrl) existing.journalUrl = art.journalUrl;
         if (!existing.issns.length && art.issns.length) existing.issns = art.issns;
         if (art.citedBy > existing.citedBy) existing.citedBy = art.citedBy;
         if (!existing.year && art.year) existing.year = art.year;
         if (!existing.capes.rec && art.capes.rec) existing.capes = art.capes;
+        if ((!existing.authors || !existing.authors.length) && art.authors?.length) existing.authors = art.authors;
         continue;
       }
 
@@ -551,9 +555,11 @@ function mergeAndDedupeArticles(groups, rawQuery) {
       if (dupTitle) {
         if (!dupTitle.doi && art.doi) dupTitle.doi = art.doi;
         if (!dupTitle.publisher && art.publisher) dupTitle.publisher = art.publisher;
+        if (!dupTitle.journalUrl && art.journalUrl) dupTitle.journalUrl = art.journalUrl;
         if (!dupTitle.issns.length && art.issns.length) dupTitle.issns = art.issns;
         if (art.citedBy > dupTitle.citedBy) dupTitle.citedBy = art.citedBy;
         if (!dupTitle.capes.rec && art.capes.rec) dupTitle.capes = art.capes;
+        if ((!dupTitle.authors || !dupTitle.authors.length) && art.authors?.length) dupTitle.authors = art.authors;
         continue;
       }
 
@@ -592,6 +598,32 @@ function buildCapesBadge(capesInfo) {
   return box;
 }
 
+function resolveJournalAccessUrl(art) {
+  const fromRec = safeHref(art.capes?.rec?.url);
+  if (fromRec) return fromRec;
+  const direct = safeHref(art.journalUrl);
+  if (direct) return direct;
+  if (art.issns && art.issns.length) {
+    return `https://portal.issn.org/resource/ISSN/${encodeURIComponent(art.issns[0])}`;
+  }
+  return `https://portal.issn.org/search?q=${encodeURIComponent(art.journalTitle || '')}`;
+}
+
+function toPdfRecord(art) {
+  return {
+    titulo: art.title || 'Publicação científica',
+    autores: Array.isArray(art.authors) && art.authors.length ? art.authors.slice(0, 8).join(', ') : '',
+    periodico: art.journalTitle || 'Periódico não informado',
+    editora: art.publisher || '',
+    ano: art.year || '',
+    issn: art.issns && art.issns.length ? art.issns[0] : '',
+    citacoes: art.citedBy || 0,
+    capes: `${art.capes.label} — ${art.capes.detail}`,
+    doi: art.doi || '',
+    journalUrl: resolveJournalAccessUrl(art)
+  };
+}
+
 function createArticleCard(art) {
   const card = el('article', 'oa-article-card');
   const titleEl = el('h4', 'oa-article-title');
@@ -610,7 +642,36 @@ function createArticleCard(art) {
     'oa-article-journal',
     `Onde foi publicado: ${art.journalTitle}${art.publisher ? ' · ' + art.publisher : ''}${art.year ? ' (' + art.year + ')' : ''}${art.citedBy ? ' · ' + art.citedBy + ' citações' : ''}${art.issns.length ? ' · ISSN ' + art.issns[0] : ''}`
   );
-  card.append(titleEl, info, buildCapesBadge(art.capes));
+
+  const actions = el('div', 'oa-article-actions');
+  const journalAccessUrl = resolveJournalAccessUrl(art);
+  const jLink = el('a', 'oa-act-link oa-journal-link', 'Acessar periódico online ↗');
+  jLink.href = journalAccessUrl;
+  jLink.target = '_blank';
+  jLink.rel = 'noopener noreferrer';
+  actions.append(jLink);
+
+  if (art.doi) {
+    const dLink = el('a', 'oa-act-link', 'Ver estudo (DOI) ↗');
+    dLink.href = art.doi;
+    dLink.target = '_blank';
+    dLink.rel = 'noopener noreferrer';
+    actions.append(dLink);
+  }
+
+  const pdfBtn = el('button', 'oa-pdf-btn', '📄 Baixar PDF');
+  pdfBtn.type = 'button';
+  pdfBtn.addEventListener('click', () => {
+    const slug = norm(art.title).split(/\s+/).slice(0, 4).join('-') || 'publicacao';
+    downloadPublicationPdf(
+      [toPdfRecord(art)],
+      `RigorAtlas-${slug}.pdf`,
+      'Ficha de Publicacao Encontrada - RigorAtlas UFT'
+    );
+  });
+  actions.append(pdfBtn);
+
+  card.append(titleEl, info, buildCapesBadge(art.capes), actions);
   return card;
 }
 
@@ -661,12 +722,27 @@ function renderBotReply({ query, orcidProfile, articles, sources, catalogMatches
   }
 
   if (articles.length) {
+    const pdfAllBtn = el(
+      'button',
+      'oa-pdf-all-btn',
+      `📥 Baixar PDF com todas as publicações e links (${articles.length})`
+    );
+    pdfAllBtn.type = 'button';
+    pdfAllBtn.addEventListener('click', () => {
+      const slug = norm(query).split(/\s+/).slice(0, 3).join('-') || 'busca';
+      downloadPublicationPdf(
+        articles.map(toPdfRecord),
+        `RigorAtlas-publicacoes-${slug}.pdf`,
+        `Busca Cientifica: ${query}`
+      );
+    });
+
     const artHead = el(
       'p',
       'oa-subhead',
       `Artigos encontrados e onde foram publicados (${articles.length}):`
     );
-    wrap.append(artHead);
+    wrap.append(artHead, pdfAllBtn);
 
     const list = el('div', 'oa-article-list');
     let shown = Math.min(INITIAL_VISIBLE_ARTICLES, articles.length);

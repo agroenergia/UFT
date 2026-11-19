@@ -59,6 +59,8 @@ Implementada em `assets/js/openalex-chat.js`, fica disponível no botão flutuan
 3. Para cada artigo científico encontrado, o assistente exibe:
    - Título clicável com link direto para o DOI;
    - **Aonde foi publicado** (revista, editora, ano, citações e ISSN);
+   - Botão **`Acessar periódico online ↗`** (página oficial do periódico ou registro ISSN);
+   - Botão **`📄 Baixar PDF`** por publicação e **`📥 Baixar PDF com todas as publicações e links`** no topo dos resultados (gerando arquivo `.pdf` imediato via `assets/js/pdf-export.js` com links clicáveis);
    - **Verificação automática de Acordo CAPES / Rede Nacional:**
      - `✓ Faz parte do Acordo CAPES (gratuidade para autor UFT)` — vínculo confirmado no catálogo com link para a ficha completa;
      - `◐ Editora com Acordo CAPES (...)` — editora conveniada na Portaria CAPES (Elsevier, Springer Nature, Wiley, ACS, IEEE, ACM, Royal Society);

@@ -6,6 +6,13 @@
       "tipo": "trimestral_capes",
       "data": "2026-11-18",
       "confirmadasCAPES": 270,
+      "candidatasEditoraConveniada": 85,
+      "proximaPrevista": "2027-02-16"
+    },
+    {
+      "tipo": "trimestral_capes",
+      "data": "2026-11-18",
+      "confirmadasCAPES": 270,
       "candidatasEditoraConveniada": 82,
       "proximaPrevista": "2027-02-16"
     },
@@ -27,9 +34,9 @@
   ],
   "proximaAuditoriaTrimestralCapes": "2027-02-16",
   "totaisAtuais": {
-    "totalRevistas": 394,
-    "comScopus": 387,
-    "comWos": 347,
+    "totalRevistas": 404,
+    "comScopus": 397,
+    "comWos": 357,
     "comAcordoCapes": 270
   },
   "fonteSemanal": "DOAJ API (revistas auditadas · fallback OpenAlex)"

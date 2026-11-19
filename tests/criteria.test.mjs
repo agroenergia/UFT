@@ -40,7 +40,7 @@ test('preserve original 118 records, verify 270 CAPES Scopus records, and preven
   assert.equal(r.evidenciasMetricas.percentilCiteScore.anoIndicador,2025);
   assert.equal(r.percentilCiteScore,Math.max(...r.percentisCiteScorePorCategoria.map(c=>c.percentil)));
  }
- data.revistas=data.revistas.filter(r=>!String(r.id).startsWith('capes-scopus-')&&!String(r.id).startsWith('openalex-')&&!String(r.id).startsWith('doaj-'));
+ data.revistas=data.revistas.filter(r=>!String(r.id).startsWith('capes-scopus-')&&!String(r.id).startsWith('openalex-')&&!String(r.id).startsWith('doaj-')&&!String(r.id).startsWith('brasil-'));
  assert.equal(data.revistas.length,118);assert.equal(new Set(data.revistas.map(r=>String(r.id))).size,118);assert.ok(data.atualizadoEm>='2026-11-17');
  const batch=data.revistas.filter(r=>String(r.id).startsWith('springer-'));
  assert.equal(batch.length,50);
@@ -53,4 +53,8 @@ test('preserve original 118 records, verify 270 CAPES Scopus records, and preven
  assert.equal(data.revistas.filter(r=>matchesCriteria(r,{percentil:'50'})).length,95);
  assert.equal(data.revistas.filter(r=>Number.isFinite(r.percentilCiteScore)).length,117);
  for(const r of data.revistas.filter(r=>Number.isFinite(r.percentilCiteScore))){assert.equal(r.evidenciasMetricas.percentilCiteScore.anoIndicador,2025);assert.ok(r.evidenciasMetricas.percentilCiteScore.urlArquivo);assert.equal(r.percentilCiteScore,Math.max(...r.percentisCiteScorePorCategoria.map(c=>c.percentil)));}
+ const allRows=JSON.parse(await readFile(new URL('../assets/data/revistas.json',import.meta.url))).revistas;
+ const brasil=allRows.filter(r=>String(r.id).startsWith('brasil-'));
+ assert.ok(brasil.length>=10);
+ for(const r of brasil){assert.equal(matchesCriteria(r,{percentil:'50'}),true,r.titulo);assert.equal(r.indexacaoScopus,true,r.titulo);assert.equal(r.indexacaoWos,true,r.titulo);}
 });
