@@ -1,0 +1,36 @@
+{
+  "ultimaAtualizacaoSemanal": "2026-11-18",
+  "ultimaAuditoriaTrimestralCapes": "2026-11-18",
+  "historico": [
+    {
+      "tipo": "trimestral_capes",
+      "data": "2026-11-18",
+      "confirmadasCAPES": 270,
+      "candidatasEditoraConveniada": 82,
+      "proximaPrevista": "2027-02-16"
+    },
+    {
+      "tipo": "semanal_openalex",
+      "data": "2026-11-18",
+      "fonte": "DOAJ API (revistas auditadas · fallback OpenAlex)",
+      "enriquecidas": 0,
+      "novasAdicionadas": 6,
+      "exemplosAdicionados": [
+        "Agricultural Environment and Sustainability",
+        "Animal Research and One Health",
+        "Applied Microbiology and Biotechnology",
+        "Grassland Research",
+        "International Journal of Photoenergy",
+        "Microbial Biotechnology"
+      ]
+    }
+  ],
+  "proximaAuditoriaTrimestralCapes": "2027-02-16",
+  "totaisAtuais": {
+    "totalRevistas": 394,
+    "comScopus": 387,
+    "comWos": 347,
+    "comAcordoCapes": 270
+  },
+  "fonteSemanal": "DOAJ API (revistas auditadas · fallback OpenAlex)"
+}

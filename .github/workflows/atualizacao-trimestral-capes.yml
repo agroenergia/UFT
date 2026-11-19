@@ -1,0 +1,38 @@
+name: Auditoria Trimestral de Acordos CAPES e Universidades Federais
+
+on:
+  schedule:
+    - cron: '0 7 1 */3 *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  auditoria-trimestral-capes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Executar auditoria trimestral do painel CAPES / UFT
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+        run: python scripts/atualizacao_trimestral_capes.py --verify-online
+
+      - name: Publicar relatório e atualização da base se houver mudanças
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/revistas.json assets/data/capes-relatorio-trimestral.json assets/data/atualizacoes-log.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(capes): auditoria trimestral automatica dos acordos CAPES e UFT"
+            git push
+          else
+            echo "Painel CAPES ja atualizado para este trimestre."
+          fi

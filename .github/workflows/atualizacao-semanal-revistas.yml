@@ -1,0 +1,38 @@
+name: Atualização Semanal Automatizada da Base de Revistas (OpenAlex)
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar-semanal:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Executar ampliação semanal via OpenAlex API
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+        run: python scripts/atualizacao_semanal_openalex.py --max-add 8
+
+      - name: Registrar atualização no repositório se houver alterações
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/revistas.json assets/data/atualizacoes-log.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(data): atualizacao semanal automatica de revistas via OpenAlex"
+            git push
+          else
+            echo "Nenhuma alteracao semanal pendente."
+          fi

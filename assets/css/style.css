@@ -1500,6 +1500,8 @@ main>.site-stage,main>.discovery-banner,.journal-card{scroll-margin-top:12px}
 .skip-link{position:fixed;top:-120px;left:16px;z-index:2000;background:#103650;color:#fff;padding:12px 18px;border-radius:10px;font-weight:700;text-decoration:none;border:3px solid #f1c44b;transition:top .15s}
 .skip-link:focus{top:14px}
 .a11y-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;padding:10px 14px;margin:10px 0 4px;background:#f4f9fc;border:1px solid #c5dbe7;border-radius:14px}
+.a11y-bar-secondary{margin:0 0 18px}
+@media print{.a11y-bar{display:none!important}}
 .a11y-group{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
 .a11y-title{font-size:11px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;color:#1b4f72;margin-right:2px}
 .a11y-btn{appearance:none;display:inline-flex;align-items:center;gap:5px;min-height:36px;padding:6px 11px;border-radius:9px;border:1px solid #b5cddb;background:#fff;color:#123f65;font-size:12px;font-weight:650;cursor:pointer;line-height:1.2}
@@ -1586,3 +1588,109 @@ html[data-a11y-scale="125"] .journal-card p,html[data-a11y-scale="125"] .faq-ans
 .contact-feedback-actions a,.contact-feedback-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 13px;border-radius:8px;font-size:12.5px;font-weight:650;text-decoration:none;cursor:pointer}
 .contact-feedback-actions .primary{background:#1b6d49;color:#fff;border:1px solid #145337}
 .contact-feedback-actions .btn{background:#fff;color:#123f65;border:1px solid #b5cddb}
+
+/* Painel tecnológico e telemetria contínua */
+main>section#tech-telemetry.tech-telemetry{margin:18px auto 20px;padding:20px 22px;border:2px solid #0e4a6d;border-radius:16px;background:linear-gradient(135deg,#092b46 0%,#0f4562 56%,#11543d 100%);color:#ffffff;box-shadow:0 10px 26px rgba(10,42,68,.18)}
+main>section#tech-telemetry.tech-telemetry::before{display:none}
+.telemetry-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.telemetry-head .eyebrow{color:#86efac;font-size:11.5px;font-weight:800;letter-spacing:.08em}
+.telemetry-head h2{margin:3px 0 0;color:#ffffff;font-size:21px;line-height:1.25}
+.telemetry-chat-btn{min-height:44px;padding:10px 16px;border:2px solid #86efac;border-radius:10px;background:#197049;color:#ffffff;font:inherit;font-size:13.5px;font-weight:750;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.telemetry-chat-btn:hover{background:#125939}
+.telemetry-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.telemetry-card{padding:14px 15px;border:1px solid rgba(255,255,255,.28);border-radius:12px;background:rgba(7,30,50,.55);display:flex;flex-direction:column;gap:5px}
+.telemetry-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#a7f3d0;font-weight:800}
+.telemetry-card strong{font-size:18px;color:#ffffff;line-height:1.25;font-weight:800}
+.telemetry-card small{font-size:12px;color:#e2f3fb;line-height:1.45}
+@media(max-width:960px){.telemetry-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.telemetry-grid{grid-template-columns:1fr}}
+
+/* Checklist em vídeo + Verificador de elegibilidade */
+.req-checklist-section{margin:20px auto;padding:22px 24px;border:1px solid #c9dce7;border-radius:18px;background:#ffffff;box-shadow:0 6px 20px rgba(15,51,73,.06)}
+.req-heading{display:grid;gap:8px;margin-bottom:16px}
+.req-lead{margin:0;color:#35596d;font-size:14.5px;line-height:1.55;max-width:78ch}
+.req-layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:20px;align-items:start}
+.req-video-figure{margin:0;border-radius:14px;overflow:hidden;border:1px solid #bfd5e2;background:#09263c}
+.req-video-figure video{display:block;width:100%;aspect-ratio:16/9;background:#09263c}
+.req-chapter-strip{margin-top:10px}
+.req-interactive-panel{padding:16px;border:1px solid #d1e2eb;border-radius:14px;background:#f7fbfd}
+.req-score-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.req-score-text{display:block;font-size:14.5px;font-weight:750;color:#103a5d}
+.req-status-badge{display:inline-block;margin-top:4px;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700}
+.req-status-badge.req-pending{background:#fff3cd;color:#6d4c00}
+.req-status-badge.req-progress{background:#dbeafe;color:#1e40af}
+.req-status-badge.req-ready{background:#dcfce7;color:#14532d}
+.req-progress-track{height:9px;border-radius:999px;background:#dce9f0;overflow:hidden;margin-bottom:12px}
+.req-progress-fill{height:100%;background:linear-gradient(90deg,#1b6d49,#10b981);transition:width .25s ease}
+.req-checklist-grid{display:grid;gap:8px}
+.req-check-item{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;border:1px solid #d5e4ec;border-radius:10px;background:#ffffff;cursor:pointer}
+.req-check-item:hover{border-color:#8cb7ce;background:#f2f8fb}
+.req-check-item.is-checked{border-color:#74c69d;background:#edf9f2}
+.req-check-item input{margin-top:3px;width:17px;height:17px;accent-color:#1b6d49;flex:none}
+.req-check-item strong{display:block;font-size:13px;color:#103a5d;line-height:1.35}
+.req-check-item small{display:block;margin-top:2px;font-size:11.5px;color:#4a697c;line-height:1.4}
+.req-panel-foot{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.req-panel-foot a,.req-panel-foot button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 13px;border-radius:9px;font:inherit;font-size:12.5px;font-weight:700;text-decoration:none;cursor:pointer}
+.req-panel-foot .primary{background:#1b6d49;color:#ffffff;border:1px solid #145337}
+.req-panel-foot .btn{background:#ffffff;color:#123f65;border:1px solid #b5cddb}
+@media(max-width:980px){.req-layout{grid-template-columns:1fr}}
+
+/* Janela flutuante IA OpenAlex + CAPES */
+.oa-chat-fab{position:fixed;right:20px;bottom:20px;z-index:260;display:inline-flex;align-items:center;gap:10px;min-height:54px;padding:9px 16px;border:2px solid #86efac;border-radius:999px;background:linear-gradient(135deg,#0f3554,#1b6d49);color:#ffffff;box-shadow:0 12px 30px rgba(10,42,68,.35);cursor:pointer;font:inherit}
+.oa-chat-fab:hover{transform:translateY(-2px);box-shadow:0 15px 34px rgba(10,42,68,.42)}
+.oa-fab-dot{width:11px;height:11px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 4px rgba(74,222,128,.28);flex:none}
+.oa-fab-label{display:flex;flex-direction:column;text-align:left;line-height:1.15}
+.oa-fab-label strong{font-size:13.5px;color:#ffffff}
+.oa-fab-label small{font-size:10.5px;color:#d1fae5}
+.oa-chat-drawer{position:fixed;right:20px;bottom:84px;z-index:270;width:min(440px,calc(100vw - 24px));max-height:min(620px,calc(100dvh - 106px));display:flex;flex-direction:column;border:1px solid #a8c7d9;border-radius:18px;background:#ffffff;box-shadow:0 20px 50px rgba(10,42,68,.32);overflow:hidden}
+.oa-chat-drawer[hidden]{display:none!important}
+.oa-chat-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 15px;background:linear-gradient(135deg,#0f3554,#165b45);color:#ffffff}
+.oa-chat-badge{display:inline-block;font-size:10px;font-weight:750;letter-spacing:.06em;color:#a7f3d0}
+.oa-chat-head h2{margin:2px 0 0;font-size:16px;color:#ffffff}
+.oa-chat-head-actions{display:flex;gap:6px}
+.oa-icon-btn{width:34px;height:34px;border:1px solid rgba(255,255,255,.32);border-radius:8px;background:rgba(255,255,255,.12);color:#ffffff;font-size:14px;cursor:pointer}
+.oa-key-panel{padding:10px 14px;background:#eef6fa;border-bottom:1px solid #cce0ec;font-size:12px;color:#123f65}
+.oa-key-panel label{display:block;font-weight:700;margin-bottom:5px}
+.oa-key-row{display:flex;gap:6px;margin-bottom:4px}
+.oa-key-row input{flex:1;min-width:0;padding:6px 8px;border:1px solid #9ec0d4;border-radius:7px;font-size:12px}
+.oa-key-btn{padding:6px 12px;border:0;border-radius:7px;background:#123f65;color:#ffffff;font-weight:700;cursor:pointer}
+.oa-key-btn-sec{background:#1b6d49}
+.oa-key-gen{margin-top:8px;padding-top:8px;border-top:1px dashed #b4cfdf}
+.oa-key-gen small{display:block;color:#27536e;font-size:11px;line-height:1.4}
+.oa-chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;background:#f5f9fc}
+.oa-msg{padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.5}
+.oa-msg-user{align-self:flex-end;max-width:85%;background:#123f65;color:#ffffff;font-weight:600}
+.oa-msg-bot{background:#ffffff;border:1px solid #d4e3ec;color:#15364d}
+.oa-msg-meta{font-size:11px;font-weight:750;color:#1b6d49;margin-bottom:6px;text-transform:uppercase;letter-spacing:.03em}
+.oa-rate-note{margin:0 0 8px;padding:7px 9px;border-radius:8px;background:#fff8db;border:1px solid #f0d478;color:#654a00;font-size:11.5px}
+.oa-quick-prompts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.oa-prompt-chip{padding:5px 10px;border:1px solid #b8d3e3;border-radius:999px;background:#f2f8fc;color:#123f65;font-size:11.5px;font-weight:650;cursor:pointer}
+.oa-prompt-chip:hover{background:#e2eff7}
+.oa-subhead{margin:8px 0 5px;font-size:12px;font-weight:750;color:#103a5d}
+.oa-match-list,.oa-article-list{display:grid;gap:7px}
+.oa-mini-journal,.oa-article-card{padding:8px 10px;border:1px solid #dbe8f0;border-radius:9px;background:#f9fcfe}
+.oa-mini-title{font-weight:750;color:#123f65;text-decoration:underline;font-size:12.5px}
+.oa-mini-journal small{display:block;margin-top:2px;color:#4a687a;font-size:11.5px}
+.oa-article-title{margin:0 0 4px;font-size:12.5px;line-height:1.35;color:#0f3554}
+.oa-article-title a{color:#0f3554;text-decoration:underline}
+.oa-article-journal{margin:0 0 6px;font-size:11.5px;color:#3f5f72}
+.oa-capes-badge{padding:6px 8px;border-radius:7px;font-size:11.5px;display:flex;flex-direction:column;gap:2px}
+.oa-capes-confirmed{background:#e7f8ee;border:1px solid #74c69d;color:#134e2e}
+.oa-capes-publisher{background:#e8f2fc;border:1px solid #8ec5eb;color:#11436e}
+.oa-capes-catalog{background:#eef4f7;border:1px solid #bdd0dc;color:#1d445c}
+.oa-capes-none{background:#f7f8f9;border:1px solid #d7dfe4;color:#4b5d69}
+.oa-catalog-link{margin-top:3px;font-weight:750;color:inherit;text-decoration:underline;width:fit-content}
+.oa-chat-form{display:flex;gap:6px;padding:10px;border-top:1px solid #d4e3ec;background:#ffffff}
+.oa-chat-form input{flex:1;min-width:0;min-height:40px;padding:8px 10px;border:1px solid #adc8d9;border-radius:9px;font:inherit;font-size:13px}
+.oa-chat-form button{min-height:40px;padding:0 15px;border:0;border-radius:9px;background:#1b6d49;color:#ffffff;font:inherit;font-size:13px;font-weight:750;cursor:pointer}
+@media(max-width:700px){.oa-chat-fab{right:12px;bottom:132px;min-height:46px;padding:7px 13px}.oa-chat-drawer{right:10px;left:10px;width:auto;bottom:186px;max-height:calc(100dvh - 205px)}main{padding-bottom:140px}}
+@media print{.oa-chat-fab,.oa-chat-drawer{display:none!important}}
+
+/* Compatibilidade Acessibilidade (Conforto visual e Alto contraste) nos novos módulos */
+html[data-a11y-calm="true"] main>section#tech-telemetry.tech-telemetry{background:#e7ede8!important;border-color:#9fb8ab!important;color:#23312b!important;box-shadow:none!important}
+html[data-a11y-calm="true"] main>section#tech-telemetry.tech-telemetry .telemetry-card,html[data-a11y-calm="true"] .req-checklist-section,html[data-a11y-calm="true"] .req-interactive-panel,html[data-a11y-calm="true"] .req-check-item,html[data-a11y-calm="true"] .oa-chat-drawer{background:#faf9f4!important;border-color:#cfd4ca!important;color:#23312b!important;box-shadow:none!important}
+html[data-a11y-calm="true"] main>section#tech-telemetry.tech-telemetry *,html[data-a11y-calm="true"] main>section#tech-telemetry.tech-telemetry h2{color:#23312b!important}
+html[data-a11y-calm="true"] main>section#tech-telemetry.tech-telemetry .telemetry-chat-btn{background:#3c695b!important;color:#ffffff!important;border-color:#2e5247!important}
+html[data-a11y-contrast="true"] .tech-telemetry,html[data-a11y-contrast="true"] .telemetry-card,html[data-a11y-contrast="true"] .req-checklist-section,html[data-a11y-contrast="true"] .req-interactive-panel,html[data-a11y-contrast="true"] .req-check-item,html[data-a11y-contrast="true"] .oa-chat-drawer{background:#ffffff!important;color:#000000!important;border:2px solid #000000!important}
+html[data-a11y-contrast="true"] .oa-chat-fab,html[data-a11y-contrast="true"] .telemetry-chat-btn{background:#000000!important;color:#ffff00!important;border:2px solid #ffff00!important}
+html[data-a11y-contrast="true"] .oa-chat-fab *{color:#ffff00!important}
