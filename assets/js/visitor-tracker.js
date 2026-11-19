@@ -1,6 +1,41 @@
 const VISIT_KEY="rigoratlas_visits_v1";
 const SESSION_KEY="rigoratlas_session_visit_id";
+const SYNC_URL_KEY="rigoratlas_remote_sync_url";
+const DEFAULT_REMOTE_ENDPOINT="";
 const MAX_ENTRIES=500;
+
+export function getRemoteSyncUrl(){
+  try{
+    return localStorage.getItem(SYNC_URL_KEY)||DEFAULT_REMOTE_ENDPOINT||"";
+  }catch{
+    return DEFAULT_REMOTE_ENDPOINT||"";
+  }
+}
+
+export function setRemoteSyncUrl(url){
+  const clean=String(url||"").trim();
+  try{
+    if(clean)localStorage.setItem(SYNC_URL_KEY,clean);
+    else localStorage.removeItem(SYNC_URL_KEY);
+  }catch{}
+  return clean;
+}
+
+export function sendRemoteVisit(entry){
+  const endpoint=getRemoteSyncUrl();
+  if(!endpoint||!/^https:\/\//i.test(endpoint))return false;
+  try{
+    const payload=JSON.stringify({evento:"visita_rigoratlas",...entry});
+    if(navigator.sendBeacon){
+      const blob=new Blob([payload],{type:"text/plain;charset=utf-8"});
+      if(navigator.sendBeacon(endpoint,blob))return true;
+    }
+    fetch(endpoint,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:payload,keepalive:true}).catch(()=>{});
+    return true;
+  }catch{
+    return false;
+  }
+}
 
 function detectBrowserAndOs(ua){
   const s=String(ua||"");
@@ -53,7 +88,7 @@ function formatDateBr(d){
 function registerVisit(){
   const existingSessionId=sessionStorage.getItem(SESSION_KEY);
   const data=getVisitData();
-  const pageName=(location.pathname.split("/").pop()||"index.html")+(location.hash||"");
+  const pageName=(location.pathname.split("/").pop()||"index.html")+(location.search||"")+(location.hash||"");
 
   if(existingSessionId){
     const hit=data.registros.find(r=>String(r.id)===existingSessionId);
@@ -90,6 +125,7 @@ function registerVisit(){
   if(data.registros.length>MAX_ENTRIES)data.registros=data.registros.slice(0,MAX_ENTRIES);
   saveVisitData(data);
   try{sessionStorage.setItem(SESSION_KEY,String(newId));}catch{}
+  sendRemoteVisit(entry);
   updateFooterBadge(data);
 }
 

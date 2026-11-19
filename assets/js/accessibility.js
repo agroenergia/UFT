@@ -155,7 +155,19 @@ function buildPageQueue(){
     "#faq h2",
     "#faq .faq-item",
     "#sugerir h2",
-    ".site-footer .footer-grid"
+    ".site-footer .footer-grid",
+    ".xls-hero h1",
+    ".xls-hero p",
+    ".check-main h1",
+    ".check-lead",
+    ".check-group h2",
+    ".information-page h1",
+    ".information-page h2",
+    ".information-page p",
+    ".journal-detail h1",
+    ".journal-detail section",
+    ".access-card h1",
+    ".access-card p"
   ];
   const nodes=[];
   const seen=new Set();
@@ -168,6 +180,13 @@ function buildPageQueue(){
         seen.add(node);
         nodes.push({el:node,text});
       }
+    });
+  }
+  if(!nodes.length){
+    document.querySelectorAll("main h1,main h2,main p,main li").forEach(node=>{
+      if(seen.has(node)||node.offsetParent===null)return;
+      const text=extractReadableElementText(node);
+      if(text){seen.add(node);nodes.push({el:node,text});}
     });
   }
   return nodes;
@@ -333,12 +352,13 @@ function bindControls(){
     liveAnnounce("Preferências de acessibilidade redefinidas para o padrão.");
   });
 
-  // Pause TTS if user plays the presentation video so audio streams never collide
-  const heroVideo=document.getElementById("hero-video");
-  heroVideo?.addEventListener("play",()=>{
-    if(isReadingSequence||SPEECH_SUPPORTED){
-      stopSpeech();
-    }
+  // Pause TTS if user plays any video so audio streams never collide
+  ["hero-video","checklist-video"].forEach(vidId=>{
+    document.getElementById(vidId)?.addEventListener("play",()=>{
+      if(isReadingSequence||SPEECH_SUPPORTED){
+        stopSpeech();
+      }
+    });
   });
 
   document.getElementById("hero-play-btn")?.addEventListener("click",()=>{
@@ -351,10 +371,15 @@ function bindControls(){
 
   document.querySelectorAll(".video-chapter-btn[data-seek]").forEach(btn=>{
     btn.addEventListener("click",()=>{
-      const vid=document.getElementById("hero-video");
+      const targetId=btn.dataset.seekTarget||"hero-video";
+      const vid=document.getElementById(targetId);
       if(!vid)return;
       const t=Number(btn.dataset.seek)||0;
-      document.querySelectorAll(".video-chapter-btn[data-seek]").forEach(b=>b.setAttribute("aria-pressed",String(b===btn)));
+      document.querySelectorAll(".video-chapter-btn[data-seek]").forEach(b=>{
+        if((b.dataset.seekTarget||"hero-video")===targetId){
+          b.setAttribute("aria-pressed",String(b===btn));
+        }
+      });
       const applySeek=()=>{
         try{vid.currentTime=t;}catch{}
       };
@@ -389,11 +414,49 @@ function bindControls(){
   });
 }
 
+function ensureAccessibilityUI(){
+  if(!document.querySelector(".skip-link")){
+    const mainEl=document.querySelector("main");
+    if(mainEl){
+      if(!mainEl.id)mainEl.id="conteudo-principal";
+      const skip=document.createElement("a");
+      skip.className="skip-link";
+      skip.href="#"+mainEl.id;
+      skip.textContent="Ir para o conteúdo principal";
+      document.body.prepend(skip);
+    }
+  }
+  if(document.querySelector(".a11y-bar"))return;
+  const bar=document.createElement("section");
+  bar.className="a11y-bar a11y-bar-secondary";
+  bar.setAttribute("aria-label","Acessibilidade: conforto sensorial para autismo, modo foco e leitor automático em áudio");
+  bar.innerHTML=`<div class="a11y-group">
+      <span class="a11y-title">Acessibilidade</span>
+      <button type="button" id="a11y-calm" class="a11y-btn" aria-pressed="false" title="Cores suaves de baixo brilho e sem animações para conforto sensorial e autismo (Alt+C)">Conforto visual (Autismo)</button>
+      <button type="button" id="a11y-focus" class="a11y-btn" aria-pressed="false" title="Realce de foco, espaçamento ampliado e redução de distrações visuais (Alt+F)">Modo Foco</button>
+      <button type="button" id="a11y-contrast" class="a11y-btn" aria-pressed="false" title="Alto contraste para baixa visão">Alto contraste</button>
+      <button type="button" id="a11y-font-dec" class="a11y-btn a11y-btn-sm" aria-label="Diminuir tamanho da fonte">A-</button>
+      <button type="button" id="a11y-font-inc" class="a11y-btn a11y-btn-sm" aria-label="Aumentar tamanho da fonte">A+</button>
+    </div>
+    <div class="a11y-group a11y-audio-group">
+      <button type="button" id="a11y-auto-read" class="a11y-btn a11y-btn-audio" aria-pressed="false" title="Ativar leitura automática em áudio em português ao focar ou clicar (Alt+L)">🔊 Leitor automático</button>
+      <button type="button" id="a11y-read-page" class="a11y-btn" aria-pressed="false" title="Ouvir os blocos da página em sequência (Alt+P)">▶ Ouvir página</button>
+      <button type="button" id="a11y-stop" class="a11y-btn" hidden aria-label="Parar leitura em áudio">■ Parar áudio</button>
+      <label class="a11y-rate"><span>Voz</span><select id="a11y-rate" aria-label="Velocidade do leitor em áudio"><option value="0.9">0.9x</option><option value="1" selected>1.0x</option><option value="1.15">1.15x</option><option value="1.3">1.3x</option></select></label>
+      <button type="button" id="a11y-reset" class="a11y-btn a11y-btn-ghost">Padrão</button>
+    </div>
+    <div id="a11y-live" class="sr-only" role="status" aria-live="polite"></div>`;
+  const mainEl=document.querySelector("main");
+  if(mainEl)mainEl.prepend(bar);
+  else document.body.prepend(bar);
+}
+
 if(SPEECH_SUPPORTED){
   window.speechSynthesis.getVoices();
   window.speechSynthesis.addEventListener?.("voiceschanged",pickPortugueseVoice);
 }
 
+ensureAccessibilityUI();
 applyTheme();
 initFocusHoverHighlight();
 bindControls();

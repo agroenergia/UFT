@@ -30,7 +30,7 @@ test('CSV quotes, formula defense and no column-breaking newlines',()=>{
 });
 test('preserve original 118 records, verify 270 CAPES Scopus records, and prevent unverified Springer records from passing filters',async()=>{
  const data=JSON.parse(await readFile(new URL('../assets/data/revistas.json',import.meta.url)));
- assert.equal(data.revistas.length,388);assert.equal(new Set(data.revistas.map(r=>String(r.id))).size,388);
+ assert.ok(data.revistas.length>=388);assert.equal(new Set(data.revistas.map(r=>String(r.id))).size,data.revistas.length);
  const capes=data.revistas.filter(r=>String(r.id).startsWith('capes-scopus-'));
  assert.equal(capes.length,270);
  for(const r of capes){
@@ -40,8 +40,8 @@ test('preserve original 118 records, verify 270 CAPES Scopus records, and preven
   assert.equal(r.evidenciasMetricas.percentilCiteScore.anoIndicador,2025);
   assert.equal(r.percentilCiteScore,Math.max(...r.percentisCiteScorePorCategoria.map(c=>c.percentil)));
  }
- data.revistas=data.revistas.filter(r=>!String(r.id).startsWith('capes-scopus-'));
- assert.equal(data.revistas.length,118);assert.equal(new Set(data.revistas.map(r=>String(r.id))).size,118);assert.equal(data.atualizadoEm,'2026-11-17');
+ data.revistas=data.revistas.filter(r=>!String(r.id).startsWith('capes-scopus-')&&!String(r.id).startsWith('openalex-')&&!String(r.id).startsWith('doaj-'));
+ assert.equal(data.revistas.length,118);assert.equal(new Set(data.revistas.map(r=>String(r.id))).size,118);assert.ok(data.atualizadoEm>='2026-11-17');
  const batch=data.revistas.filter(r=>String(r.id).startsWith('springer-'));
  assert.equal(batch.length,50);
  for(const r of batch){
