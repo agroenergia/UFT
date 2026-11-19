@@ -47,16 +47,16 @@ O **RigorAtlas** é um portal acadêmico de apoio à decisão para estudantes e 
 
 ---
 
-## 3. Janela Flutuante de Bate-Papo IA (`Onde Publicar? · Artigos & CAPES`)
+## 3. Janela Flutuante de Bate-Papo IA (`Artigos & Onde Publicar`)
 
-Implementada em `assets/js/openalex-chat.js`, fica disponível no botão flutuante inferior direito (**`Onde Publicar? (Chat IA)`**) e pelos atalhos da página principal (`Descubra Onde Publicar seu Artigo`).
+Implementada em `assets/js/openalex-chat.js`, fica disponível no botão flutuante inferior direito (**`Artigos & Onde Publicar`** — *"Busque estudos e onde foram publicados"*) e pelos atalhos da página principal (`Busque Artigos e Onde Publicar`).
 
 ### Como funciona a busca inteligente no Chat
-1. O usuário digita em linguagem natural o **tema do artigo**, **título**, **autor** (ex.: `"guilherme benko"`) ou **nome da revista**.
+1. O usuário digita em linguagem natural um **tema de pesquisa**, **artigo de interesse**, **autor** (ex.: `"guilherme benko"`) ou **nome da revista**.
 2. O módulo expande termos técnicos PT → EN (`expandSearchTerms` em `assets/js/journal-search.js`), consulta a base auditada local (`revistas.json`) e pesquisa artigos e periódicos nas APIs abertas (**OpenAlex REST API** como fonte primária e **Crossref Works / Crossref Journals API** em redundância silenciosa automática quando o limite diário anônimo do IP no OpenAlex estiver em pausa).
-3. Para cada artigo científico semelhante encontrado, o assistente exibe:
+3. Para cada artigo científico encontrado, o assistente exibe:
    - Título clicável com link direto para o DOI;
-   - **Em qual revista foi publicado**, editora, ano, citações e ISSN;
+   - **Aonde foi publicado** (revista, editora, ano, citações e ISSN);
    - **Verificação automática de Acordo CAPES / Rede Nacional:**
      - `✓ Faz parte do Acordo CAPES (gratuidade para autor UFT)` — vínculo confirmado no catálogo com link para a ficha completa;
      - `◐ Editora com Acordo CAPES (...)` — editora conveniada na Portaria CAPES (Elsevier, Springer Nature, Wiley, ACS, IEEE, ACM, Royal Society);

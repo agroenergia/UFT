@@ -352,11 +352,11 @@ function renderBotReply({ query, searchResult, catalogMatches }) {
   const wrap = el('div', 'oa-msg oa-msg-bot');
 
   const meta = el('div', 'oa-msg-meta');
-  meta.textContent = 'Assistente de Publicação · Revistas & CAPES';
+  meta.textContent = 'Assistente de Artigos, Revistas & CAPES';
   wrap.append(meta);
 
   if (catalogMatches.length) {
-    const catHead = el('p', 'oa-subhead', `Revistas recomendadas na nossa base (${catalogMatches.length}):`);
+    const catHead = el('p', 'oa-subhead', `Revistas da nossa base alinhadas à busca (${catalogMatches.length}):`);
     wrap.append(catHead);
     const chipList = el('div', 'oa-match-list');
     catalogMatches.slice(0, 4).forEach(r => {
@@ -386,7 +386,7 @@ function renderBotReply({ query, searchResult, catalogMatches }) {
     const artHead = el(
       'p',
       'oa-subhead',
-      `Artigos semelhantes publicados e situação CAPES das revistas (${searchResult.articles.length}):`
+      `Artigos encontrados e onde foram publicados (${searchResult.articles.length}):`
     );
     wrap.append(artHead);
 
@@ -461,7 +461,7 @@ function mountChatUI() {
   fab.setAttribute('aria-expanded', 'false');
   fab.setAttribute('aria-controls', 'oa-chat-drawer');
   fab.innerHTML =
-    '<span class="oa-fab-dot" aria-hidden="true"></span><span class="oa-fab-label"><strong>Onde Publicar? (Chat IA)</strong><small>Artigos semelhantes &amp; CAPES</small></span>';
+    '<span class="oa-fab-dot" aria-hidden="true"></span><span class="oa-fab-label"><strong>Artigos &amp; Onde Publicar</strong><small>Busque estudos e onde foram publicados</small></span>';
 
   const drawer = el('section', 'oa-chat-drawer');
   drawer.id = 'oa-chat-drawer';
@@ -473,8 +473,8 @@ function mountChatUI() {
   drawer.innerHTML = `
     <header class="oa-chat-head">
       <div>
-        <span class="oa-chat-badge">GUIA DE PUBLICAÇÃO · REVISTAS &amp; CAPES</span>
-        <h2 id="oa-chat-title">Descubra Onde Publicar seu Artigo</h2>
+        <span class="oa-chat-badge">ARTIGOS DE INTERESSE · ONDE FORAM PUBLICADOS · CAPES</span>
+        <h2 id="oa-chat-title">Busque Artigos e Onde Publicar</h2>
       </div>
       <div class="oa-chat-head-actions">
         <button type="button" id="oa-chat-close" class="oa-icon-btn" aria-label="Fechar conversa">✕</button>
@@ -482,9 +482,9 @@ function mountChatUI() {
     </header>
     <div id="oa-chat-messages" class="oa-chat-messages" aria-live="polite">
       <div class="oa-msg oa-msg-bot">
-        <div class="oa-msg-meta">Assistente de Publicação RigorAtlas</div>
-        <p>Olá! Posso ajudar você a encontrar em quais revistas científicas artigos parecidos com a sua pesquisa já foram publicados — e conferir na hora se a revista tem gratuidade pelo <strong>Acordo CAPES</strong>.</p>
-        <p>Digite o <strong>assunto do seu trabalho</strong>, o <strong>título de um artigo</strong>, um <strong>autor</strong> ou o <strong>nome da revista</strong>, ou toque em um exemplo:</p>
+        <div class="oa-msg-meta">Assistente de Artigos &amp; Revistas RigorAtlas</div>
+        <p>Olá! Aqui você pode <strong>buscar artigos de seu interesse</strong> na literatura científica, descobrir <strong>aonde cada estudo foi publicado</strong> e conferir se a revista participa do <strong>Acordo CAPES</strong> ou oferece indicações para publicar o seu.</p>
+        <p>Digite um <strong>assunto de pesquisa</strong>, <strong>título de artigo</strong>, <strong>autor</strong> ou <strong>nome da revista</strong>, ou toque em um exemplo:</p>
         <div class="oa-quick-prompts" aria-label="Exemplos de pesquisa">
           <button type="button" class="oa-prompt-chip" data-q="bioetanol biomassa cana">🔎 bioetanol e biomassa</button>
           <button type="button" class="oa-prompt-chip" data-q="glicose fermentação">🔎 glicose e fermentação</button>
@@ -494,8 +494,8 @@ function mountChatUI() {
       </div>
     </div>
     <form id="oa-chat-form" class="oa-chat-form">
-      <label class="sr-only" for="oa-chat-input">Digite seu tema, título de artigo, autor ou revista</label>
-      <input id="oa-chat-input" type="search" maxlength="240" required placeholder="Ex.: glicose, bioetanol, autor ou revista..." autocomplete="off">
+      <label class="sr-only" for="oa-chat-input">Busque artigos de interesse, autores, temas ou revistas</label>
+      <input id="oa-chat-input" type="search" maxlength="240" required placeholder="Busque artigos, temas, autores ou revistas..." autocomplete="off">
       <button type="submit" id="oa-chat-send">Buscar</button>
     </form>
   `;
