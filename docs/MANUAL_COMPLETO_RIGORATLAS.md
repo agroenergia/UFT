@@ -53,7 +53,9 @@ Implementada em `assets/js/openalex-chat.js`, fica disponível no botão flutuan
 
 ### Como funciona a busca inteligente no Chat
 1. O usuário digita em linguagem natural um **tema de pesquisa**, **artigo de interesse**, **autor** (ex.: `"guilherme benko"`) ou **nome da revista**.
-2. O módulo expande termos técnicos PT → EN (`expandSearchTerms` em `assets/js/journal-search.js`), consulta a base auditada local (`revistas.json`) e pesquisa artigos e periódicos nas APIs abertas (**OpenAlex REST API** como fonte primária e **Crossref Works / Crossref Journals API** em redundância silenciosa automática quando o limite diário anônimo do IP no OpenAlex estiver em pausa).
+2. O módulo executa busca paralela e agregada com remoção de duplicidades por DOI/título:
+   - **Autores / Pesquisadores (ORCID + Crossref):** identifica automaticamente pesquisadores no registro público do **ORCID** (exibindo cartão do pesquisador com filiação institucional e vínculo UFT) e recupera toda a lista de artigos publicados sem misturar homônimos;
+   - **Pesquisas temáticas (OpenAlex + Crossref Works + Crossref Journals + PubMed E-utilities + Base Local):** expande termos técnicos PT → EN (`expandSearchTerms`), agrega até **25+ artigos** por busca com paginação progressiva (**"Mostrar mais artigos"**) e cruza cada periódico encontrado contra os **Acordos CAPES / rede nacional SciELO-IES**.
 3. Para cada artigo científico encontrado, o assistente exibe:
    - Título clicável com link direto para o DOI;
    - **Aonde foi publicado** (revista, editora, ano, citações e ISSN);

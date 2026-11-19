@@ -4,7 +4,13 @@ const OPENALEX_WORKS = 'https://api.openalex.org/works';
 const OPENALEX_SOURCES = 'https://api.openalex.org/sources';
 const CROSSREF_WORKS = 'https://api.crossref.org/works';
 const CROSSREF_JOURNALS = 'https://api.crossref.org/journals';
+const ORCID_SEARCH = 'https://pub.orcid.org/v3.0/expanded-search/';
+const ORCID_BASE = 'https://pub.orcid.org/v3.0/';
+const PUBMED_ESEARCH = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi';
+const PUBMED_ESUMMARY = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi';
 const STORAGE_KEY_API = 'rigoratlas_openalex_api_key';
+
+const INITIAL_VISIBLE_ARTICLES = 10;
 
 const CAPES_PUBLISHERS = [
   ['elsevier', 'Elsevier'],
@@ -22,18 +28,28 @@ const CAPES_PUBLISHERS = [
   ['royal society', 'Royal Society Publishing']
 ];
 
-const DIAMOND_NATIONAL_PUBLISHERS = [
+const DIAMOND_NATIONAL_HINTS = [
   'scielo',
   'fapunifesp',
   'universidade federal',
-  'embrapa',
   'universidade estadual',
+  'embrapa',
+  'ifto',
+  'ifgoiano',
   'ufrgs',
   'unicamp',
   'unesp',
   'usp',
+  'ufv',
+  'ufla',
   'capes',
-  'cnpq'
+  'cnpq',
+  'desafios',
+  'sitio novo',
+  'capim dourado',
+  'agri environmental sciences',
+  'revista engenharia na agricultura',
+  'agroenergy'
 ];
 
 let catalogPromise = null;
@@ -54,6 +70,12 @@ function norm(v) {
 function extractIssns(v) {
   const m = String(v || '').toUpperCase().match(/\d{4}-\d{3}[\dX]/g);
   return m ? [...new Set(m)] : [];
+}
+
+function extractDoiKey(urlOrDoi) {
+  const s = String(urlOrDoi || '').trim().toLowerCase();
+  const m = s.match(/10\.\d{4,9}\/[^\s?#]+/);
+  return m ? m[0].replace(/\/+$/, '') : '';
 }
 
 function safeHref(url) {
@@ -103,9 +125,9 @@ function matchPublisherCapes(publisherName) {
   return null;
 }
 
-function isNationalDiamondPublisher(publisherName) {
-  const p = norm(publisherName);
-  return Boolean(p && DIAMOND_NATIONAL_PUBLISHERS.some(k => p.includes(k)));
+function isNationalDiamondVenue(title, publisherName) {
+  const combined = `${norm(title)} ${norm(publisherName)}`;
+  return Boolean(combined.trim() && DIAMOND_NATIONAL_HINTS.some(k => combined.includes(k)));
 }
 
 function evaluateCapesAndCatalog({ title, issns = [], publisher, isOa }) {
@@ -151,11 +173,11 @@ function evaluateCapesAndCatalog({ title, issns = [], publisher, isOa }) {
       rec
     };
   }
-  if (isNationalDiamondPublisher(effectivePub)) {
+  if (isNationalDiamondVenue(title, effectivePub)) {
     return {
       status: 'catalog',
       label: '★ Periódico institucional / rede nacional (SciELO / IES)',
-      detail: 'Sem vínculo CAPES pago; muitas revistas universitárias brasileiras não cobram taxa de publicação',
+      detail: 'Sem vínculo CAPES pago; revistas universitárias e nacionais geralmente têm acesso aberto sem taxa',
       rec: null
     };
   }
@@ -181,18 +203,121 @@ function getStoredKey() {
   }
 }
 
+function tokenizeQuery(q) {
+  return norm(q)
+    .split(/\s+/)
+    .filter(t => t.length >= 2);
+}
+
+function authorMatchesTokens(authorsList, tokens) {
+  if (!tokens.length || !Array.isArray(authorsList) || !authorsList.length) return false;
+  return authorsList.some(name => {
+    const n = norm(name);
+    return tokens.every(t => n.includes(t));
+  });
+}
+
+async function queryOrcidProfileAndWorks(rawQuery, tokens) {
+  if (tokens.length < 2 || tokens.length > 5) return { profile: null, articles: [] };
+  try {
+    const resp = await fetch(`${ORCID_SEARCH}?q=${encodeURIComponent(rawQuery)}&rows=6`, {
+      headers: { Accept: 'application/json' }
+    });
+    if (!resp.ok) return { profile: null, articles: [] };
+    const data = await resp.json();
+    const candidates = data['expanded-result'] || [];
+    if (!candidates.length) return { profile: null, articles: [] };
+
+    const scored = candidates
+      .map(c => {
+        const full = norm(
+          [c['given-names'], c['family-names'], c['credit-name'], ...(c['other-name'] || [])].join(' ')
+        );
+        const hits = tokens.filter(t => full.includes(t)).length;
+        const inst = norm((c['institution-name'] || []).join(' '));
+        const brBonus = /(tocantins|uft|brasil|brazil|federal|agro)/.test(inst) ? 2 : 0;
+        return { c, hits, allMatch: hits === tokens.length, score: hits * 10 + brBonus };
+      })
+      .filter(x => x.allMatch)
+      .sort((a, b) => b.score - a.score);
+
+    if (!scored.length) return { profile: null, articles: [] };
+
+    const best = scored[0].c;
+    const orcidId = best['orcid-id'];
+    if (!orcidId) return { profile: null, articles: [] };
+
+    const worksResp = await fetch(`${ORCID_BASE}${encodeURIComponent(orcidId)}/works`, {
+      headers: { Accept: 'application/json' }
+    });
+    if (!worksResp.ok) return { profile: null, articles: [] };
+    const worksData = await worksResp.json();
+    const groups = worksData.group || [];
+
+    const articles = [];
+    for (const g of groups) {
+      const summaries = g['work-summary'] || [];
+      if (!summaries.length) continue;
+      // Prefer summary with DOI and journal title
+      const ws =
+        summaries.find(
+          s =>
+            (s['external-ids']?.['external-id'] || []).some(e => e['external-id-type'] === 'doi') &&
+            s['journal-title']?.value
+        ) || summaries[0];
+
+      const title = ws.title?.title?.value || '';
+      if (!title) continue;
+      const journalTitle = ws['journal-title']?.value || 'Produção registrada no ORCID';
+      const year = ws['publication-date']?.year?.value ? Number(ws['publication-date'].year.value) : null;
+      const extIds = ws['external-ids']?.['external-id'] || [];
+      const doiObj = extIds.find(e => String(e['external-id-type']).toLowerCase() === 'doi');
+      const doiUrl = doiObj
+        ? doiObj['external-id-url']?.value || safeHref(doiObj['external-id-value'])
+        : safeHref(ws.url?.value);
+
+      articles.push({
+        title,
+        year,
+        doi: safeHref(doiUrl),
+        citedBy: 0,
+        journalTitle,
+        publisher: '',
+        issns: [],
+        isOa: false,
+        sourceTag: 'ORCID',
+        capes: evaluateCapesAndCatalog({ title: journalTitle, issns: [], publisher: '', isOa: false })
+      });
+    }
+
+    const fullName = [best['given-names'], best['family-names']].filter(Boolean).join(' ').trim();
+    const institutions = (best['institution-name'] || []).filter(Boolean);
+    return {
+      profile: {
+        orcid: orcidId,
+        name: fullName || best['credit-name'] || rawQuery,
+        institution: institutions[institutions.length - 1] || institutions[0] || '',
+        totalWorks: articles.length
+      },
+      articles
+    };
+  } catch {
+    return { profile: null, articles: [] };
+  }
+}
+
 async function queryOpenAlex(queryText) {
   const apiKey = getStoredKey();
   const baseParams = {
     search: queryText,
-    'per-page': '6',
+    'per-page': '20',
     sort: 'relevance_score:desc',
     mailto: 'mdqmichael@gmail.com'
   };
   if (apiKey) baseParams.api_key = apiKey;
 
   const worksParams = new URLSearchParams(baseParams);
-  const sourcesParams = new URLSearchParams({ ...baseParams, 'per-page': '4' });
+  const sourcesParams = new URLSearchParams({ ...baseParams, 'per-page': '6' });
 
   const [worksResp, sourcesResp] = await Promise.all([
     fetch(`${OPENALEX_WORKS}?${worksParams.toString()}`),
@@ -201,12 +326,9 @@ async function queryOpenAlex(queryText) {
 
   if (worksResp.status === 429 || sourcesResp.status === 429) {
     openAlexUnavailableInSession = true;
-    const err = new Error('FALLBACK');
-    throw err;
-  }
-  if (!worksResp.ok) {
     throw new Error('FALLBACK');
   }
+  if (!worksResp.ok) throw new Error('FALLBACK');
 
   const worksData = await worksResp.json();
   const sourcesData = sourcesResp.ok ? await sourcesResp.json() : { results: [] };
@@ -214,6 +336,7 @@ async function queryOpenAlex(queryText) {
   const articles = (worksData.results || []).map(w => {
     const src = w.primary_location?.source || {};
     const issns = [...new Set([src.issn_l, ...(src.issn || [])].filter(Boolean).map(s => String(s).toUpperCase()))];
+    const authors = (w.authorships || []).map(a => a.author?.display_name).filter(Boolean);
     return {
       title: w.display_name || w.title || 'Artigo científico',
       year: w.publication_year || null,
@@ -222,7 +345,9 @@ async function queryOpenAlex(queryText) {
       journalTitle: src.display_name || 'Periódico não informado',
       publisher: src.host_organization_name || '',
       issns,
+      authors,
       isOa: Boolean(w.open_access?.is_oa || src.is_oa),
+      sourceTag: 'OpenAlex',
       capes: evaluateCapesAndCatalog({
         title: src.display_name,
         issns,
@@ -252,46 +377,64 @@ async function queryOpenAlex(queryText) {
   return { articles, sources };
 }
 
-async function queryFreeAcademicAPIs(rawQuery, expandedQuery) {
+async function queryCrossrefCombined(rawQuery, expandedQuery, authorTokens, strictAuthor) {
   const effectiveQuery = expandedQuery || rawQuery;
-  const worksParams = new URLSearchParams({
-    query: rawQuery,
-    filter: 'type:journal-article',
-    rows: '6',
-    mailto: 'mdqmichael@gmail.com'
-  });
-  const journalParams = new URLSearchParams({
-    query: effectiveQuery,
-    rows: '4',
-    mailto: 'mdqmichael@gmail.com'
-  });
+  const reqs = [
+    fetch(
+      `${CROSSREF_WORKS}?${new URLSearchParams({
+        query: rawQuery,
+        filter: 'type:journal-article',
+        rows: '20',
+        mailto: 'mdqmichael@gmail.com'
+      })}`
+    ).catch(() => null),
+    fetch(
+      `${CROSSREF_JOURNALS}?${new URLSearchParams({
+        query: effectiveQuery,
+        rows: '6',
+        mailto: 'mdqmichael@gmail.com'
+      })}`
+    ).catch(() => null)
+  ];
+  if (strictAuthor) {
+    reqs.push(
+      fetch(
+        `${CROSSREF_WORKS}?${new URLSearchParams({
+          'query.author': rawQuery,
+          filter: 'type:journal-article',
+          rows: '20',
+          mailto: 'mdqmichael@gmail.com'
+        })}`
+      ).catch(() => null)
+    );
+  }
 
-  const [worksResp, journalsResp] = await Promise.all([
-    fetch(`${CROSSREF_WORKS}?${worksParams.toString()}`),
-    fetch(`${CROSSREF_JOURNALS}?${journalParams.toString()}`).catch(() => null)
-  ]);
-
-  let items = [];
-  if (worksResp.ok) {
-    const data = await worksResp.json();
-    items = data.message?.items || [];
-    if (!items.length && expandedQuery && expandedQuery !== rawQuery) {
-      const retry = await fetch(
-        `${CROSSREF_WORKS}?${new URLSearchParams({ query: expandedQuery, filter: 'type:journal-article', rows: '6', mailto: 'mdqmichael@gmail.com' })}`
-      );
-      if (retry.ok) {
-        items = (await retry.json()).message?.items || [];
-      }
+  const [worksResp, journalsResp, authorResp] = await Promise.all(reqs);
+  const rawItems = [];
+  for (const r of [authorResp, worksResp]) {
+    if (r && r.ok) {
+      const d = await r.json();
+      rawItems.push(...(d.message?.items || []));
     }
   }
 
-  const articles = items.map(it => {
+  // Filter out unrelated homonyms when user searched a confirmed researcher
+  const filteredItems = strictAuthor
+    ? rawItems.filter(it => {
+        const names = (it.author || []).map(a => `${a.given || ''} ${a.family || ''}`.trim());
+        const titleStr = Array.isArray(it.title) ? it.title[0] || '' : '';
+        return authorMatchesTokens(names, authorTokens) || norm(titleStr).includes(norm(rawQuery));
+      })
+    : rawItems;
+
+  const articles = filteredItems.map(it => {
     const jTitle = Array.isArray(it['container-title']) ? it['container-title'][0] : '';
     const title = Array.isArray(it.title) ? it.title[0] : 'Artigo científico';
     const issns = (it.ISSN || []).map(s => String(s).toUpperCase());
     const dateParts = it.published?.['date-parts']?.[0] || it.created?.['date-parts']?.[0] || [];
     const pubYear = dateParts[0] || null;
     const publisher = it.publisher || '';
+    const authors = (it.author || []).map(a => `${a.given || ''} ${a.family || ''}`.trim()).filter(Boolean);
     return {
       title,
       year: pubYear,
@@ -300,37 +443,138 @@ async function queryFreeAcademicAPIs(rawQuery, expandedQuery) {
       journalTitle: jTitle || 'Periódico científico',
       publisher,
       issns,
+      authors,
       isOa: false,
-      capes: evaluateCapesAndCatalog({
-        title: jTitle,
-        issns,
-        publisher,
-        isOa: false
-      })
+      sourceTag: 'Crossref',
+      capes: evaluateCapesAndCatalog({ title: jTitle, issns, publisher, isOa: false })
     };
   });
 
   let sources = [];
   if (journalsResp && journalsResp.ok) {
     const jData = await journalsResp.json();
-    sources = (jData.message?.items || []).slice(0, 3).map(j => {
+    sources = (jData.message?.items || []).slice(0, 5).map(j => {
       const issns = (j.ISSN || []).map(s => String(s).toUpperCase());
       return {
         title: j.title || '',
         publisher: j.publisher || '',
         issns,
         homepage: issns.length ? `https://portal.issn.org/resource/ISSN/${encodeURIComponent(issns[0])}` : '',
-        capes: evaluateCapesAndCatalog({
-          title: j.title,
-          issns,
-          publisher: j.publisher,
-          isOa: false
-        })
+        capes: evaluateCapesAndCatalog({ title: j.title, issns, publisher: j.publisher, isOa: false })
       };
     });
   }
 
   return { articles, sources };
+}
+
+async function queryPubMed(termQuery) {
+  try {
+    const esResp = await fetch(
+      `${PUBMED_ESEARCH}?${new URLSearchParams({
+        db: 'pubmed',
+        term: termQuery,
+        retmax: '15',
+        retmode: 'json'
+      })}`
+    );
+    if (!esResp.ok) return [];
+    const esData = await esResp.json();
+    const ids = esData.esearchresult?.idlist || [];
+    if (!ids.length) return [];
+
+    const sumResp = await fetch(
+      `${PUBMED_ESUMMARY}?${new URLSearchParams({
+        db: 'pubmed',
+        id: ids.join(','),
+        retmode: 'json'
+      })}`
+    );
+    if (!sumResp.ok) return [];
+    const sumData = await sumResp.json();
+    const res = sumData.result || {};
+
+    return ids
+      .map(id => {
+        const it = res[id];
+        if (!it || !it.title) return null;
+        const jTitle = it.fulljournalname || it.source || 'Periódico indexado no PubMed';
+        const issns = [it.issn, it.essn].filter(Boolean).map(s => String(s).toUpperCase());
+        const doiEntry = (it.articleids || []).find(a => a.idtype === 'doi');
+        const link = doiEntry ? safeHref(doiEntry.value) : `https://pubmed.ncbi.nlm.nih.gov/${encodeURIComponent(id)}/`;
+        const yMatch = String(it.pubdate || it.epubdate || '').match(/\b(19|20)\d{2}\b/);
+        const year = yMatch ? Number(yMatch[0]) : null;
+        return {
+          title: String(it.title).replace(/\.$/, ''),
+          year,
+          doi: link,
+          citedBy: 0,
+          journalTitle: jTitle,
+          publisher: '',
+          issns,
+          isOa: false,
+          sourceTag: 'PubMed',
+          capes: evaluateCapesAndCatalog({ title: jTitle, issns, publisher: '', isOa: false })
+        };
+      })
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function mergeAndDedupeArticles(groups, rawQuery) {
+  const byKey = new Map();
+  const list = [];
+
+  for (const group of groups) {
+    for (const art of group) {
+      if (!art || !art.title) continue;
+      const doiKey = extractDoiKey(art.doi);
+      const tKey = norm(art.title).slice(0, 90);
+      const key = doiKey || tKey;
+      if (!key) continue;
+
+      if (byKey.has(key)) {
+        const existing = byKey.get(key);
+        // Merge richer metadata (ISSNs, publisher, citations, CAPES rec)
+        if (!existing.publisher && art.publisher) existing.publisher = art.publisher;
+        if (!existing.issns.length && art.issns.length) existing.issns = art.issns;
+        if (art.citedBy > existing.citedBy) existing.citedBy = art.citedBy;
+        if (!existing.year && art.year) existing.year = art.year;
+        if (!existing.capes.rec && art.capes.rec) existing.capes = art.capes;
+        continue;
+      }
+
+      // Check near-duplicate title even if one lacked DOI
+      const dupTitle = list.find(x => norm(x.title).slice(0, 85) === tKey);
+      if (dupTitle) {
+        if (!dupTitle.doi && art.doi) dupTitle.doi = art.doi;
+        if (!dupTitle.publisher && art.publisher) dupTitle.publisher = art.publisher;
+        if (!dupTitle.issns.length && art.issns.length) dupTitle.issns = art.issns;
+        if (art.citedBy > dupTitle.citedBy) dupTitle.citedBy = art.citedBy;
+        if (!dupTitle.capes.rec && art.capes.rec) dupTitle.capes = art.capes;
+        continue;
+      }
+
+      byKey.set(key, art);
+      list.push(art);
+    }
+  }
+
+  const qTokens = tokenizeQuery(rawQuery);
+  return list.sort((a, b) => {
+    const aCap = a.capes.status === 'confirmed' ? 2 : a.capes.status === 'publisher' ? 1 : 0;
+    const bCap = b.capes.status === 'confirmed' ? 2 : b.capes.status === 'publisher' ? 1 : 0;
+    const aTitleHits = qTokens.filter(t => norm(a.title).includes(t)).length;
+    const bTitleHits = qTokens.filter(t => norm(b.title).includes(t)).length;
+    return (
+      bTitleHits - aTitleHits ||
+      bCap - aCap ||
+      (b.year || 0) - (a.year || 0) ||
+      (b.citedBy || 0) - (a.citedBy || 0)
+    );
+  });
 }
 
 function buildCapesBadge(capesInfo) {
@@ -348,12 +592,46 @@ function buildCapesBadge(capesInfo) {
   return box;
 }
 
-function renderBotReply({ query, searchResult, catalogMatches }) {
+function createArticleCard(art) {
+  const card = el('article', 'oa-article-card');
+  const titleEl = el('h4', 'oa-article-title');
+  if (art.doi) {
+    const a = el('a', '', art.title);
+    a.href = art.doi;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    titleEl.append(a);
+  } else {
+    titleEl.textContent = art.title;
+  }
+
+  const info = el(
+    'p',
+    'oa-article-journal',
+    `Onde foi publicado: ${art.journalTitle}${art.publisher ? ' · ' + art.publisher : ''}${art.year ? ' (' + art.year + ')' : ''}${art.citedBy ? ' · ' + art.citedBy + ' citações' : ''}${art.issns.length ? ' · ISSN ' + art.issns[0] : ''}`
+  );
+  card.append(titleEl, info, buildCapesBadge(art.capes));
+  return card;
+}
+
+function renderBotReply({ query, orcidProfile, articles, sources, catalogMatches }) {
   const wrap = el('div', 'oa-msg oa-msg-bot');
 
   const meta = el('div', 'oa-msg-meta');
   meta.textContent = 'Assistente de Artigos, Revistas & CAPES';
   wrap.append(meta);
+
+  if (orcidProfile) {
+    const profileCard = el('div', 'oa-orcid-card');
+    const title = el('strong', '', `Pesquisador identificado no ORCID: ${orcidProfile.name}`);
+    const details = el(
+      'small',
+      '',
+      `${orcidProfile.institution ? orcidProfile.institution + ' · ' : ''}ORCID ${orcidProfile.orcid} · ${orcidProfile.totalWorks} publicações vinculadas`
+    );
+    profileCard.append(title, details);
+    wrap.append(profileCard);
+  }
 
   if (catalogMatches.length) {
     const catHead = el('p', 'oa-subhead', `Revistas da nossa base alinhadas à busca (${catalogMatches.length}):`);
@@ -382,51 +660,48 @@ function renderBotReply({ query, searchResult, catalogMatches }) {
     wrap.append(chipList);
   }
 
-  if (searchResult.articles.length) {
+  if (articles.length) {
     const artHead = el(
       'p',
       'oa-subhead',
-      `Artigos encontrados e onde foram publicados (${searchResult.articles.length}):`
+      `Artigos encontrados e onde foram publicados (${articles.length}):`
     );
     wrap.append(artHead);
 
     const list = el('div', 'oa-article-list');
-    searchResult.articles.forEach(art => {
-      const card = el('article', 'oa-article-card');
-      const titleEl = el('h4', 'oa-article-title');
-      if (art.doi) {
-        const a = el('a', '', art.title);
-        a.href = art.doi;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        titleEl.append(a);
-      } else {
-        titleEl.textContent = art.title;
-      }
-
-      const info = el(
-        'p',
-        'oa-article-journal',
-        `Onde foi publicado: ${art.journalTitle}${art.publisher ? ' · ' + art.publisher : ''}${art.year ? ' (' + art.year + ')' : ''}${art.citedBy ? ' · ' + art.citedBy + ' citações' : ''}${art.issns.length ? ' · ISSN ' + art.issns[0] : ''}`
-      );
-      card.append(titleEl, info, buildCapesBadge(art.capes));
-      list.append(card);
-    });
+    let shown = Math.min(INITIAL_VISIBLE_ARTICLES, articles.length);
+    articles.slice(0, shown).forEach(art => list.append(createArticleCard(art)));
     wrap.append(list);
+
+    if (articles.length > shown) {
+      const moreBtn = el('button', 'oa-more-btn', `Mostrar mais artigos (${articles.length - shown} restantes)`);
+      moreBtn.type = 'button';
+      moreBtn.addEventListener('click', () => {
+        const nextEnd = Math.min(shown + 12, articles.length);
+        articles.slice(shown, nextEnd).forEach(art => list.append(createArticleCard(art)));
+        shown = nextEnd;
+        if (shown >= articles.length) {
+          moreBtn.remove();
+        } else {
+          moreBtn.textContent = `Mostrar mais artigos (${articles.length - shown} restantes)`;
+        }
+      });
+      wrap.append(moreBtn);
+    }
   } else {
     const none = el(
       'p',
       'oa-empty-note',
-      `Não localizamos artigos exatamente com "${query}". Tente usar 2 ou 3 palavras-chave principais do tema (em português ou inglês) ou o nome exato de uma revista.`
+      `Não localizamos artigos exatamente com "${query}". Tente usar o nome completo do autor ou 2 a 3 palavras-chave principais (em português ou inglês).`
     );
     wrap.append(none);
   }
 
-  if (searchResult.sources && searchResult.sources.length) {
+  if (sources && sources.length && !orcidProfile) {
     const srcHead = el('p', 'oa-subhead', 'Outras revistas relacionadas ao tema:');
     wrap.append(srcHead);
     const sList = el('div', 'oa-article-list');
-    searchResult.sources.slice(0, 3).forEach(src => {
+    sources.slice(0, 4).forEach(src => {
       const sc = el('div', 'oa-article-card');
       const st = el('p', 'oa-article-journal');
       if (src.homepage) {
@@ -483,7 +758,7 @@ function mountChatUI() {
     <div id="oa-chat-messages" class="oa-chat-messages" aria-live="polite">
       <div class="oa-msg oa-msg-bot">
         <div class="oa-msg-meta">Assistente de Artigos &amp; Revistas RigorAtlas</div>
-        <p>Olá! Aqui você pode <strong>buscar artigos de seu interesse</strong> na literatura científica, descobrir <strong>aonde cada estudo foi publicado</strong> e conferir se a revista participa do <strong>Acordo CAPES</strong> ou oferece indicações para publicar o seu.</p>
+        <p>Olá! Aqui você pode <strong>buscar artigos de seu interesse</strong> na literatura científica (integrando <strong>OpenAlex</strong>, <strong>Crossref</strong>, <strong>PubMed</strong> e <strong>ORCID</strong>), descobrir <strong>aonde cada estudo foi publicado</strong> e conferir se a revista participa do <strong>Acordo CAPES</strong>.</p>
         <p>Digite um <strong>assunto de pesquisa</strong>, <strong>título de artigo</strong>, <strong>autor</strong> ou <strong>nome da revista</strong>, ou toque em um exemplo:</p>
         <div class="oa-quick-prompts" aria-label="Exemplos de pesquisa">
           <button type="button" class="oa-prompt-chip" data-q="bioetanol biomassa cana">🔎 bioetanol e biomassa</button>
@@ -557,51 +832,67 @@ function mountChatUI() {
     sendBtn.textContent = '...';
 
     const userBubble = el('div', 'oa-msg oa-msg-user', query);
-    const loading = el('div', 'oa-msg oa-msg-bot oa-msg-loading', 'Procurando artigos semelhantes e verificando Acordos CAPES…');
+    const loading = el('div', 'oa-msg oa-msg-bot oa-msg-loading', 'Consultando bases científicas e cruzando Acordos CAPES…');
     messages.append(userBubble, loading);
     messages.scrollTop = messages.scrollHeight;
 
     await ensureCatalog();
+    const tokens = tokenizeQuery(query);
     const expanded = expandSearchTerms(query);
+    const hasTopicCluster = expanded.matchedClusters && expanded.matchedClusters.length > 0;
     const expandedQuery = expanded.crossrefQuery && query.length < 45 ? expanded.crossrefQuery : query;
-    const smartCat = findSmartCatalogMatches(catalogRows, query, { limit: 4 });
+    const smartCat = findSmartCatalogMatches(catalogRows, query, { limit: 6 });
 
-    let searchResult = null;
-    if (!openAlexUnavailableInSession) {
-      try {
-        searchResult = await queryOpenAlex(expandedQuery);
-        if (!searchResult.articles.length && expandedQuery !== query) {
-          searchResult = await queryOpenAlex(query);
-        }
-      } catch {
-        searchResult = null;
-      }
-    }
+    // 1. Check ORCID first if query looks like a person/researcher name (2..5 tokens, not strictly topic clusters)
+    const orcidData = !hasTopicCluster
+      ? await queryOrcidProfileAndWorks(query, tokens)
+      : { profile: null, articles: [] };
+    const isConfirmedAuthor = Boolean(orcidData.profile);
 
-    if (!searchResult) {
-      try {
-        searchResult = await queryFreeAcademicAPIs(query, expandedQuery);
-      } catch {
-        searchResult = { articles: [], sources: [] };
-      }
-    }
+    // 2. Fetch in parallel from Crossref + PubMed (if thematic) + OpenAlex (when available)
+    const pmQuery = expanded.crossrefTerms?.length ? expanded.crossrefTerms.slice(0, 4).join(' ') : query;
+    const [crossrefData, pubmedArticles, openAlexData] = await Promise.all([
+      queryCrossrefCombined(query, expandedQuery, tokens, isConfirmedAuthor),
+      !isConfirmedAuthor ? queryPubMed(pmQuery) : Promise.resolve([]),
+      !openAlexUnavailableInSession
+        ? queryOpenAlex(isConfirmedAuthor ? query : expandedQuery).catch(() => null)
+        : Promise.resolve(null)
+    ]);
+
+    const oaArticles =
+      openAlexData && openAlexData.articles
+        ? isConfirmedAuthor
+          ? openAlexData.articles.filter(a => authorMatchesTokens(a.authors || [], tokens))
+          : openAlexData.articles
+        : [];
+
+    const mergedArticles = mergeAndDedupeArticles(
+      [orcidData.articles, oaArticles, crossrefData.articles, pubmedArticles],
+      query
+    );
+
+    const sources = (openAlexData?.sources?.length ? openAlexData.sources : crossrefData.sources) || [];
 
     loading.remove();
     const botBubble = renderBotReply({
       query,
-      searchResult,
-      catalogMatches: smartCat.matches || []
+      orcidProfile: orcidData.profile,
+      articles: mergedArticles,
+      sources,
+      catalogMatches: isConfirmedAuthor ? [] : smartCat.matches || []
     });
     messages.append(botBubble);
     messages.scrollTop = messages.scrollHeight;
     sendBtn.disabled = false;
     sendBtn.textContent = 'Buscar';
 
-    const capesHits = searchResult.articles.filter(a => a.capes.status === 'confirmed' || a.capes.status === 'publisher').length;
+    const capesHits = mergedArticles.filter(
+      a => a.capes.status === 'confirmed' || a.capes.status === 'publisher'
+    ).length;
     window.dispatchEvent(
       new CustomEvent('rigoratlas:announce', {
         detail: {
-          message: `Busca concluída para ${query}. ${searchResult.articles.length} artigos encontrados e ${capesHits} periódicos identificados nos acordos CAPES.`
+          message: `Busca concluída para ${query}. ${mergedArticles.length} artigos encontrados e ${capesHits} periódicos identificados nos acordos CAPES.`
         }
       })
     );
