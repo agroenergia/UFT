@@ -1,7 +1,24 @@
 {
-  "ultimaAtualizacaoSemanal": "2026-11-18",
+  "ultimaAtualizacaoSemanal": "2026-11-23",
   "ultimaAuditoriaTrimestralCapes": "2026-11-18",
   "historico": [
+    {
+      "tipo": "semanal_openalex",
+      "data": "2026-11-23",
+      "fonte": "OpenAlex REST API",
+      "enriquecidas": 18,
+      "novasAdicionadas": 8,
+      "exemplosAdicionados": [
+        "Irrigation and Drainage",
+        "Agroecology and Sustainable Food Systems",
+        "Biological Agriculture & Horticulture",
+        "Journal of Renewable and Sustainable Energy",
+        "International Journal of Renewable Energy Research",
+        "Renewable energy focus",
+        "International Journal of Renewable Energy Development",
+        "Materials for Renewable and Sustainable Energy"
+      ]
+    },
     {
       "tipo": "trimestral_capes",
       "data": "2026-11-18",
@@ -34,10 +51,10 @@
   ],
   "proximaAuditoriaTrimestralCapes": "2027-02-16",
   "totaisAtuais": {
-    "totalRevistas": 404,
+    "totalRevistas": 412,
     "comScopus": 397,
     "comWos": 357,
     "comAcordoCapes": 270
   },
-  "fonteSemanal": "DOAJ API (revistas auditadas · fallback OpenAlex)"
+  "fonteSemanal": "OpenAlex REST API"
 }
