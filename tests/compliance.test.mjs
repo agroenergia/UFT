@@ -133,12 +133,20 @@ test('fixed legal compliance footer and full policy documentation cover independ
   }
 });
 
-test('header replaces Menu toggle button with always-visible horizontal term navigation below search bar', async () => {
+test('header displays 4 main terms + hover dropdown below search bar and provides mobile-only floating nav', async () => {
   const indexHtml = await read('index.html');
   assert.doesNotMatch(indexHtml, /id="menu-toggle"/i, 'index.html must not contain #menu-toggle button');
   assert.doesNotMatch(indexHtml, /<span>Menu<\/span>/i, 'index.html must not show Menu button label');
   assert.match(indexHtml, /<div class="header-subnav">\s*<nav id="primary-navigation" class="header-term-nav"[^>]*>/i, 'index.html must render always-visible horizontal term navigation under search bar');
   assert.doesNotMatch(indexHtml, /id="primary-navigation"[^>]*\shidden\b/i, '#primary-navigation must not be hidden');
+  const navMatch = indexHtml.match(/<nav id="primary-navigation"[\s\S]*?<\/nav>/i);
+  assert.ok(navMatch, '#primary-navigation must exist');
+  const navBlock = navMatch[0];
+  for (const mainTerm of ['>Início<', '>Comparar<', '>Sinais de alerta<', '>Contato<', 'Mais recursos']) {
+    assert.ok(navBlock.includes(mainTerm), `primary nav must include ${mainTerm}`);
+  }
+  assert.match(navBlock, /id="nav-more-menu" class="nav-dropdown-menu"/i, 'secondary items must live in dropdown menu');
+  assert.match(indexHtml, /<nav class="mobile-floating-nav"/i, 'index.html must provide mobile floating bottom navigation');
   const searchPos = indexHtml.indexOf('id="ai-search-form"');
   const navPos = indexHtml.indexOf('id="primary-navigation"');
   assert.ok(searchPos > 0 && navPos > searchPos, 'horizontal term navigation must appear below the search bar');
