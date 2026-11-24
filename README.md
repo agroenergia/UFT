@@ -1,40 +1,35 @@
-# PPGAD UFT — Portal de apoio à publicação científica
+# RigorAtlas — Portal independente de apoio à publicação científica
 
-Projeto estático para alunos do Programa de Pós-Graduação em Agronegócio Digital (PPGAD/UFT).
+Projeto estático, independente e sem fins lucrativos voltado para pesquisadores e estudantes consultarem, filtrarem e compararem periódicos científicos em regime **exclusivamente online (downloads desativados)**.
 
-**Orientação:** Prof. Dr. Guilherme Benko Siqueira  
-**Desenvolvimento:** Michael e Nibert
+**Desenvolvimento e manutenção:** Michael Oliveira (`mdqmichael@gmail.com`)
+
+> **Independência institucional:** o RigorAtlas não possui vínculo institucional, representação oficial, patrocínio ou endosso de universidades, programas de pós-graduação, órgãos públicos ou editoras científicas.
 
 ## Objetivo
-Organizar revistas acadêmicas e futuramente repositórios, permitindo busca, filtros, comparação e consulta a um guia de indicadores.
+Organizar informações referenciais sobre periódicos científicos (escopo, idioma, custos/APC, Acordos CAPES, indicadores Scopus® e Web of Science™ e sinais antipredatórios), permitindo busca, filtros, comparação lado a lado e checklist interativo online.
 
 ## Estrutura
-- index.html — interface principal.
-- assets/css/style.css — identidade visual e responsividade.
-- assets/js/data.js — dados editoriais.
-- assets/js/app.js — filtros, ordenação, comparação e CSV.
-- docs/guia.html — guia didático e impressão em PDF.
-- 404.html — página de erro.
-- .nojekyll — publicação estática.
+- `index.html` — interface principal com busca, navegação horizontal, catálogo, comparador e documentação jurídica fixa.
+- `privacidade.html` — Política de Segurança, Independência Institucional, Direitos, Regras de Uso, APIs, IA, Scopus®, Web of Science™ e LGPD.
+- `ficha-revista.html` — ficha detalhada individual de cada periódico.
+- `checklist.html` — checklist interativo online de 29 etapas antes da submissão.
+- `sobre.html` — metodologia editorial, fontes de indicadores e governança.
+- `assets/css/style.css` — identidade visual científica limpa, responsividade e modos de acessibilidade.
+- `assets/js/` — busca local, filtros, comparação, acessibilidade e assistente integrado às APIs abertas (Crossref, OpenAlex, ORCID e NCBI PubMed).
+- `assets/data/revistas.json` — catálogo editorial de consulta online.
+- `scripts/` — rotinas automatizadas de ampliação semanal (OpenAlex/DOAJ) e auditoria trimestral de Acordos CAPES.
+- `tests/` — suíte automatizada de testes (`node --test tests/*.test.mjs`) incluindo auditoria de conformidade e independência.
 
-## Fluxo colaborativo
-A branch main representa a versão publicada. Michael e Nibert devem trabalhar em branches próprias e abrir Pull Requests antes do merge.
+## Segurança, APIs e LGPD
+- **Regime somente consulta online:** todas as opções de download e exportação em massa (XLS, CSV, PDF, JSON, TXT e MP4) estão desativadas.
+- **APIs públicas abertas:** Crossref REST API (com `mailto`), OpenAlex (CC0 1.0), DOAJ (CC0 1.0), ORCID Public API (CC0/ToS) e NCBI PubMed E-utilities (`tool=RigorAtlas`).
+- **Sem envio a IA generativa externa:** busca assistida e síntese de voz rodam localmente no navegador.
+- Nunca coloque senhas, tokens ou chaves de API diretamente no repositório.
 
-Use commits pequenos e claros. Nunca coloque senhas, tokens ou chaves de API no repositório.
+## GitHub Pages e Testes
+O projeto usa HTML, CSS e JavaScript estáticos compatíveis com GitHub Pages. Para validar todas as regras antes de publicar:
 
-## GitHub Pages
-O projeto usa HTML, CSS e JavaScript no navegador e é compatível com GitHub Pages.
-
-## Formulário
-O formulário está preparado para encaminhar sugestões ao endereço mdqmichael@gmail.com por serviço externo de formulário. Confirmar endereço e serviço antes da publicação institucional.
-
-## Dados
-Os registros iniciais são uma base de demonstração. Indicadores, custos, prazos e links devem ser revisados pela equipe e confirmados nas fontes oficiais.
-
-## Próximas etapas
-1. Validar o catálogo em reunião com a Dra. Solange e a equipe do programa.
-2. Cadastrar os principais repositórios.
-3. Inserir links oficiais.
-4. Revisar identidade visual institucional.
-5. Configurar GitHub Pages.
-6. Adicionar testes de links e validação dos dados.
+```bash
+node --test tests/*.test.mjs
+```

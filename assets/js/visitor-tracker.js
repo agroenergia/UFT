@@ -153,7 +153,7 @@ function updateFooterBadge(data){
 export function formatVisitsTxt(data=getVisitData()){
   const lines=[
     "================================================================",
-    "RIGORATLAS PPGAD/UFT — REGISTRO DE VISITAS (BLOCO DE NOTAS)",
+    "RIGORATLAS — REGISTRO TÉCNICO LOCAL DE VISITAS",
     `Gerado em: ${formatDateBr(new Date())}`,
     `Total de visitas registradas neste navegador: ${data.totalVisitas}`,
     "Obs.: Em hospedagem estática (GitHub Pages), o registro padrão fica salvo no navegador do visitante.",
@@ -174,28 +174,6 @@ export function formatVisitsTxt(data=getVisitData()){
     lines.push("----------------------------------------------------------------");
   });
   return lines.join("\r\n");
-}
-
-function triggerDownload(filename,content,mime){
-  const blob=new Blob(["\ufeff"+content],{type:mime});
-  const a=document.createElement("a");
-  const u=URL.createObjectURL(blob);
-  a.href=u;
-  a.download=filename;
-  document.body.append(a);
-  a.click();
-  a.remove();
-  setTimeout(()=>URL.revokeObjectURL(u),1500);
-}
-
-export function downloadVisitsTxt(){
-  const stamp=new Date().toISOString().slice(0,10);
-  triggerDownload(`visitas-rigoratlas-${stamp}.txt`,formatVisitsTxt(),"text/plain;charset=utf-8");
-}
-
-export function downloadVisitsJson(){
-  const stamp=new Date().toISOString().slice(0,10);
-  triggerDownload(`visitas-rigoratlas-${stamp}.json`,JSON.stringify(getVisitData(),null,2),"application/json;charset=utf-8");
 }
 
 export function clearVisitLog(){

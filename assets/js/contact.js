@@ -8,9 +8,9 @@ function buildMessagePayload(){
   const assunto=(document.getElementById("assunto")?.value||"Contato RigorAtlas").trim();
   const mensagem=(document.getElementById("mensagem")?.value||"").trim();
   const canal=document.querySelector('input[name="contact-channel"]:checked')?.value||"gmail";
-  const subject=`[RigorAtlas UFT] ${assunto}`;
+  const subject=`[RigorAtlas] ${assunto}`;
   const body=[
-    "Mensagem enviada pelo portal RigorAtlas (PPGAD/UFT):",
+    "Mensagem enviada pelo portal RigorAtlas:",
     `Assunto: ${assunto}`,
     `Nome: ${nome}`,
     `E-mail para resposta: ${email}`,

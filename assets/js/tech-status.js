@@ -17,7 +17,7 @@ const REQUIREMENTS = [
     id: 'capes',
     num: '03',
     title: 'Cobertura CAPES (Read & Publish) ou rota sem taxa',
-    tip: 'Verifique se a editora possui acordo CAPES ativo para autor correspondente UFT ou opção gratuita por assinatura.'
+    tip: 'Verifique se a editora possui acordo CAPES ativo para autor correspondente de instituição participante ou opção gratuita por assinatura.'
   },
   {
     id: 'idioma',

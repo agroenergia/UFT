@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Executar auditoria trimestral do painel CAPES / UFT
+      - name: Executar auditoria trimestral do painel CAPES (acordos Read & Publish)
         env:
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
         run: python scripts/atualizacao_trimestral_capes.py --verify-online
@@ -31,7 +31,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/data/revistas.json assets/data/capes-relatorio-trimestral.json assets/data/atualizacoes-log.json
           if ! git diff --staged --quiet; then
-            git commit -m "chore(capes): auditoria trimestral automatica dos acordos CAPES e UFT"
+            git commit -m "chore(capes): auditoria trimestral automatica dos acordos CAPES"
             git push
           else
             echo "Painel CAPES ja atualizado para este trimestre."

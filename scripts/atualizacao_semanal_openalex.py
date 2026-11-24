@@ -16,7 +16,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REVISTAS_PATH = os.path.join(ROOT, "assets", "data", "revistas.json")
 LOG_PATH = os.path.join(ROOT, "assets", "data", "atualizacoes-log.json")
 OPENALEX_API_KEY = os.environ.get("OPENALEX_API_KEY", "").strip()
-HEADERS = {"User-Agent": "RigorAtlas-UFT-WeeklyUpdater/1.1 (mailto:mdqmichael@gmail.com)"}
+HEADERS = {"User-Agent": "RigorAtlas-WeeklyUpdater/1.1 (mailto:mdqmichael@gmail.com)"}
 OPENALEX_BLOCKED = False
 
 CAPES_PUBLISHERS = (
@@ -349,7 +349,7 @@ def main():
                 "sjr": None,
                 "idioma": lang,
                 "custo": custo_txt,
-                "alinhamento": f"Candidata auditada pelo DOAJ descoberta na rotina semanal automática ({area_label}); validar aderência ao PPGAD/UFT e métricas Scopus/WoS.",
+                "alinhamento": f"Candidata auditada pelo DOAJ descoberta na rotina semanal automática ({area_label}); validar aderência ao seu programa de pós-graduação e métricas Scopus/WoS.",
                 "url": homepage,
                 "urlInstrucoes": instr_url or None,
                 "tier": None,

@@ -1,4 +1,4 @@
-name: Deploy PPGAD UFT to GitHub Pages
+name: Deploy RigorAtlas to GitHub Pages
 
 on:
   push:

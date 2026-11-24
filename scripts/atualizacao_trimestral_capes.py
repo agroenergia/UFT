@@ -17,7 +17,7 @@ REVISTAS_PATH = os.path.join(ROOT, "assets", "data", "revistas.json")
 LOG_PATH = os.path.join(ROOT, "assets", "data", "atualizacoes-log.json")
 REPORT_PATH = os.path.join(ROOT, "assets", "data", "capes-relatorio-trimestral.json")
 OPENALEX_API_KEY = os.environ.get("OPENALEX_API_KEY", "").strip()
-HEADERS = {"User-Agent": "RigorAtlas-UFT-QuarterlyCAPES/1.1 (mailto:mdqmichael@gmail.com)"}
+HEADERS = {"User-Agent": "RigorAtlas-QuarterlyCAPES/1.1 (mailto:mdqmichael@gmail.com)"}
 OPENALEX_BLOCKED = False
 
 # Editoras com contratos vigentes Read & Publish / PADICT (Portaria CAPES nº 120/2024)
@@ -129,7 +129,7 @@ def main():
                 "editoraConveniada": label,
                 "contratoReferencia": desc,
                 "ultimaRevisao": today,
-                "criterioUniversidadeFederal": "Exige autor correspondente UFT/PPGAD, ORCID em meusdados.capes.gov.br e e-mail institucional (@uft.edu.br).",
+                "criterioInstituicaoParticipante": "Exige autor correspondente vinculado a instituição participante, ORCID validado em meusdados.capes.gov.br e e-mail institucional.",
             }
             if rec.get("acordoCapes") is True:
                 confirmed_capes += 1
@@ -149,16 +149,16 @@ def main():
     report = {
         "dataAuditoria": today,
         "proximaAuditoriaPrevista": next_quarter,
-        "normativa": "Portaria CAPES nº 120/2024 · PADICT Read & Publish · Universidades Federais (UFT/PPGAD)",
+        "normativa": "Portaria CAPES nº 120/2024 · PADICT Read & Publish · Instituições Participantes",
         "totalCatalogo": len(rows),
         "comAcordoCapesConfirmado": confirmed_capes,
         "candidatasEditoraConveniadaCAPES": flagged_by_publisher,
         "verificacoesOnline": online_checked,
         "distribuicaoPorEditoraCAPES": dict(sorted(by_publisher.items(), key=lambda kv: (-kv[1], kv[0]))),
-        "requisitosObrigatoriosUFT": [
+        "requisitosObrigatoriosCAPES": [
             "Identificador ORCID validado e vinculado em meusdados.capes.gov.br",
-            "Autor correspondente com vínculo ativo com a Universidade Federal do Tocantins (PPGAD/UFT)",
-            "Uso obrigatório do e-mail institucional (@uft.edu.br ou @mail.uft.edu.br) na submissão",
+            "Autor correspondente com vínculo ativo com instituição brasileira participante do acordo CAPES",
+            "Uso obrigatório do e-mail institucional oficial da instituição participante na submissão",
             "Aprovação regular por revisão por pares e disponibilidade de cota anual da editora",
         ],
     }
