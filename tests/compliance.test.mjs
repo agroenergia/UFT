@@ -133,7 +133,7 @@ test('fixed legal compliance footer and full policy documentation cover independ
   }
 });
 
-test('header displays 4 main terms + hover dropdown below search bar and provides mobile-only floating nav', async () => {
+test('header displays 5 main terms + hover dropdown below search bar and provides mobile-only floating nav', async () => {
   const indexHtml = await read('index.html');
   assert.doesNotMatch(indexHtml, /id="menu-toggle"/i, 'index.html must not contain #menu-toggle button');
   assert.doesNotMatch(indexHtml, /<span>Menu<\/span>/i, 'index.html must not show Menu button label');
@@ -142,8 +142,9 @@ test('header displays 4 main terms + hover dropdown below search bar and provide
   const navMatch = indexHtml.match(/<nav id="primary-navigation"[\s\S]*?<\/nav>/i);
   assert.ok(navMatch, '#primary-navigation must exist');
   const navBlock = navMatch[0];
-  for (const mainTerm of ['>Início<', '>Comparar<', '>Sinais de alerta<', '>Contato<', 'Mais recursos']) {
-    assert.ok(navBlock.includes(mainTerm), `primary nav must include ${mainTerm}`);
+  const beforeDropdown = navBlock.split('data-nav-dropdown')[0];
+  for (const mainTerm of ['>Início<', '>Catálogo de revistas<', '>Comparar<', '>Sinais de alerta<', '>Contato<']) {
+    assert.ok(beforeDropdown.includes(mainTerm), `primary top-level nav must include ${mainTerm}`);
   }
   assert.match(navBlock, /id="nav-more-menu" class="nav-dropdown-menu"/i, 'secondary items must live in dropdown menu');
   assert.match(indexHtml, /<nav class="mobile-floating-nav"/i, 'index.html must provide mobile floating bottom navigation');
