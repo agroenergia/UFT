@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20261124indep3">
+<link rel="stylesheet" href="assets/css/style.css?v=20261124nav4">
 </head>
 <body>
 <a class="skip-link" href="#inicio">Ir para o conteúdo principal</a>
@@ -23,7 +23,23 @@
     </form>
   </div>
   <div class="header-subnav">
-    <nav id="primary-navigation" class="header-term-nav" aria-label="Navegação principal"><a href="#revistas" class="on">Catálogo</a><a href="#comparar">Comparar</a><a href="#requisitos-publicacao">Requisitos (7 passos)</a><a href="checklist.html">Checklist completo</a><a href="#faq">Acordos CAPES &amp; FAQ</a><a href="#sinais-alerta">Sinais de alerta</a><a href="sobre.html">Sobre e fontes</a><a href="privacidade.html">Segurança e Direitos</a><a href="#sugerir">Contato</a></nav>
+    <nav id="primary-navigation" class="header-term-nav" aria-label="Navegação principal">
+      <a href="#inicio" class="on">Início</a>
+      <a href="#comparar">Comparar</a>
+      <a href="#sinais-alerta">Sinais de alerta</a>
+      <a href="#sugerir">Contato</a>
+      <div class="nav-dropdown" data-nav-dropdown>
+        <button type="button" class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true" aria-controls="nav-more-menu">Mais recursos <span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div id="nav-more-menu" class="nav-dropdown-menu" role="menu">
+          <a href="#revistas" role="menuitem">Catálogo de revistas</a>
+          <a href="#requisitos-publicacao" role="menuitem">Requisitos (7 passos)</a>
+          <a href="checklist.html" role="menuitem">Checklist completo</a>
+          <a href="#faq" role="menuitem">Acordos CAPES &amp; FAQ</a>
+          <a href="sobre.html" role="menuitem">Sobre e fontes</a>
+          <a href="privacidade.html" role="menuitem">Segurança e Direitos</a>
+        </div>
+      </div>
+    </nav>
   </div>
 </header>
 <div class="ai-response-wrap">
@@ -386,7 +402,14 @@
   </div>
 </section>
 <div class="footer-bottom"><span>RigorAtlas · Iniciativa independente de apoio à pesquisa científica</span><span>Sem vínculo institucional com universidades, órgãos públicos ou editoras · Uso educacional e não comercial</span></div></div></footer>
-<script type="module" src="assets/js/app.js?v=20261124indep3"></script>
+<nav class="mobile-floating-nav" aria-label="Atalhos rápidos para dispositivos móveis">
+  <a href="#inicio" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6.5h-5V21H4a1 1 0 0 1-1-1v-9.5z"/></svg><span>Início</span></a>
+  <a href="#revistas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3H10a2 2 0 0 1 2 2v15a2 2 0 0 0-2-1.5H4.5A2.5 2.5 0 0 1 2 16v-10.5zm20 0A2.5 2.5 0 0 0 19.5 3H14a2 2 0 0 0-2 2v15a2 2 0 0 1 2-1.5h5.5A2.5 2.5 0 0 0 22 16v-10.5z"/></svg><span>Catálogo</span></a>
+  <a href="#comparar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h7v12H4zM13 6h7v12h-7z"/></svg><span>Comparar</span></a>
+  <a href="#sinais-alerta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L2 20h20L12 3zm0 6v5m0 3h.01"/></svg><span>Alerta</span></a>
+  <a href="#sugerir"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm0 2l8 6 8-6"/></svg><span>Contato</span></a>
+</nav>
+<script type="module" src="assets/js/app.js?v=20261124nav4"></script>
 <script type="module" src="assets/js/accessibility.js?v=20261124indep3"></script>
 <script type="module" src="assets/js/contact.js?v=20261124indep3"></script>
 <script type="module" src="assets/js/visitor-tracker.js?v=20261124indep3"></script>
