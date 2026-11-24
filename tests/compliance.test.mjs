@@ -112,3 +112,15 @@ test('fixed legal compliance footer and full policy documentation cover APIs, AI
     assert.ok(policyHtml.includes(term), `privacidade.html must document: ${term}`);
   }
 });
+
+test('header replaces Menu toggle button with always-visible horizontal term navigation below search bar', async () => {
+  const indexHtml = await read('index.html');
+  assert.doesNotMatch(indexHtml, /id="menu-toggle"/i, 'index.html must not contain #menu-toggle button');
+  assert.doesNotMatch(indexHtml, /<span>Menu<\/span>/i, 'index.html must not show Menu button label');
+  assert.match(indexHtml, /<div class="header-subnav">\s*<nav id="primary-navigation" class="header-term-nav"[^>]*>/i, 'index.html must render always-visible horizontal term navigation under search bar');
+  assert.doesNotMatch(indexHtml, /id="primary-navigation"[^>]*\shidden\b/i, '#primary-navigation must not be hidden');
+  const searchPos = indexHtml.indexOf('id="ai-search-form"');
+  const navPos = indexHtml.indexOf('id="primary-navigation"');
+  assert.ok(searchPos > 0 && navPos > searchPos, 'horizontal term navigation must appear below the search bar');
+});
+
