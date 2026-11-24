@@ -176,28 +176,6 @@ export function formatVisitsTxt(data=getVisitData()){
   return lines.join("\r\n");
 }
 
-function triggerDownload(filename,content,mime){
-  const blob=new Blob(["\ufeff"+content],{type:mime});
-  const a=document.createElement("a");
-  const u=URL.createObjectURL(blob);
-  a.href=u;
-  a.download=filename;
-  document.body.append(a);
-  a.click();
-  a.remove();
-  setTimeout(()=>URL.revokeObjectURL(u),1500);
-}
-
-export function downloadVisitsTxt(){
-  const stamp=new Date().toISOString().slice(0,10);
-  triggerDownload(`visitas-rigoratlas-${stamp}.txt`,formatVisitsTxt(),"text/plain;charset=utf-8");
-}
-
-export function downloadVisitsJson(){
-  const stamp=new Date().toISOString().slice(0,10);
-  triggerDownload(`visitas-rigoratlas-${stamp}.json`,JSON.stringify(getVisitData(),null,2),"application/json;charset=utf-8");
-}
-
 export function clearVisitLog(){
   saveVisitData({totalVisitas:0,registros:[]});
   try{sessionStorage.removeItem(SESSION_KEY);}catch{}

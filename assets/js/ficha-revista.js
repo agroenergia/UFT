@@ -45,7 +45,7 @@ async function load(){
   wosEntries.push(["Conferir Quartil/Percentil JIF no JCR (via CAPES)","https://jcr.clarivate.com/"]);
   root.append(section("Classificadores na Web of Science (WoS / Clarivate JCR)",wosEntries));
  }
- const actions=document.createElement("div");actions.className="detail-actions";const print=document.createElement("button");print.type="button";print.className="detail-print";print.textContent="Imprimir / salvar como PDF";print.addEventListener("click",()=>window.print());actions.append(print);
+ const actions=document.createElement("div");actions.className="detail-actions";
  const back=document.createElement("a");back.href="index.html#revista-"+encodeURIComponent(journal.id??journalId);back.className="detail-back-button";back.textContent="Voltar à revista no catálogo";actions.append(back);
  if(journal.scopusSourceId){const scopus=document.createElement("a");scopus.href="https://www.scopus.com/sourceid/"+encodeURIComponent(journal.scopusSourceId);scopus.target="_blank";scopus.rel="noopener noreferrer";scopus.className="detail-source-link";scopus.textContent="Ver notas no site oficial da Scopus ↗";actions.append(scopus)}
  const official=safeUrl(journal.url_ficha||journal.url);if(official){const link=document.createElement("a");link.href=official;link.target="_blank";link.rel="noopener noreferrer";link.className="detail-source-link";link.textContent=journal.tipoLink?"Abrir fonte externa ↗":"Abrir página do periódico ↗";actions.append(link)}root.append(actions);

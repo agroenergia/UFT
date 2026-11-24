@@ -1,5 +1,4 @@
 import { findSmartCatalogMatches, expandSearchTerms } from './journal-search.js';
-import { downloadPublicationPdf } from './pdf-export.js?v=20261118v15';
 
 const OPENALEX_WORKS = 'https://api.openalex.org/works';
 const OPENALEX_SOURCES = 'https://api.openalex.org/sources';
@@ -477,7 +476,9 @@ async function queryPubMed(termQuery) {
         db: 'pubmed',
         term: termQuery,
         retmax: '15',
-        retmode: 'json'
+        retmode: 'json',
+        tool: 'RigorAtlas-UFT',
+        email: 'mdqmichael@gmail.com'
       })}`
     );
     if (!esResp.ok) return [];
@@ -489,7 +490,9 @@ async function queryPubMed(termQuery) {
       `${PUBMED_ESUMMARY}?${new URLSearchParams({
         db: 'pubmed',
         id: ids.join(','),
-        retmode: 'json'
+        retmode: 'json',
+        tool: 'RigorAtlas-UFT',
+        email: 'mdqmichael@gmail.com'
       })}`
     );
     if (!sumResp.ok) return [];
@@ -609,21 +612,6 @@ function resolveJournalAccessUrl(art) {
   return `https://portal.issn.org/search?q=${encodeURIComponent(art.journalTitle || '')}`;
 }
 
-function toPdfRecord(art) {
-  return {
-    titulo: art.title || 'Publicação científica',
-    autores: Array.isArray(art.authors) && art.authors.length ? art.authors.slice(0, 8).join(', ') : '',
-    periodico: art.journalTitle || 'Periódico não informado',
-    editora: art.publisher || '',
-    ano: art.year || '',
-    issn: art.issns && art.issns.length ? art.issns[0] : '',
-    citacoes: art.citedBy || 0,
-    capes: `${art.capes.label} — ${art.capes.detail}`,
-    doi: art.doi || '',
-    journalUrl: resolveJournalAccessUrl(art)
-  };
-}
-
 function createArticleCard(art) {
   const card = el('article', 'oa-article-card');
   const titleEl = el('h4', 'oa-article-title');
@@ -658,18 +646,6 @@ function createArticleCard(art) {
     dLink.rel = 'noopener noreferrer';
     actions.append(dLink);
   }
-
-  const pdfBtn = el('button', 'oa-pdf-btn', '📄 Baixar PDF');
-  pdfBtn.type = 'button';
-  pdfBtn.addEventListener('click', () => {
-    const slug = norm(art.title).split(/\s+/).slice(0, 4).join('-') || 'publicacao';
-    downloadPublicationPdf(
-      [toPdfRecord(art)],
-      `RigorAtlas-${slug}.pdf`,
-      'Ficha de Publicacao Encontrada - RigorAtlas UFT'
-    );
-  });
-  actions.append(pdfBtn);
 
   card.append(titleEl, info, buildCapesBadge(art.capes), actions);
   return card;
@@ -722,27 +698,12 @@ function renderBotReply({ query, orcidProfile, articles, sources, catalogMatches
   }
 
   if (articles.length) {
-    const pdfAllBtn = el(
-      'button',
-      'oa-pdf-all-btn',
-      `📥 Baixar PDF com todas as publicações e links (${articles.length})`
-    );
-    pdfAllBtn.type = 'button';
-    pdfAllBtn.addEventListener('click', () => {
-      const slug = norm(query).split(/\s+/).slice(0, 3).join('-') || 'busca';
-      downloadPublicationPdf(
-        articles.map(toPdfRecord),
-        `RigorAtlas-publicacoes-${slug}.pdf`,
-        `Busca Cientifica: ${query}`
-      );
-    });
-
     const artHead = el(
       'p',
       'oa-subhead',
       `Artigos encontrados e onde foram publicados (${articles.length}):`
     );
-    wrap.append(artHead, pdfAllBtn);
+    wrap.append(artHead);
 
     const list = el('div', 'oa-article-list');
     let shown = Math.min(INITIAL_VISIBLE_ARTICLES, articles.length);
@@ -834,7 +795,7 @@ function mountChatUI() {
     <div id="oa-chat-messages" class="oa-chat-messages" aria-live="polite">
       <div class="oa-msg oa-msg-bot">
         <div class="oa-msg-meta">Assistente de Artigos &amp; Revistas RigorAtlas</div>
-        <p>Olá! Aqui você pode <strong>buscar artigos de seu interesse</strong> na literatura científica (integrando <strong>OpenAlex</strong>, <strong>Crossref</strong>, <strong>PubMed</strong> e <strong>ORCID</strong>), descobrir <strong>aonde cada estudo foi publicado</strong> e conferir se a revista participa do <strong>Acordo CAPES</strong>.</p>
+        <p>Olá! Aqui você pode <strong>consultar artigos de seu interesse online</strong> na literatura científica (integrando as APIs públicas abertas <strong>OpenAlex</strong>, <strong>Crossref</strong>, <strong>PubMed</strong> e <strong>ORCID</strong>), descobrir <strong>onde cada estudo foi publicado</strong> e conferir se a revista participa do <strong>Acordo CAPES</strong>.</p>
         <p>Digite um <strong>assunto de pesquisa</strong>, <strong>título de artigo</strong>, <strong>autor</strong> ou <strong>nome da revista</strong>, ou toque em um exemplo:</p>
         <div class="oa-quick-prompts" aria-label="Exemplos de pesquisa">
           <button type="button" class="oa-prompt-chip" data-q="bioetanol biomassa cana">🔎 bioetanol e biomassa</button>
@@ -844,6 +805,7 @@ function mountChatUI() {
         </div>
       </div>
     </div>
+    <p class="oa-chat-legal">Regime somente consulta online (downloads desativados). Metadados públicos via OpenAlex (CC0), Crossref, PubMed e ORCID; sem envio a IA externa. Não insira dados sigilosos. <a href="privacidade.html">Política de Segurança e Direitos</a>.</p>
     <form id="oa-chat-form" class="oa-chat-form">
       <label class="sr-only" for="oa-chat-input">Busque artigos de interesse, autores, temas ou revistas</label>
       <input id="oa-chat-input" type="search" maxlength="240" required placeholder="Busque artigos, temas, autores ou revistas..." autocomplete="off">

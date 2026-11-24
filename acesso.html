@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Área técnica | PPGAD UFT</title>
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css?v=20261124legal1">
 <style>
 .access-page{min-height:100vh;display:block;padding:28px 16px;background:var(--bg)}
 .access-card{width:min(1180px,100%);margin:0 auto 22px;min-width:0;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:28px}
@@ -37,20 +37,15 @@
   <section id="visitas" class="access-card" aria-labelledby="visitas-title" style="margin-bottom:22px">
     <div class="admin-head">
       <div>
-        <span class="eyebrow">Marcador de Visitas</span>
-        <h1 id="visitas-title">Registro de Acessos (.txt / .json)</h1>
-        <p id="visit-summary">Carregando histórico de visitas registradas…</p>
+        <span class="eyebrow">Marcador Técnico Local</span>
+        <h1 id="visitas-title">Registro Local de Acessos (Somente Visualização)</h1>
+        <p id="visit-summary">Carregando histórico técnico local…</p>
       </div>
       <a class="btn" href="./">← Voltar ao portal</a>
     </div>
     <div class="admin-toolbar">
       <div class="group">
-        <button id="visit-dl-txt" class="primary-admin" type="button">⬇ Baixar Bloco de Notas (.txt)</button>
-        <button id="visit-dl-json" type="button">⬇ Baixar JSON (.json)</button>
-        <button id="visit-copy-json" type="button">Copiar JSON</button>
-      </div>
-      <div class="group">
-        <button id="visit-refresh" type="button">Atualizar</button>
+        <button id="visit-refresh" class="primary-admin" type="button">Atualizar tabela</button>
         <button id="visit-clear" class="danger-admin" type="button">Limpar histórico local</button>
       </div>
     </div>
@@ -62,32 +57,14 @@
         <tbody id="visit-log-body"></tbody>
       </table>
     </div>
-    <p class="admin-note"><strong>Como funciona no GitHub Pages:</strong> como o site é hospedado de forma estática no GitHub Pages, cada navegador registra seus próprios acessos em armazenamento local (<code>rigoratlas_visits_v1</code>) e permite exportar tudo em Bloco de Notas (<code>.txt</code>) ou <code>.json</code>.</p>
-    <details class="admin-note" style="margin-top:10px">
-      <summary style="cursor:pointer;font-weight:700;color:#123f65">Opcional: Sincronizar acessos de outros computadores na nuvem (Google Planilhas / Drive)</summary>
-      <p style="margin:8px 0">Para receber automaticamente os acessos de qualquer visitante da internet em uma única planilha do seu Google Drive, crie um Google Apps Script Web App com o código abaixo, publique como “Qualquer pessoa” e cole a URL gerada aqui neste navegador:</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0">
-        <input id="remote-sync-url" type="url" placeholder="https://script.google.com/macros/s/.../exec" style="flex:1;min-width:260px;min-height:38px;padding:6px 10px;border:1px solid #b5cddb;border-radius:8px">
-        <button id="save-sync-url" class="primary-admin" type="button">Salvar URL de nuvem</button>
-        <button id="test-sync-url" type="button">Enviar teste</button>
-      </div>
-      <p id="sync-status" style="margin:4px 0 8px;font-weight:600"></p>
-      <pre style="white-space:pre-wrap;background:#f4f8fb;border:1px solid #cbdde5;border-radius:8px;padding:10px;font-size:11.5px;overflow:auto">function doPost(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sh = ss.getSheetByName("Visitas") || ss.insertSheet("Visitas");
-  if (sh.getLastRow() === 0) sh.appendRow(["Data/Hora","Pagina","Dispositivo","Navegador","Resolucao","Origem","Acoes"]);
-  var d = JSON.parse(e.postData.contents);
-  sh.appendRow([d.dataHoraBR, d.paginaInicial, d.dispositivo, d.navegadorSistema, d.resolucao, d.origem, (d.acoes||[]).join(" | ")]);
-  return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
-}</pre>
-    </details>
+    <p class="admin-note"><strong>Regime somente consulta:</strong> em conformidade com a <a href="privacidade.html">Política de Segurança e Direitos</a>, opções de download de arquivos foram desativadas. Este histórico permanece exclusivamente no armazenamento local (<code>localStorage</code>) do navegador.</p>
   </section>
   <section class="access-card">
     <div id="login-view" class="access-login">
       <span class="eyebrow">Área técnica</span>
-      <h1>Acesso editorial</h1>
-      <p>Área local para edição e exportação da base em JSON/XLS.</p>
-      <p class="admin-note"><strong>Aviso de arquitetura estática:</strong> em páginas estáticas (GitHub Pages), esta tela bloqueia apenas o editor local do navegador; a publicação oficial exige commit no repositório GitHub.</p>
+      <h1>Consulta editorial</h1>
+      <p>Área local para revisão técnica da base editorial (downloads desativados).</p>
+      <p class="admin-note"><strong>Aviso de arquitetura estática:</strong> em páginas estáticas (GitHub Pages), esta tela é restrita à revisão local no navegador; alterações oficiais exigem revisão e commit autenticado diretamente no repositório GitHub.</p>
       <form id="login-form">
         <label class="access-field" for="usuario">Usuário</label>
         <input id="usuario" type="text" autocomplete="username" required>
@@ -102,26 +79,21 @@
       <div class="admin-head">
         <div>
           <span class="eyebrow">Área técnica</span>
-          <h1>Base editorial atualizada</h1>
-          <p>Edite os dados no formato atual do RigorAtlas (Scopus, Web of Science e CAPES) e exporte o JSON ou Planilha XLS.</p>
+          <h1>Revisão local da base editorial</h1>
+          <p>Visualize e rascunhe ajustes locais no navegador (Scopus®, Web of Science™ e CAPES). Downloads e exportações de arquivos permanecem desativados pela política de segurança.</p>
         </div>
         <button id="logout" type="button">Sair</button>
       </div>
 
       <div class="admin-note">
-        <strong>Importante:</strong> esta versão do portal é estática. As alterações feitas aqui ficam no navegador até serem exportadas. Use <strong>Baixar JSON</strong> para gerar a nova base e substituir o arquivo <code>assets/data/revistas.json</code> no repositório.
+        <strong>Governança de publicação:</strong> para atualizar o portal oficial com rastreabilidade, aplique alterações auditadas diretamente no repositório GitHub (<code>assets/data/revistas.json</code>) mediante revisão técnica.
       </div>
 
       <div class="admin-toolbar">
         <div class="group">
-          <button id="add" class="primary-admin" type="button">+ Nova revista</button>
-          <button id="save-local" type="button">Salvar no navegador</button>
+          <button id="add" class="primary-admin" type="button">+ Nova revista (rascunho local)</button>
+          <button id="save-local" type="button">Salvar rascunho no navegador</button>
           <button id="reset" class="danger-admin" type="button">Restaurar base original</button>
-        </div>
-        <div class="group">
-          <button id="json" type="button">Baixar JSON</button>
-          <button id="xls" type="button">Baixar Excel (.xls)</button>
-          <button id="admin-pdf" type="button">Imprimir / PDF</button>
         </div>
       </div>
 
@@ -138,12 +110,27 @@
     </div>
   </section>
 </main>
+<footer class="legal-compliance-standalone" aria-labelledby="legal-footer-title">
+  <div class="legal-compliance-head">
+    <div>
+      <span class="legal-compliance-kicker">DOCUMENTAÇÃO JURÍDICA FIXA · POLÍTICA DE SEGURANÇA, DIREITOS E GOVERNANÇA DE DADOS</span>
+      <h2 id="legal-footer-title">Conformidade Legal, APIs, IA, Scopus® e Web of Science™ — RigorAtlas (PPGAD/UFT)</h2>
+    </div>
+    <span class="legal-badge-readonly">Regime Somente Consulta · Downloads Desativados</span>
+  </div>
+  <div class="legal-disclaimer-bar">
+    <strong>Resumo Fixo:</strong> portal acadêmico público sem fins lucrativos (PPGAD/UFT) em modo somente consulta online (downloads e exportações desativados). APIs abertas em conformidade: OpenAlex (CC0), Crossref (Metadados Abertos), DOAJ (CC0), ORCID Public API (CC0/ToS) e NCBI PubMed E-utilities. Sem envio de dados a IA generativa externa. <strong>Scopus® / CiteScore™</strong> (Elsevier B.V.), <strong>Web of Science™ / JCR™ / JIF™</strong> (Clarivate™) e <strong>SJR</strong> (SCImago Lab) exibidos exclusivamente em caráter referencial, sem <em>scraping</em> nem redistribuição. Alinhado à LGPD (Lei nº 13.709/2018), Marco Civil (Lei nº 12.965/2014) e Lei de Direitos Autorais (Lei nº 9.610/1998). Documentação técnica de governança — não substitui parecer jurídico formal (Procuradoria/UFT ou OAB).
+  </div>
+  <div class="legal-links-bar">
+    <a href="privacidade.html">Política Completa de Segurança, Direitos, APIs e LGPD</a>
+    <a href="index.html">Catálogo RigorAtlas</a>
+    <a href="sobre.html">Sobre e Fontes</a>
+  </div>
+</footer>
 <script type="module">
-import {downloadJournalsXls} from "./assets/js/xls-export.js?v=20261118v8";
 const USER_SHA256="727d59a803beb62023107cce02aeefa7af5323fe5f17edcfa734693b16d7c75d";
 const PASS_SHA256="4439959ed7554063122ebf22f5b656ca4e62ecfd96a3fae567dab227e21863d5";
 const DATA_URL="assets/data/revistas.json";
-let original=null;
 let data=null;
 
 const $=id=>document.getElementById(id);
@@ -157,11 +144,10 @@ async function sha256Hex(str){
 
 async function loadData(){
   const local=localStorage.getItem("ppgad_admin_base");
-  if(local){try{data=JSON.parse(local);original=JSON.parse(local);return}catch{}}
+  if(local){try{data=JSON.parse(local);return}catch{}}
   const res=await fetch(DATA_URL,{cache:"no-store"});
-  if(!res.ok) throw new Error("Não foi possível carregar a base JSON.");
+  if(!res.ok) throw new Error("Não foi possível carregar a base editorial.");
   data=await res.json();
-  original=JSON.parse(JSON.stringify(data));
 }
 
 const ADMIN_FIELDS=[
@@ -191,8 +177,6 @@ function render(){
  document.querySelectorAll(".delete").forEach(b=>b.onclick=()=>{data.revistas.splice(+b.dataset.i,1);render();});
 }
 
-function download(name,blob){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-
 $("login-form").onsubmit=async e=>{
  e.preventDefault();
  const uHash=await sha256Hex($("usuario").value.trim());
@@ -206,23 +190,15 @@ $("login-form").onsubmit=async e=>{
 
 $("logout").onclick=()=>{sessionStorage.removeItem("ppgad_admin_auth");location.reload()};
 $("add").onclick=()=>{data.revistas.unshift({id:Date.now(),titulo:"Nova revista",editora:"",issn:"",area:"",escopo:"",citescore:null,maiorPercentil:null,sjr:"",colecaoWos:"",fatorImpacto:null,acordoCapes:null,idioma:"",custo:"",url:"",urlInstrucoes:"",atualizadoEm:new Date().toISOString().slice(0,10)});render()};
-$("save-local").onclick=()=>{localStorage.setItem("ppgad_admin_base",JSON.stringify(data));alert("Base salva neste navegador.")};
-$("reset").onclick=()=>{if(confirm("Restaurar a base original e apagar a cópia local?")){localStorage.removeItem("ppgad_admin_base");location.reload()}};
-$("json").onclick=()=>download("revistas.json",new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"}));
-$("xls").onclick=()=>downloadJournalsXls(data.revistas||[],"RigorAtlas-base-editorial.xls");
-$("admin-pdf").onclick=()=>{
- const w=window.open("","_blank");
- if(!w)return;
- w.document.write("<html><head><meta charset='utf-8'><title>Base editorial PPGAD UFT</title><style>body{font:11px Arial;margin:20px}h1{color:#073f30}table{width:100%;border-collapse:collapse}th,td{border:1px solid #bbb;padding:5px;text-align:left}th{background:#e8f0ec}</style></head><body><h1>Base editorial — PPGAD/UFT</h1><p>Base atualizada: "+esc(data.atualizadoEm||data.baseAtualizada)+"</p><table><tr><th>Título</th><th>Editora</th><th>ISSN</th><th>Área</th><th>CiteScore</th><th>Percentil</th><th>SJR</th><th>WoS</th><th>JIF</th><th>Idioma</th></tr>"+data.revistas.map(r=>"<tr>"+["titulo","editora","issn","area","citescore","maiorPercentil","sjr","colecaoWos","fatorImpacto","idioma"].map(c=>"<td>"+esc(r[c])+"</td>").join("")+"</tr>").join("")+"</table><script>window.onload=()=>window.print()<\/script></body></html>");
- w.document.close();
-};
+$("save-local").onclick=()=>{localStorage.setItem("ppgad_admin_base",JSON.stringify(data));alert("Rascunho salvo localmente neste navegador.")};
+$("reset").onclick=()=>{if(confirm("Restaurar a base original e apagar o rascunho local?")){localStorage.removeItem("ppgad_admin_base");location.reload()}};
 if(sessionStorage.getItem("ppgad_admin_auth")==="1"){
  $("login-view").style.display="none";$("admin-panel").style.display="block";
  loadData().then(render).catch(e=>{$("admin-panel").innerHTML="<p>"+esc(e.message)+"</p>"});
 }
 </script>
 <script type="module">
-import {getVisitData,downloadVisitsTxt,downloadVisitsJson,clearVisitLog,getRemoteSyncUrl,setRemoteSyncUrl,sendRemoteVisit} from "./assets/js/visitor-tracker.js?v=20261118v8";
+import {getVisitData,clearVisitLog} from "./assets/js/visitor-tracker.js?v=20261124legal1";
 const $v=id=>document.getElementById(id);
 const escV=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function renderVisits(){
@@ -240,25 +216,9 @@ function renderVisits(){
     <td>${escV((r.acoes||[]).join(" | ")||"—")}</td>
   </tr>`).join("")||'<tr><td colspan="7">Nenhuma visita registrada ainda neste navegador.</td></tr>';
 }
-$v("visit-dl-txt")?.addEventListener("click",downloadVisitsTxt);
-$v("visit-dl-json")?.addEventListener("click",downloadVisitsJson);
-$v("visit-copy-json")?.addEventListener("click",async()=>{
-  try{await navigator.clipboard.writeText(JSON.stringify(getVisitData(),null,2));alert("Registro JSON copiado.");}catch{}
-});
 $v("visit-refresh")?.addEventListener("click",renderVisits);
 $v("visit-clear")?.addEventListener("click",()=>{
   if(confirm("Limpar todo o registro local de visitas?")){clearVisitLog();renderVisits();}
-});
-if($v("remote-sync-url"))$v("remote-sync-url").value=getRemoteSyncUrl();
-$v("save-sync-url")?.addEventListener("click",()=>{
-  const saved=setRemoteSyncUrl($v("remote-sync-url")?.value||"");
-  if($v("sync-status"))$v("sync-status").textContent=saved?"URL salva para sincronização neste navegador.":"Sincronização remota desativada.";
-});
-$v("test-sync-url")?.addEventListener("click",()=>{
-  const url=setRemoteSyncUrl($v("remote-sync-url")?.value||"");
-  if(!url){if($v("sync-status"))$v("sync-status").textContent="Informe uma URL https:// válida antes de testar.";return;}
-  const ok=sendRemoteVisit({dataHoraBR:new Date().toLocaleString("pt-BR"),paginaInicial:"acesso.html (teste)",dispositivo:"Admin",navegadorSistema:navigator.userAgent.slice(0,40),resolucao:`${screen.width}x${screen.height}`,origem:location.href,acoes:["Teste de conexão"]});
-  if($v("sync-status"))$v("sync-status").textContent=ok?"Evento de teste disparado! Confira a aba 'Visitas' na sua Planilha Google.":"Não foi possível enviar o teste (verifique se a URL começa com https://).";
 });
 renderVisits();
 </script>

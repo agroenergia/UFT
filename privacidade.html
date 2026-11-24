@@ -3,46 +3,187 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Privacidade e LGPD | RigorAtlas</title>
-<link rel="stylesheet" href="assets/css/style.css?v=20261118v15">
+<title>Política de Segurança, Direitos, Regras de Uso, APIs e LGPD | RigorAtlas</title>
+<meta name="description" content="Política de Segurança da Informação, Direitos e Regras de Uso (sem downloads), conformidade das APIs científicas (Crossref, OpenAlex, ORCID, PubMed, DOAJ), IA, Scopus, Web of Science e LGPD do portal RigorAtlas — PPGAD/UFT.">
+<link rel="stylesheet" href="assets/css/style.css?v=20261124legal1">
 </head>
 <body>
-<main class="information-page">
+<main class="information-page policy-page">
   <a class="brand-lockup" href="index.html"><img class="ppgad-logo" src="assets/img/logo-pesquisa-ppgad.svg" alt="Logotipo RigorAtlas"><strong>RigorAtlas</strong></a>
-  <h1>Privacidade e LGPD</h1>
-  <p>Informativo atualizado em 18/11/2026. Este aviso descreve o funcionamento atual do RigorAtlas e orienta o uso com o mínimo de dados pessoais.</p>
+  <span class="policy-hero-badge">REGIME SOMENTE CONSULTA ONLINE · DOWNLOADS DESATIVADOS · ATUALIZADA EM 24/11/2026</span>
+  <h1>Política de Segurança, Direitos, Regras de Uso, APIs e LGPD</h1>
+  <p>Esta documentação estabelece a <strong>Política de Segurança da Informação</strong>, os <strong>Direitos e Regras de Uso</strong>, a <strong>Matriz de Conformidade de APIs, Inteligência Artificial e Bases Bibliográficas (Scopus® e Web of Science™)</strong> e o <strong>Aviso de Privacidade (LGPD)</strong> do portal acadêmico <strong>RigorAtlas</strong>, iniciativa vinculada ao Programa de Pós-Graduação em Agroenergia Digital da Universidade Federal do Tocantins (PPGAD/UFT).</p>
 
-  <h2>Catálogo, filtros e Planilha XLS</h2>
-  <p>A consulta ao catálogo, a aplicação dos filtros, a comparação de revistas e a geração de arquivos em <a href="base-planilha.html">Planilha XLS</a>, CSV ou PDF acontecem integralmente no navegador do visitante, sem exigir cadastro, nome ou e-mail. A hospedagem estática no GitHub Pages e os serviços de capas externas podem receber dados técnicos normais da conexão HTTP (como endereço IP), conforme suas próprias políticas.</p>
+  <div class="policy-callout">
+    <strong>Regra Fixa de Operação — Consulta Exclusivamente Online (Sem Downloads)</strong>
+    Por diretriz de segurança jurídica, proteção de propriedade intelectual e respeito integral aos termos contratuais das bases bibliográficas científicas, <strong>todas as opções de download e exportação em massa de arquivos (XLS, XLSX, CSV, PDF, JSON, TXT e MP4) foram permanentemente removidas</strong> do site, das fichas, do checklist e do assistente de busca (chat). O RigorAtlas opera estritamente como ambiente público de <strong>consulta, comparação e direcionamento acadêmico online</strong>, sem redistribuição de datasets de terceiros.
+  </div>
 
-  <h2>Pesquisa inteligente interna e Crossref</h2>
-  <p>Ao acionar “Pesquisar” na barra superior, a busca principal é executada localmente no seu navegador sobre a base auditada do projeto (<code>revistas.json</code>). De forma complementar, o termo digitado é consultado na API pública do <strong>Crossref</strong> para sugerir artigos e periódicos recentes relacionados. Não inclua nomes de participantes de pesquisa, dados pessoais, segredos industriais ou trechos sigilosos de manuscritos na barra de busca.</p>
+  <h2>1. Direitos, Regras de Uso e Segurança da Informação</h2>
+  <div class="policy-grid">
+    <section class="policy-box">
+      <h3>Finalidade e Direitos de Uso</h3>
+      <ul>
+        <li>Uso estritamente <strong>acadêmico, educacional e sem fins lucrativos</strong> para apoio a discentes, docentes e pesquisadores.</li>
+        <li>É vedada a exploração comercial, a revenda, o espelhamento automatizado (<em>scraping</em>) ou a extração em massa dos registros compilados neste portal.</li>
+        <li>A decisão editorial de submissão é exclusivamente do autor e de seu orientador; nenhuma informação exibida garante aprovação pelo PPGAD/UFT, cobertura CAPES ou aceite pelo periódico.</li>
+      </ul>
+    </section>
+    <section class="policy-box">
+      <h3>Segurança da Informação e Conduta</h3>
+      <ul>
+        <li>Arquitetura <strong>100% estática em HTTPS</strong> (GitHub Pages), sem banco de dados de usuários, sem criação de contas, sem senhas de visitantes e sem cookies publicitários ou de rastreamento comercial.</li>
+        <li>Remoção de carregamento externo (<em>hotlinking</em>) de capas/imagens proprietárias de editoras, evitando transferência desnecessária de endereço IP a servidores de mídia de terceiros.</li>
+        <li><strong>Dever do usuário:</strong> não insira na barra de pesquisa, no chat ou no checklist dados pessoais sensíveis (Art. 5º, II, LGPD), dados de participantes de pesquisa, segredos industriais ou trechos sigilosos de manuscritos inéditos.</li>
+      </ul>
+    </section>
+  </div>
 
-  <h2>Acessibilidade (conforto visual e leitor em áudio)</h2>
-  <p>As escolhas de conforto visual para autismo, modo foco, alto contraste, tamanho da fonte e leitor automático em áudio (via síntese de voz do próprio navegador — <code>Web Speech API</code>) são salvas apenas localmente em <code>localStorage</code> (<code>rigoratlas_a11y_v1</code>), sem envio a servidores externos.</p>
+  <h2>2. Análise de Conformidade das APIs Científicas Utilizadas</h2>
+  <p>O RigorAtlas integra APIs públicas oficiais de infraestrutura científica aberta para descoberta de artigos, periódicos e identificadores persistentes. Abaixo consta a auditoria técnica das regras oficiais de cada serviço e as medidas de conformidade adotadas:</p>
 
-  <h2>Checklist de submissão</h2>
-  <p>O título ou apelido do artigo, a revista, as marcações e anotações ficam no armazenamento local do navegador. Não há sincronização automática nem envio ao servidor. Limpar dados do navegador apaga o histórico local; utilize a exportação JSON/CSV se desejar manter backup.</p>
+  <div class="policy-table-wrap">
+    <table class="policy-table">
+      <thead>
+        <tr>
+          <th scope="col">API / Serviço</th>
+          <th scope="col">Uso no RigorAtlas</th>
+          <th scope="col">Licença e Regras Oficiais</th>
+          <th scope="col">Conformidade Adotada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Crossref REST API</strong><br><code>api.crossref.org</code></td>
+          <td>Busca complementar de artigos recentes e metadados de periódicos na barra de busca, no chat e na rotina trimestral.</td>
+          <td>Metadados bibliográficos abertos sem restrição de reutilização; agregações liberadas em <strong>domínio público</strong> (<em>Crossref Metadata License Statement</em>). Recomenda identificação via <code>mailto</code> (<em>Polite Pool</em>). Textos integrais permanecem sob direitos dos editores.</td>
+          <td><span class="policy-status policy-status-ok">Conforme</span><br>Uso exclusivo de metadados públicos, identificação <code>mailto</code> ativa em todas as chamadas, exibição de links DOI oficiais e sem redistribuição de arquivos.</td>
+        </tr>
+        <tr>
+          <td><strong>OpenAlex REST API</strong><br><code>api.openalex.org</code></td>
+          <td>Busca de artigos e periódicos no chat e ampliação/enriquecimento semanal automatizado de metadados abertos (ISSN, idioma, homepage).</td>
+          <td>Base de dados mantida pela ONG <em>OurResearch</em> licenciada integralmente sob <strong>Creative Commons CC0 1.0 Universal (domínio público)</strong>, livre para consulta e reutilização. Sujeita a cotas de uso (<em>rate limits</em> / <code>api_key</code>).</td>
+          <td><span class="policy-status policy-status-ok">Conforme</span><br>Respeito integral a limites HTTP 429 (interrupção imediata sem insistência), identificação institucional e uso apenas de metadados públicos CC0.</td>
+        </tr>
+        <tr>
+          <td><strong>ORCID Public API v3.0</strong><br><code>pub.orcid.org</code></td>
+          <td>Consulta sob demanda no chat para localizar perfis públicos e obras vinculadas quando o usuário busca por um pesquisador.</td>
+          <td>Dados públicos do registro ORCID disponibilizados sob <strong>CC0 1.0 Waiver</strong>, regidos pelos <em>ORCID Public APIs Terms of Service</em>: veda exceder limites de taxa, <em>polling</em> contínuo, uso enganoso ou coleta de e-mails para spam. Marca <code>ORCID®</code> reservada à ORCID, Inc.</td>
+          <td><span class="policy-status policy-status-ok">Conforme</span><br>Consulta pontual disparada apenas pelo usuário, sem <em>polling</em>, sem armazenamento local/remoto de perfis pessoais e sem coleta de e-mails.</td>
+        </tr>
+        <tr>
+          <td><strong>NCBI PubMed E-utilities</strong><br><code>eutils.ncbi.nlm.nih.gov</code></td>
+          <td>Consulta complementar de artigos biomédicos/biotecnológicos no chat (<code>esearch</code> e <code>esummary</code>).</td>
+          <td>Metadados do NCBI/NLM em <strong>domínio público governamental (EUA)</strong> (resumos e textos integrais podem conter direitos de editores). Diretriz oficial exige limite máximo de <strong>3 req/s</strong> sem chave e envio dos parâmetros <code>tool</code> e <code>email</code>.</td>
+          <td><span class="policy-status policy-status-ok">Conforme</span><br>Consultas pontuais abaixo do limite de taxa, com identificação explícita <code>tool=RigorAtlas-UFT</code> e <code>email</code>, exibindo apenas título, periódico, ano e link oficial DOI/PubMed.</td>
+        </tr>
+        <tr>
+          <td><strong>DOAJ API</strong><br><code>doaj.org/api</code></td>
+          <td>Fallback semanal automatizado para descoberta de periódicos de acesso aberto com revisão por pares auditada.</td>
+          <td>Metadados de periódicos e artigos sob <strong>Creative Commons CC0 1.0 Universal</strong> (<em>DOAJ Terms &amp; Conditions</em>).</td>
+          <td><span class="policy-status policy-status-ok">Conforme</span><br>Uso não comercial de metadados CC0 com atribuição de fonte e filtro por revisão por pares declarada.</td>
+        </tr>
+        <tr>
+          <td><strong>Portal ISSN &amp; CAPES / PADICT</strong><br><code>portal.issn.org</code> / Portaria nº 120/2024</td>
+          <td>Links diretos para identificação oficial de ISSN e referência informativa aos Acordos <em>Read &amp; Publish</em> da CAPES.</td>
+          <td>Informações normativas públicas brasileiras (Lei nº 12.527/2011 — LAI) e links externos públicos de referência.</td>
+          <td><span class="policy-status policy-status-ok">Conforme</span><br>Caráter estritamente informativo com alerta explícito de que elegibilidade, ORCID e cota vigente devem ser confirmados na CAPES/UFT.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <h2>Formulário de contato direto</h2>
-  <p>Na seção “Fale com o administrador”, nome e e-mail são opcionais e utilizados exclusivamente para retorno da sua mensagem. O envio ocorre diretamente pelo cliente escolhido por você (Gmail na web pré-preenchido, aplicativo de e-mail padrão via <code>mailto:</code> ou cópia da mensagem pronta) endereçado a <a href="mailto:mdqmichael@gmail.com">mdqmichael@gmail.com</a>, sem intermediários externos nem exposição automática de conteúdo sigiloso.</p>
-
-  <h2>Marcador de visitas e diagnósticos técnicos</h2>
-  <p>O sistema registra localmente neste navegador informações técnicas não nominais da navegação (data/hora, páginas acessadas, dispositivo/sistema resumido, resolução de tela, idioma e ações de pesquisa ou exportação) sob a chave <code>rigoratlas_visits_v1</code>, permitindo análises técnicas internas pela administração do portal sem coleta de senha ou cookies publicitários.</p>
-
-  <h2>Seus direitos e contato</h2>
-  <p>A LGPD prevê direitos de informação, confirmação, acesso, correção e eliminação de dados tratados. Para dúvidas ou solicitações, escreva ao administrador do projeto em <a href="mailto:mdqmichael@gmail.com">mdqmichael@gmail.com</a>.</p>
-
-  <h2>Referências</h2>
+  <h2>3. Governança de Inteligência Artificial (IA) e Uso de Dados</h2>
+  <div class="policy-callout">
+    <strong>Ausência de Envio de Dados a Modelos Externos de IA Generativa (LLMs)</strong>
+    Na versão atual em produção do RigorAtlas, <strong>nenhuma pergunta, termo de pesquisa, anotação ou manuscrito é enviado a provedores externos de Inteligência Artificial generativa (LLMs)</strong>.
+  </div>
   <ul>
-    <li><a href="https://www.gov.br/anpd/pt-br/assuntos/titular-de-dados/direito-dos-titulares" target="_blank" rel="noopener noreferrer">ANPD: direitos dos titulares</a></li>
-    <li><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">Privacidade do GitHub</a></li>
-    <li><a href="https://www.crossref.org/privacy/" target="_blank" rel="noopener noreferrer">Privacidade do Crossref</a></li>
+    <li><strong>Busca inteligente interna:</strong> executada 100% localmente no navegador do usuário por meio de algoritmos determinísticos de normalização linguística e expansão de sinônimos técnicos (<code>journal-search.js</code>) sobre o catálogo editorial, complementada pelas APIs públicas listadas na Seção 2.</li>
+    <li><strong>Acessibilidade por voz:</strong> o leitor automático utiliza exclusivamente a <code>Web Speech API</code> nativa do próprio navegador/sistema operacional do visitante, sem envio de áudio ou texto a servidores externos.</li>
+    <li><strong>Regra fixa de governança de IA:</strong> é expressamente vedado utilizar dados pessoais de visitantes ou métricas proprietárias da Scopus® / Web of Science™ para treinar, ajustar (<em>fine-tuning</em>) ou alimentar modelos públicos de IA generativa. Caso qualquer recurso externo de IA venha a ser integrado futuramente, exigirá atualização prévia desta política, contrato com cláusula de não retenção/não treinamento e conformidade plena com a LGPD e os termos das bases científicas.</li>
   </ul>
-  <p><a href="index.html">Voltar ao catálogo</a> · <a href="base-planilha.html">Planilha XLS</a> · <a href="sobre.html">Sobre e fontes</a></p>
+
+  <h2>4. Conformidade Ética e Contratual: Scopus® (Elsevier), Web of Science™ (Clarivate) e SJR</h2>
+  <p>Diferentemente das APIs abertas (CC0), <strong>Scopus®</strong> e <strong>Web of Science™</strong> são plataformas proprietárias comerciais com termos contratuais rígidos contra redistribuição em massa de bancos de dados. O RigorAtlas adota as seguintes regras fixas para operar de forma ética e respeitosa:</p>
+
+  <div class="policy-grid">
+    <section class="policy-box">
+      <h3>Scopus® e CiteScore™ (Elsevier B.V.)</h3>
+      <ul>
+        <li><strong>Propriedade e marcas:</strong> <em>Scopus®</em> e <em>CiteScore™</em> são marcas registradas da Elsevier B.V. O RigorAtlas não é afiliado, patrocinado nem endossado pela Elsevier.</li>
+        <li><strong>Sem scraping e sem redistribuição:</strong> o portal não executa robôs de extração automatizada (<em>web scraping</em>) contra a Scopus e <strong>desativou integralmente o download/exportação da base</strong>, impedindo redistribuição em massa de registros.</li>
+        <li><strong>Referência educacional e verificação oficial:</strong> os valores de CiteScore e percentis exibidos são referências históricas/didáticas com ano e categoria indicados, acompanhadas de link direto para a ficha oficial da revista em <code>scopus.com/sourceid</code>, onde o pesquisador deve confirmar a indexação vigente.</li>
+        <li><strong>Nota de auditoria editorial:</strong> parte dos registros históricos de 2025 referencia planilha pública de consulta aberta; a equipe recomenda e prioriza a migração contínua das verificações exclusivamente para a lista oficial da Elsevier (<code>scopus.com/sources</code>) e o acesso institucional via Portal de Periódicos da CAPES.</li>
+      </ul>
+    </section>
+    <section class="policy-box">
+      <h3>Web of Science™ / JCR™ / JIF™ (Clarivate™) e SJR</h3>
+      <ul>
+        <li><strong>Atribuição oficial exigida pela Clarivate™:</strong> as referências utilizam a grafia oficial <em>Web of Science™</em>, <em>Journal Citation Reports™ (JCR)</em> e <em>Journal Impact Factor™ (JIF)</em>, atribuídas à Clarivate™, com indicação de coleção (SCIE, SSCI, ESCI) e ano quando documentado.</li>
+        <li><strong>Vedação de compartilhamento em massa do JCR:</strong> os termos da Clarivate proíbem o compartilhamento em massa (<em>wholesale sharing</em>) de dados do JCR fora da instituição assinante. Por isso, o RigorAtlas <strong>não disponibiliza tabelas do JCR para download</strong>, não importa nem redistribui a base completa do JCR e exibe apenas dados divulgados publicamente pelas próprias editoras dos periódicos.</li>
+        <li><strong>Acesso legítimo via UFT/CAPES:</strong> para consulta completa a quartis e percentis JIF, o portal direciona o usuário diretamente ao <strong>Master Journal List</strong> público (<code>mjl.clarivate.com</code>) e ao <strong>Journal Citation Reports™</strong> (<code>jcr.clarivate.com</code>) via assinatura institucional do Portal de Periódicos da CAPES (login CAFe/UFT).</li>
+        <li><strong>SCImago Journal &amp; Country Rank (SJR):</strong> quartis SJR são atribuídos à SCImago Lab (<code>scimagojr.com</code>) para referência exclusivamente acadêmica e não comercial.</li>
+      </ul>
+    </section>
+  </div>
+
+  <h2>5. Privacidade, Proteção de Dados Pessoais (LGPD) e Marco Civil</h2>
+  <p>O tratamento de dados no RigorAtlas observa os princípios da finalidade, adequação, necessidade e transparência da <strong>Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018 — LGPD)</strong> e do <strong>Marco Civil da Internet (Lei nº 12.965/2014)</strong>:</p>
+  <ul>
+    <li><strong>Hospedagem estática (GitHub Pages):</strong> a navegação no portal não exige cadastro. A infraestrutura de hospedagem pode registrar logs técnicos padronizados de conexão (como endereço IP e cabeçalhos HTTP) conforme a política do GitHub.</li>
+    <li><strong>Armazenamento exclusivamente local (<code>localStorage</code>):</strong> permanecem apenas no navegador do próprio visitante: (a) preferências de acessibilidade (<code>rigoratlas_a11y_v1</code>); (b) marcações do checklist de submissão (<code>rigoratlas.checklist.v1</code> e <code>rigoratlas_req_checklist_v1</code>); (c) registro técnico local de navegação (<code>rigoratlas_visits_v1</code>) sem dados nominais ou cookies publicitários. O usuário pode apagar todos esses registros a qualquer momento nas configurações do navegador.</li>
+    <li><strong>Contato direto com o administrador:</strong> o formulário “Fale com o administrador” não envia dados para servidores intermediários de terceiros; ele apenas prepara a mensagem para envio voluntário pelo próprio cliente de e-mail do usuário (Gmail na web, aplicativo padrão <code>mailto:</code> ou cópia local) para <a href="mailto:mdqmichael@gmail.com">mdqmichael@gmail.com</a>. Nome e e-mail são opcionais e usados exclusivamente para responder à solicitação.</li>
+    <li><strong>Direitos do titular (Art. 18 da LGPD):</strong> confirmação da existência de tratamento, acesso, correção de dados incompletos ou desatualizados, eliminação, revogação de consentimento e esclarecimentos sobre compartilhamento. Solicitações devem ser encaminhadas ao administrador do projeto em <a href="mailto:mdqmichael@gmail.com">mdqmichael@gmail.com</a>.</li>
+  </ul>
+
+  <h2>6. Propriedade Intelectual e Código-Fonte (Lei nº 9.610/1998)</h2>
+  <p>O código-fonte original desenvolvido pela equipe do projeto RigorAtlas (PPGAD/UFT) é disponibilizado sob a licença open-source <strong>MIT License</strong>, conforme arquivo <code>LICENSE</code> do repositório. Essa licença aplica-se <strong>exclusivamente ao código de software original</strong> e <strong>não</strong> transfere direitos sobre marcas registradas, logotipos, métricas, resumos ou conteúdos de terceiros (Elsevier/Scopus®, Clarivate™/Web of Science™/JCR™, SCImago, Crossref, OpenAlex, ORCID®, PubMed/NCBI, DOAJ, CAPES e editoras científicas), os quais permanecem integralmente sob titularidade de seus respectivos proprietários.</p>
+
+  <h2>7. Escopo da Conformidade e Validação Jurídica Formal</h2>
+  <div class="policy-callout policy-callout-warn">
+    <strong>Nota de Transparência Jurídica e Governança Institucional</strong>
+    Este documento e o rodapé jurídico fixo do portal consolidam as medidas técnicas, éticas e operacionais adotadas pelo RigorAtlas para conformidade com a LGPD, o Marco Civil da Internet, a Lei de Direitos Autorais e os termos oficiais das APIs e plataformas científicas consultadas. Por rigor ético e legal, esclarece-se que <strong>documentação técnica ou revisão automatizada não constitui parecer jurídico vinculante nem certificação legal oficial</strong>. Para emissão de parecer jurídico formal ou certificação institucional definitiva das operações no âmbito da Universidade Federal do Tocantins (UFT), esta documentação deve ser submetida à <strong>Procuradoria Federal junto à UFT</strong>, ao <strong>Encarregado pelo Tratamento de Dados Pessoais (DPO/UFT)</strong> ou a advogado regularmente inscrito na OAB.
+  </div>
+
+  <h2>8. Referências Oficiais e Termos das Plataformas</h2>
+  <ul>
+    <li><a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm" target="_blank" rel="noopener noreferrer">Lei nº 13.709/2018 — Lei Geral de Proteção de Dados Pessoais (LGPD)</a></li>
+    <li><a href="https://www.gov.br/anpd/pt-br/assuntos/titular-de-dados/direito-dos-titulares" target="_blank" rel="noopener noreferrer">ANPD — Direitos dos Titulares de Dados</a></li>
+    <li><a href="https://www.crossref.org/documentation/retrieve-metadata/" target="_blank" rel="noopener noreferrer">Crossref — Metadata Retrieval &amp; License Statement</a> · <a href="https://www.crossref.org/privacy/" target="_blank" rel="noopener noreferrer">Privacidade do Crossref</a></li>
+    <li><a href="https://openalex.org/projects" target="_blank" rel="noopener noreferrer">OpenAlex — CC0 Public Domain Data Policy</a></li>
+    <li><a href="https://info.orcid.org/public-client-terms-of-service/" target="_blank" rel="noopener noreferrer">ORCID — Public APIs Terms of Service &amp; CC0 Waiver</a></li>
+    <li><a href="https://www.ncbi.nlm.nih.gov/books/NBK25497/" target="_blank" rel="noopener noreferrer">NCBI / NIH — E-utilities Usage Guidelines &amp; Policies</a></li>
+    <li><a href="https://doaj.org/terms/" target="_blank" rel="noopener noreferrer">DOAJ — Terms and Conditions (CC0 Metadata)</a></li>
+    <li><a href="https://www.elsevier.com/products/scopus/content/content-policy-and-selection" target="_blank" rel="noopener noreferrer">Elsevier / Scopus® — Content Policy &amp; Terms</a></li>
+    <li><a href="https://clarivate.com/legal-center/" target="_blank" rel="noopener noreferrer">Clarivate™ — Legal Center (Web of Science™ &amp; JCR™)</a></li>
+    <li><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub — General Privacy Statement (GitHub Pages)</a></li>
+  </ul>
+
+  <p><a href="index.html">← Voltar ao catálogo</a> · <a href="sobre.html">Sobre e fontes</a> · <a href="checklist.html">Checklist de submissão</a></p>
 </main>
+
+<footer class="legal-compliance-standalone" aria-labelledby="legal-footer-title">
+  <div class="legal-compliance-head">
+    <div>
+      <span class="legal-compliance-kicker">DOCUMENTAÇÃO JURÍDICA FIXA · POLÍTICA DE SEGURANÇA, DIREITOS E GOVERNANÇA DE DADOS</span>
+      <h2 id="legal-footer-title">Conformidade Legal, APIs, IA, Scopus® e Web of Science™ — RigorAtlas (PPGAD/UFT)</h2>
+    </div>
+    <span class="legal-badge-readonly">Regime Somente Consulta · Downloads Desativados</span>
+  </div>
+  <div class="legal-disclaimer-bar">
+    <strong>Resumo Fixo:</strong> portal acadêmico público sem fins lucrativos (PPGAD/UFT) em modo somente consulta online (downloads e exportações desativados). APIs abertas em conformidade: OpenAlex (CC0), Crossref (Metadados Abertos), DOAJ (CC0), ORCID Public API (CC0/ToS) e NCBI PubMed E-utilities. Sem envio de dados a IA generativa externa. <strong>Scopus® / CiteScore™</strong> (Elsevier B.V.), <strong>Web of Science™ / JCR™ / JIF™</strong> (Clarivate™) e <strong>SJR</strong> (SCImago Lab) exibidos exclusivamente em caráter referencial, sem <em>scraping</em> nem redistribuição, exigindo conferência oficial (incluindo Portal CAPES/CAFe-UFT). Alinhado à LGPD (Lei nº 13.709/2018), Marco Civil (Lei nº 12.965/2014) e Lei de Direitos Autorais (Lei nº 9.610/1998). Documentação técnica de governança — não substitui parecer jurídico formal (Procuradoria/UFT ou OAB).
+  </div>
+  <div class="legal-links-bar">
+    <a href="index.html">Catálogo RigorAtlas</a>
+    <a href="sobre.html">Sobre e Fontes</a>
+    <a href="checklist.html">Checklist Online</a>
+    <a href="index.html#sugerir">Contato e Direitos LGPD</a>
+  </div>
+</footer>
+
 <script type="module" src="assets/js/accessibility.js?v=20261118v12"></script>
-<script type="module" src="assets/js/visitor-tracker.js?v=20261118v12"></script>
-<script type="module" src="assets/js/openalex-chat.js?v=20261118v15"></script>
+<script type="module" src="assets/js/visitor-tracker.js?v=20261124legal1"></script>
+<script type="module" src="assets/js/openalex-chat.js?v=20261124legal1"></script>
 </body>
 </html>
