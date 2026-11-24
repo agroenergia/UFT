@@ -805,7 +805,7 @@ function mountChatUI() {
         </div>
       </div>
     </div>
-    <p class="oa-chat-legal">Regime somente consulta online (downloads desativados). Metadados públicos via OpenAlex (CC0), Crossref, PubMed e ORCID; sem envio a IA externa. Não insira dados sigilosos. <a href="privacidade.html">Política de Segurança e Direitos</a>.</p>
+    <p class="oa-chat-legal">Consulta online via APIs públicas abertas: OpenAlex (CC0), Crossref, PubMed e ORCID; sem envio a IA externa. Não insira dados sigilosos. <a href="privacidade.html">Política de Segurança e Direitos</a>.</p>
     <form id="oa-chat-form" class="oa-chat-form">
       <label class="sr-only" for="oa-chat-input">Busque artigos de interesse, autores, temas ou revistas</label>
       <input id="oa-chat-input" type="search" maxlength="240" required placeholder="Busque artigos, temas, autores ou revistas..." autocomplete="off">

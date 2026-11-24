@@ -138,8 +138,7 @@ function buildPageQueue(){
   const selectors=[
     ".banner-copy h1",
     ".banner-copy .banner-lead",
-    ".banner-guide-panel .hero-video-title",
-    ".banner-guide-panel .guide-steps-clean li",
+    ".banner-video-hero .hero-video-title",
     ".featured-heading h2",
     "#featured-criteria",
     "#featured-journals .featured-journal",
@@ -217,6 +216,8 @@ function startOrTogglePageRead(){
     stopSpeech();
     return;
   }
+  const heroVideo=document.getElementById("hero-video");
+  if(heroVideo&&!heroVideo.paused)heroVideo.pause();
   readingQueue=buildPageQueue();
   if(!readingQueue.length)return;
   readingIndex=-1;
@@ -349,6 +350,46 @@ function bindControls(){
     state=defaultState();
     applyTheme();
     liveAnnounce("Preferências de acessibilidade redefinidas para o padrão.");
+  });
+
+  ["hero-video","checklist-video"].forEach(vidId=>{
+    document.getElementById(vidId)?.addEventListener("play",()=>{
+      if(isReadingSequence||SPEECH_SUPPORTED){
+        stopSpeech();
+      }
+    });
+  });
+
+  document.getElementById("hero-play-btn")?.addEventListener("click",()=>{
+    const vid=document.getElementById("hero-video");
+    if(!vid)return;
+    vid.scrollIntoView({behavior:state.calm?"auto":"smooth",block:"center"});
+    vid.focus();
+    vid.play().catch(()=>{});
+  });
+
+  document.querySelectorAll(".video-chapter-btn[data-seek]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const targetId=btn.dataset.seekTarget||"hero-video";
+      const vid=document.getElementById(targetId);
+      if(!vid)return;
+      const t=Number(btn.dataset.seek)||0;
+      document.querySelectorAll(".video-chapter-btn[data-seek]").forEach(b=>{
+        if((b.dataset.seekTarget||"hero-video")===targetId){
+          b.setAttribute("aria-pressed",String(b===btn));
+        }
+      });
+      const applySeek=()=>{
+        try{vid.currentTime=t;}catch{}
+      };
+      if(vid.readyState>=1){
+        vid.play().then(()=>applySeek()).catch(()=>{applySeek();vid.play().catch(()=>{});});
+      }else{
+        vid.addEventListener("loadedmetadata",()=>{applySeek();vid.play().catch(()=>{});},{once:true});
+        vid.load();
+      }
+      liveAnnounce("Reproduzindo capítulo: "+btn.innerText);
+    });
   });
 
   window.addEventListener("rigoratlas:announce",e=>{

@@ -63,21 +63,20 @@ test('no download buttons, download attributes, or file-export modules remain in
     'assets/js/base-planilha.js',
     'assets/js/catalogo-pdf.js',
     'assets/js/top-10.js',
-    'assets/video/apresentacao-rigoratlas.mp4',
-    'assets/video/checklist-requisitos.mp4',
-    'assets/img/video-poster.jpg',
-    'assets/img/checklist-video-poster.jpg',
     'assets/img/logo-pesquisa-ppgad.svg'
   ]) {
     await assert.rejects(() => access(new URL(removed, root)), `${removed} should be removed`);
   }
 });
 
-test('no institutional-branded videos remain in index.html', async () => {
+test('learning videos are restored with nodownload controls and clean subtitles', async () => {
   const indexHtml = await read('index.html');
-  assert.doesNotMatch(indexHtml, /<video\b/i, 'index.html must not embed removed institutional videos');
-  assert.match(indexHtml, /class="banner-guide-panel"/i, 'index.html should render independent editorial guide panel');
-  assert.match(indexHtml, /class="req-guide-panel"/i, 'index.html should render independent 7-pillar guide panel');
+  const videoTags = indexHtml.match(/<video\b[^>]*>/gi) || [];
+  assert.equal(videoTags.length, 2, 'index.html should render both learning videos');
+  for (const tag of videoTags) {
+    assert.match(tag, /controlsList="nodownload"/i);
+    assert.match(tag, /disablePictureInPicture/i);
+  }
 });
 
 test('API compliance: Crossref mailto, NCBI PubMed tool/email, and no unlicensed Elsevier cover CDN hotlinks', async () => {
@@ -88,10 +87,11 @@ test('API compliance: Crossref mailto, NCBI PubMed tool/email, and no unlicensed
   assert.match(appJs, /mailto:"mdqmichael@gmail\.com"/, 'Crossref request in app.js should include Polite Pool mailto');
   assert.match(chatJs, /tool:\s*'RigorAtlas'/, 'PubMed E-utilities must declare independent tool parameter');
   assert.match(chatJs, /email:\s*'mdqmichael@gmail\.com'/, 'PubMed E-utilities must declare email parameter');
-  assert.match(chatJs, /Regime somente consulta online \(downloads desativados\)/i, 'chat drawer must display fixed compliance notice');
+  assert.match(chatJs, /Consulta online via APIs públicas abertas/i, 'chat drawer must display API compliance notice');
+  assert.doesNotMatch(chatJs, /Regime somente consulta/i, 'chat drawer must not display removed read-only badge text');
 });
 
-test('fixed legal compliance footer and full policy documentation cover independence, APIs, AI, Scopus, WoS, and LGPD', async () => {
+test('fixed legal compliance footer and full policy documentation cover independence, APIs, AI, Scopus, WoS, and LGPD without removed badge', async () => {
   const pagesWithFooter = [
     'index.html',
     'privacidade.html',
@@ -104,7 +104,7 @@ test('fixed legal compliance footer and full policy documentation cover independ
   for (const page of pagesWithFooter) {
     const html = await read(page);
     assert.match(html, /DOCUMENTAÇÃO JURÍDICA FIXA/i, `${page} must include fixed legal footer`);
-    assert.match(html, /Regime Somente Consulta · Downloads Desativados/i, `${page} must state read-only no-download status`);
+    assert.doesNotMatch(html, /Regime Somente Consulta · Downloads Desativados/i, `${page} must not show removed badge term`);
     assert.match(html, /sem vínculo institucional/i, `${page} must state institutional independence`);
     assert.match(html, /Scopus®/i, `${page} must attribute Scopus trademark`);
     assert.match(html, /Web of Science™/i, `${page} must attribute Web of Science trademark`);
@@ -133,21 +133,24 @@ test('fixed legal compliance footer and full policy documentation cover independ
   }
 });
 
-test('header displays 5 main terms + hover dropdown below search bar and provides mobile-only floating nav', async () => {
+test('header displays search hint, main terms including Aprendizado, desktop left sidebar with WhatsApp, and mobile floating nav', async () => {
   const indexHtml = await read('index.html');
   assert.doesNotMatch(indexHtml, /id="menu-toggle"/i, 'index.html must not contain #menu-toggle button');
   assert.doesNotMatch(indexHtml, /<span>Menu<\/span>/i, 'index.html must not show Menu button label');
+  assert.match(indexHtml, /<span id="search-hint-text" class="search-hint">/i, 'search bar must display descriptive hint span');
   assert.match(indexHtml, /<div class="header-subnav">\s*<nav id="primary-navigation" class="header-term-nav"[^>]*>/i, 'index.html must render always-visible horizontal term navigation under search bar');
   assert.doesNotMatch(indexHtml, /id="primary-navigation"[^>]*\shidden\b/i, '#primary-navigation must not be hidden');
   const navMatch = indexHtml.match(/<nav id="primary-navigation"[\s\S]*?<\/nav>/i);
   assert.ok(navMatch, '#primary-navigation must exist');
   const navBlock = navMatch[0];
   const beforeDropdown = navBlock.split('data-nav-dropdown')[0];
-  for (const mainTerm of ['>Início<', '>Catálogo de revistas<', '>Comparar<', '>Sinais de alerta<', '>Contato<']) {
+  for (const mainTerm of ['>Início<', '>Catálogo de revistas<', '>Comparar<', '>Aprendizado<', '>Sinais de alerta<', '>Contato<']) {
     assert.ok(beforeDropdown.includes(mainTerm), `primary top-level nav must include ${mainTerm}`);
   }
   assert.match(navBlock, /id="nav-more-menu" class="nav-dropdown-menu"/i, 'secondary items must live in dropdown menu');
+  assert.match(indexHtml, /<nav class="desktop-side-nav"/i, 'index.html must provide desktop left sidebar navigation');
   assert.match(indexHtml, /<nav class="mobile-floating-nav"/i, 'index.html must provide mobile floating bottom navigation');
+  assert.match(indexHtml, /https:\/\/wa\.me\/5548996390391/i, 'WhatsApp button must link to 48996390391');
   const searchPos = indexHtml.indexOf('id="ai-search-form"');
   const navPos = indexHtml.indexOf('id="primary-navigation"');
   assert.ok(searchPos > 0 && navPos > searchPos, 'horizontal term navigation must appear below the search bar');
@@ -165,7 +168,7 @@ test('institutional independence: zero unauthorized UFT/PPGAD references remain,
   const violations = [];
   for (const rel of files) {
     if (rel === 'tests/compliance.test.mjs') continue;
-    if (!/\.(html|js|mjs|css|svg|json|py|yml|yaml|md)$|^(LICENSE|README\.md)$/i.test(rel)) continue;
+    if (!/\.(html|js|mjs|css|svg|json|py|yml|yaml|md|vtt)$|^(LICENSE|README\.md)$/i.test(rel)) continue;
     const text = await read(rel);
     const match = text.match(forbidden);
     if (match) {
