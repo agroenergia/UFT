@@ -144,8 +144,14 @@ test('header replaces Menu toggle button with always-visible horizontal term nav
   assert.ok(searchPos > 0 && navPos > searchPos, 'horizontal term navigation must appear below the search bar');
 });
 
-test('institutional independence: zero unauthorized UFT, PPGAD, or third-party staff references remain across repository', async () => {
-  const forbidden = /\b(uft|ppgad|propesq|tocantins|palmas)\b|universidade federal do tocantins|agroenergia digital|agroneg[oó]cio digital|guilherme benko|benko siqueira|neiber|nibert|dra\.?\s*solange|@uft\.edu\.br|@mail\.uft\.edu\.br|logo-pesquisa-ppgad|ppgad_admin|ppgad-logo|cafe\/uft|procuradoria federal/i;
+test('institutional independence: zero unauthorized UFT/PPGAD references remain, .search-privacy banner removed, and approved team credits present', async () => {
+  const indexHtml = await read('index.html');
+  assert.doesNotMatch(indexHtml, /class="search-privacy"/i, 'index.html must not display the top .search-privacy banner');
+  for (const member of ['Michael Oliveira', 'Neiber Garcia', 'Prof. Dr. Guilherme Benko Siqueira']) {
+    assert.ok(indexHtml.includes(member), `index.html footer must include ${member}`);
+  }
+
+  const forbidden = /\b(uft|ppgad|propesq|tocantins|palmas)\b|universidade federal do tocantins|agroenergia digital|agroneg[oó]cio digital|nibert|dra\.?\s*solange|@uft\.edu\.br|@mail\.uft\.edu\.br|logo-pesquisa-ppgad|ppgad_admin|ppgad-logo|cafe\/uft|procuradoria federal/i;
   const files = await walkFiles(rootDir);
   const violations = [];
   for (const rel of files) {
@@ -157,6 +163,6 @@ test('institutional independence: zero unauthorized UFT, PPGAD, or third-party s
       violations.push(`${rel}: matched "${match[0]}"`);
     }
   }
-  assert.deepEqual(violations, [], `Unauthorized institutional/staff references found:\n${violations.join('\n')}`);
+  assert.deepEqual(violations, [], `Unauthorized institutional references found:\n${violations.join('\n')}`);
 });
 

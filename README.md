@@ -2,7 +2,8 @@
 
 Projeto estático, independente e sem fins lucrativos voltado para pesquisadores e estudantes consultarem, filtrarem e compararem periódicos científicos em regime **exclusivamente online (downloads desativados)**.
 
-**Desenvolvimento e manutenção:** Michael Oliveira (`mdqmichael@gmail.com`)
+**Desenvolvimento e pesquisa:** Michael Oliveira (`mdqmichael@gmail.com`) e Neiber Garcia  
+**Orientação acadêmica:** Prof. Dr. Guilherme Benko Siqueira
 
 > **Independência institucional:** o RigorAtlas não possui vínculo institucional, representação oficial, patrocínio ou endosso de universidades, programas de pós-graduação, órgãos públicos ou editoras científicas.
 

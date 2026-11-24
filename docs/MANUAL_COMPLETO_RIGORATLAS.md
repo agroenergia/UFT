@@ -1,6 +1,7 @@
 # Manual Completo do Portal RigorAtlas
 
-**Responsável técnico:** Michael Oliveira (`mdqmichael@gmail.com`)  
+**Desenvolvimento e pesquisa:** Michael Oliveira (`mdqmichael@gmail.com`) e Neiber Garcia  
+**Orientação acadêmica:** Prof. Dr. Guilherme Benko Siqueira  
 **Natureza:** Iniciativa independente, pública e sem fins lucrativos de apoio à pesquisa científica (sem vínculo institucional com universidades, órgãos públicos ou editoras)  
 **Regime operacional:** Consulta exclusivamente online (downloads e exportações em massa desativados)  
 **Atualização deste manual:** 24/11/2026
