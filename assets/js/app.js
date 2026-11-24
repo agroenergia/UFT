@@ -385,11 +385,12 @@ function setupBanner(){
 }
 
 function setupHeaderMenu(){
-  const header=document.querySelector(".site-header"),nav=$("primary-navigation"),mobileNav=document.querySelector(".mobile-floating-nav");
+  const header=document.querySelector(".site-header"),nav=$("primary-navigation"),mobileNav=document.querySelector(".mobile-floating-nav"),sideNav=document.querySelector(".desktop-side-nav");
   if(!header)return;
   const allNavLinks=[
     ...(nav?nav.querySelectorAll("a"):[]),
-    ...(mobileNav?mobileNav.querySelectorAll("a"):[])
+    ...(mobileNav?mobileNav.querySelectorAll("a"):[]),
+    ...(sideNav?sideNav.querySelectorAll("a"):[])
   ];
   const markActive=href=>{
     if(!href)return;
@@ -426,6 +427,7 @@ function setupHeaderMenu(){
   };
   nav?.addEventListener("click",onNavClick);
   mobileNav?.addEventListener("click",onNavClick);
+  sideNav?.addEventListener("click",onNavClick);
   window.addEventListener("hashchange",()=>{
     if(location.hash&&allNavLinks.some(a=>a.getAttribute("href")===location.hash))markActive(location.hash);
   });

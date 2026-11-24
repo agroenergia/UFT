@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20261124nav5">
+<link rel="stylesheet" href="assets/css/style.css?v=20261124v6">
 </head>
 <body>
 <a class="skip-link" href="#inicio">Ir para o conteúdo principal</a>
@@ -15,8 +15,11 @@
   <div class="header-inner">
     <a class="brand-lockup" href="#inicio" aria-label="RigorAtlas — início"><img class="brand-logo" src="assets/img/logo-rigoratlas.svg?v=20261124" alt="Símbolo do RigorAtlas: lupa, globo e folhas verdes"><span class="brand-text"><strong>Rigor<span>Atlas</span></strong><small>Pesquisa Científica</small></span></a>
     <form id="ai-search-form" class="header-search" role="search">
-      <label class="sr-only" for="ai-question">Encontre revistas científicas para publicar sua pesquisa</label>
-      <input id="ai-question" type="search" maxlength="1500" placeholder="Nome da revista (ex.: Bragantia) ou tema da pesquisa" title="Encontre revistas científicas para publicar sua pesquisa" autocomplete="off">
+      <label class="sr-only" for="ai-question">Pesquise por tema do artigo, nome da revista, ISSN, editora ou área científica</label>
+      <div class="search-field-group">
+        <input id="ai-question" type="search" maxlength="1500" placeholder="Busque tema do artigo (ex.: bioenergia, IA), revista (ex.: Bragantia), ISSN ou editora" title="Pesquise por tema da pesquisa, nome da revista, ISSN, editora ou área científica" aria-describedby="search-hint-text" autocomplete="off">
+        <span id="search-hint-text" class="search-hint">Sugestões de busca: <strong>tema do artigo</strong> (ex.: biomassa, glicose, sensores), <strong>nome da revista</strong> (ex.: Bragantia), <strong>ISSN</strong>, <strong>editora</strong> ou <strong>área científica</strong>.</span>
+      </div>
       <div class="header-actions">
         <button type="submit" id="ai-search-button" aria-label="Pesquisar revistas">Pesquisar</button>
       </div>
@@ -27,12 +30,13 @@
       <a href="#inicio" class="on">Início</a>
       <a href="#revistas">Catálogo de revistas</a>
       <a href="#comparar">Comparar</a>
+      <a href="#apresentacao">Aprendizado</a>
       <a href="#sinais-alerta">Sinais de alerta</a>
       <a href="#sugerir">Contato</a>
       <div class="nav-dropdown" data-nav-dropdown>
         <button type="button" class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true" aria-controls="nav-more-menu">Mais recursos <span class="nav-caret" aria-hidden="true">▾</span></button>
         <div id="nav-more-menu" class="nav-dropdown-menu" role="menu">
-          <a href="#requisitos-publicacao" role="menuitem">Requisitos (7 passos)</a>
+          <a href="#requisitos-publicacao" role="menuitem">Vídeo: 7 requisitos</a>
           <a href="checklist.html" role="menuitem">Checklist completo</a>
           <a href="#faq" role="menuitem">Acordos CAPES &amp; FAQ</a>
           <a href="sobre.html" role="menuitem">Sobre e fontes</a>
@@ -70,22 +74,31 @@
     <p class="banner-kicker"><span aria-hidden="true"></span> CIÊNCIA COM DIREÇÃO · INICIATIVA INDEPENDENTE DE APOIO CIENTÍFICO</p>
     <h1 id="banner-title">Encontre a <em>revista certa</em> para publicar sua pesquisa.</h1>
     <p class="banner-lead">Explore periódicos científicos em uma base auditada com indicadores referenciais da Scopus® e Web of Science™, consulte Acordos CAPES, compare critérios editoriais e proteja seu manuscrito contra revistas predatórias.</p>
-    <div class="banner-actions"><a class="banner-primary" href="#revistas">Explorar revistas <span aria-hidden="true">↗</span></a><a class="banner-secondary" href="#ai-question" data-focus-search>Pesquisar tema <span aria-hidden="true">→</span></a><a class="banner-secondary" href="#requisitos-publicacao">7 requisitos</a></div>
+    <div class="banner-actions"><a class="banner-primary" href="#revistas">Explorar revistas <span aria-hidden="true">↗</span></a><button type="button" id="hero-play-btn" class="banner-secondary">▶ Assistir ao guia em vídeo</button><a class="banner-secondary" href="#ai-question" data-focus-search>Pesquisar tema <span aria-hidden="true">→</span></a></div>
     <div class="banner-prompts" aria-label="Dúvidas frequentes"><span>Comece por uma dúvida (FAQ):</span><a href="#faq-portugues">Aceita português?</a><a href="#faq-sem-taxa">Tem opção sem taxa?</a><a href="#faq-combina">Meu artigo combina?</a></div>
   </div>
-  <aside id="apresentacao" class="banner-guide-panel" aria-labelledby="hero-guide-title">
+  <div id="apresentacao" class="banner-video-hero" aria-labelledby="hero-video-title">
     <div class="hero-video-head">
-      <span class="hero-video-badge">METODOLOGIA EDITORIAL · RIGOR CIENTÍFICO</span>
-      <h2 id="hero-guide-title" class="hero-video-title">Como escolher seu periódico em 4 etapas</h2>
+      <span class="hero-video-badge">APRENDIZADO · VÍDEO DE APRESENTAÇÃO · 5 MIN 11 S</span>
+      <h2 id="hero-video-title" class="hero-video-title">Guia prático passo a passo do RigorAtlas</h2>
     </div>
-    <ol class="guide-steps-clean">
-      <li><span class="guide-num">01</span><div><strong>Descubra pelo tema ou nome</strong><p>Use a barra superior ou o assistente de artigos para cruzar nossa base auditada com metadados abertos (Crossref, OpenAlex, PubMed e ORCID).</p></div></li>
-      <li><span class="guide-num">02</span><div><strong>Avalie impacto e indexação</strong><p>Consulte referências de CiteScore™ (Scopus®) e coleção/JIF™ (Web of Science™) e confirme sempre diretamente nas bases oficiais.</p></div></li>
-      <li><span class="guide-num">03</span><div><strong>Compare custos, prazos e CAPES</strong><p>Coloque até 4 periódicos lado a lado para verificar rota gratuita por assinatura, APC e participação em Acordos <em>Read &amp; Publish</em> da CAPES.</p></div></li>
-      <li><span class="guide-num">04</span><div><strong>Valide integridade e submeta</strong><p>Conclua os 7 critérios de elegibilidade, cheque sinais antipredatórios e valide a escolha final com seu orientador.</p></div></li>
-    </ol>
-    <p class="hero-video-foot">Projeto independente, sem fins lucrativos e sem vínculo institucional com universidades ou editoras · Consulta exclusivamente online.</p>
-  </aside>
+    <figure class="hero-video-figure">
+      <video id="hero-video" controls controlsList="nodownload" disablePictureInPicture preload="metadata" poster="assets/img/video-poster.jpg" playsinline aria-label="Conheça o funcionamento do site RigorAtlas neste vídeo de 5 minutos para fazer a sua pesquisa">
+        <source src="assets/video/apresentacao-rigoratlas.mp4" type="video/mp4">
+        <track kind="subtitles" srclang="pt-BR" label="Português (Brasil)" src="assets/video/apresentacao-rigoratlas.vtt" default>
+        <p>Seu navegador não suporta reprodução direta de vídeo MP4.</p>
+      </video>
+    </figure>
+    <div class="video-chapter-strip" role="group" aria-label="Ir diretamente para um capítulo do vídeo">
+      <button type="button" class="video-chapter-btn" data-seek="0">0:00 Visão geral</button>
+      <button type="button" class="video-chapter-btn" data-seek="34">0:34 Pesquisa</button>
+      <button type="button" class="video-chapter-btn" data-seek="84">1:24 Comparar</button>
+      <button type="button" class="video-chapter-btn" data-seek="128">2:08 Critérios &amp; CAPES</button>
+      <button type="button" class="video-chapter-btn" data-seek="201">3:21 Predatórias</button>
+      <button type="button" class="video-chapter-btn" data-seek="260">4:20 Contato</button>
+    </div>
+    <p class="hero-video-foot">Com áudio em português, legendas integradas (CC) e capítulos clicáveis para facilitar o aprendizado.</p>
+  </div>
   <div class="banner-featured"><div class="featured-heading"><div><span class="eyebrow">DESTAQUES POR PERCENTIL SCOPUS®</span><h2>5 revistas em destaque (&gt; 50% na Scopus®)</h2></div><a href="#revistas">Ver todas as revistas →</a></div>
     <p id="featured-criteria" class="featured-criteria">Exibição por faixas de Percentil na Scopus® acima do piso de 50%: inclui 1 revista na faixa inicial (&gt; 50%), 1 no patamar de 75% e 3 revistas de alto nível (99%). A ficha completa identifica as fontes, os indicadores na Web of Science™ e os campos a confirmar.</p>
     <div id="featured-journals" class="featured-journals" aria-describedby="featured-criteria"><p>Carregando destaques do catálogo…</p></div>
@@ -136,24 +149,32 @@
 <section id="requisitos-publicacao" class="req-checklist-section site-stage" aria-labelledby="req-title">
   <div class="section-heading req-heading">
     <div>
-      <span class="eyebrow">ROTEIRO DE ELEGIBILIDADE DO ARTIGO</span>
+      <span class="eyebrow">CHECKLIST EM VÍDEO · ELEGIBILIDADE DO ARTIGO</span>
       <h2 id="req-title">Principais requisitos para saber se seu artigo pode ser publicado na revista</h2>
     </div>
-    <p class="req-lead">Revise os 7 critérios essenciais abaixo e marque cada etapa conferida para avaliar se o periódico escolhido atende às exigências de qualidade, custos, prazos e integridade científica do seu programa de pós-graduação.</p>
+    <p class="req-lead">Assista ao guia visual de 1 min 39 s e marque os 7 critérios abaixo para avaliar se o periódico escolhido atende às exigências de qualidade, custos, prazos e integridade científica do seu programa de pós-graduação.</p>
   </div>
   <div class="req-layout">
-    <aside class="req-guide-panel" aria-label="Resumo metodológico dos 7 requisitos">
-      <span class="hero-video-badge">GUIA RÁPIDO · 7 PILARES DE DECISÃO</span>
-      <h3>Antes de formatar e submeter seu manuscrito</h3>
-      <p>Avaliar a adequação editorial antes do envio reduz rejeições de mesa (<em>desk rejection</em>), atrasos de cronograma e custos inesperados.</p>
-      <ul class="req-pillar-list">
-        <li><strong>Aderência científica:</strong> escopo editorial, tipo de artigo aceito e idioma compatíveis com seu trabalho.</li>
-        <li><strong>Rigor bibliométrico:</strong> conferência oficial da indexação vigente em <em>scopus.com/sources</em> e no <em>Journal Citation Reports™</em> (via Portal CAPES).</li>
-        <li><strong>Viabilidade financeira:</strong> verificação prévia de rota gratuita por assinatura ou cobertura por Acordo CAPES (Portaria nº 120/2024).</li>
-        <li><strong>Integridade editorial:</strong> checagem de revisão por pares real, corpo editorial verificável, ausência de alertas predatórios e ORCID atualizado.</li>
-      </ul>
-      <p class="req-guide-note">As marcações ficam salvas somente no seu navegador. Confirme sempre as normas específicas do seu programa com seu orientador.</p>
-    </aside>
+    <div class="req-video-box">
+      <figure class="req-video-figure">
+        <video id="checklist-video" controls controlsList="nodownload" disablePictureInPicture preload="metadata" poster="assets/img/checklist-video-poster.jpg" playsinline aria-label="Vídeo checklist em sete etapas para confirmar se o artigo pode ser publicado na revista">
+          <source src="assets/video/checklist-requisitos.mp4" type="video/mp4">
+          <track kind="subtitles" srclang="pt-BR" label="Português (Brasil)" src="assets/video/checklist-requisitos.vtt" default>
+          <p>Seu navegador não suporta reprodução de vídeo MP4.</p>
+        </video>
+      </figure>
+      <div class="video-chapter-strip req-chapter-strip" role="group" aria-label="Capítulos do checklist em vídeo">
+        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="0">Início</button>
+        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="9.8">1. Escopo</button>
+        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="21">2. Scopus &amp; WoS</button>
+        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="33.8">3. CAPES &amp; APC</button>
+        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="45.5">4. Idioma</button>
+        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="56.2">5. Prazos</button>
+        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="66.7">6. Predatórias</button>
+        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="79.7">7. Ética &amp; ORCID</button>
+      </div>
+      <p class="hero-video-foot">Com áudio em português e legendas integradas (CC) para revisão rápida antes da submissão.</p>
+    </div>
     <div class="req-interactive-panel">
       <div class="req-score-head">
         <div>
@@ -365,53 +386,64 @@
 </form></section>
 </main>
 <footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><img class="footer-logo" src="assets/img/logo-rigoratlas.svg?v=20261124" alt="" aria-hidden="true"><div><strong>RigorAtlas</strong><p>Rigor científico para escolher onde publicar.</p></div></div><div class="footer-objective"><span class="footer-label">Objetivo do projeto</span><p>Este projeto foi desenvolvido de forma independente e sem fins lucrativos para ajudar pesquisadores e estudantes a encontrar, consultar e comparar revistas científicas e informações editoriais, facilitando a escolha de periódicos para a publicação de seus trabalhos. Não possui vínculo institucional, representação oficial, patrocínio ou endosso de universidades, programas de pós-graduação, órgãos públicos ou editoras.</p></div><div class="project-credits" aria-label="Equipe do projeto"><div class="credits-heading"><span class="footer-label">Quem constrói o RigorAtlas</span><p>Iniciativa independente de apoio à pesquisa científica em regime exclusivamente de consulta online.</p></div><div class="credit-person"><span class="footer-label">Desenvolvimento e pesquisa</span><strong>Michael Oliveira</strong><small>Desenvolvedor e pesquisador responsável pelo projeto</small></div><div class="credit-person"><span class="footer-label">Desenvolvimento e pesquisa</span><strong>Neiber Garcia</strong><small>Desenvolvedor e pesquisador responsável pelo projeto</small></div><div class="credit-person"><span class="footer-label">Orientação acadêmica</span><strong>Prof. Dr. Guilherme Benko Siqueira</strong><small>Orientação do projeto</small></div><div class="credits-contact"><span class="footer-label">Contato do projeto</span><a href="#sugerir">Fale com o administrador</a></div></div>
+<div class="footer-bottom"><span>RigorAtlas · Iniciativa independente de apoio à pesquisa científica</span><span>Sem vínculo institucional com universidades, órgãos públicos ou editoras · Uso educacional e não comercial</span></div></div></footer>
 <section class="legal-compliance-footer" aria-labelledby="legal-footer-title">
-  <div class="legal-compliance-head">
-    <div>
+  <div class="legal-compliance-inner">
+    <div class="legal-compliance-head">
       <span class="legal-compliance-kicker">DOCUMENTAÇÃO JURÍDICA FIXA · POLÍTICA DE SEGURANÇA, DIREITOS E GOVERNANÇA DE DADOS</span>
       <h2 id="legal-footer-title">Conformidade Legal, Independência, APIs, IA e Plataformas Científicas</h2>
     </div>
-    <span class="legal-badge-readonly">Regime Somente Consulta · Downloads Desativados</span>
-  </div>
-  <div class="legal-grid">
-    <article class="legal-card">
-      <h3>1. Direitos, Independência e Vedação de Downloads</h3>
-      <p>O RigorAtlas é um projeto <strong>independente, sem fins lucrativos e sem vínculo institucional</strong> com universidades ou órgãos públicos, operando em regime <strong>exclusivo de consulta online</strong>. Todas as funções de download e exportação em massa (XLS, CSV, PDF, JSON e MP4) foram removidas do site e do chat para impedir redistribuição não autorizada de bases de terceiros e assegurar respeito à <strong>Lei de Direitos Autorais (Lei nº 9.610/1998)</strong>.</p>
-    </article>
-    <article class="legal-card">
-      <h3>2. APIs Científicas Abertas &amp; Governança de IA</h3>
-      <p>As consultas online utilizam exclusivamente APIs públicas sob licenças abertas: <strong>OpenAlex</strong> (CC0 1.0), <strong>Crossref REST API</strong> (metadados abertos / <em>Polite Pool</em>), <strong>DOAJ</strong> (CC0 1.0), <strong>ORCID Public API</strong> (CC0 / Termos de Serviço) e <strong>NCBI PubMed E-utilities</strong> (domínio público EUA, com identificação <code>tool</code>/<code>email</code> e respeito ao limite de taxa). <strong>IA:</strong> a busca assistida roda localmente no navegador, <strong>sem envio</strong> de dados pessoais, manuscritos ou métricas proprietárias a LLMs externos e sem treinamento de IA.</p>
-    </article>
-    <article class="legal-card">
-      <h3>3. Scopus® (Elsevier), Web of Science™ (Clarivate) &amp; SJR</h3>
-      <p><strong>Scopus®</strong> e <strong>CiteScore™</strong> são marcas registradas da Elsevier B.V.; <strong>Web of Science™</strong>, <strong>Journal Citation Reports™ (JCR)</strong> e <strong>Journal Impact Factor™ (JIF)</strong> são marcas registradas da Clarivate™; <strong>SJR</strong> pertence à SCImago Lab. Este portal não realiza <em>web scraping</em> automatizado nem redistribui arquivos/tabelas completas do Scopus ou do JCR. Os indicadores exibidos são estritamente referenciais para apoio educacional; a conferência oficial deve ocorrer diretamente em <strong>scopus.com/sources</strong>, <strong>mjl.clarivate.com</strong> e <strong>jcr.clarivate.com</strong> (via Portal de Periódicos da CAPES / acesso institucional CAFe).</p>
-    </article>
-    <article class="legal-card">
-      <h3>4. Segurança da Informação, LGPD &amp; Marco Civil</h3>
-      <p>Operação alinhada à <strong>LGPD (Lei nº 13.709/2018)</strong>, ao <strong>Marco Civil da Internet (Lei nº 12.965/2014)</strong> e à <strong>Portaria CAPES nº 120/2024</strong>. Arquitetura estática em HTTPS, sem cadastro de usuários, sem cookies publicitários e sem hotlinking de mídia externa de editoras. Preferências locais permanecem somente no navegador (<code>localStorage</code>). Direitos dos titulares (Art. 18 da LGPD) atendidos via canal de contato do administrador.</p>
-    </article>
-  </div>
-  <div class="legal-disclaimer-bar">
-    <strong>Transparência e Escopo Jurídico:</strong> esta documentação fixa formaliza as regras técnicas, éticas e operacionais de conformidade do portal e serve de base auditável de governança. Não substitui a conferência obrigatória nas fontes oficiais das bases/editoras, a validação pelo orientador ou programa de pós-graduação, nem parecer ou certificação jurídica formal emitida por advogado inscrito na OAB ou assessoria jurídica habilitada.
-  </div>
-  <div class="legal-links-bar">
-    <a href="privacidade.html">Política Completa de Segurança, Direitos, APIs e LGPD</a>
-    <a href="sobre.html">Sobre e Fontes dos Dados</a>
-    <a href="checklist.html">Checklist de Submissão (Online)</a>
-    <a href="#sugerir">Contato e Direitos do Titular</a>
+    <div class="legal-grid">
+      <article class="legal-card">
+        <h3>1. Direitos, Independência e Vedação de Downloads</h3>
+        <p>O RigorAtlas é um projeto <strong>independente, sem fins lucrativos e sem vínculo institucional</strong> com universidades ou órgãos públicos, operando em regime <strong>exclusivo de consulta online</strong>. Todas as funções de download e exportação em massa (XLS, CSV, PDF, JSON e MP4) foram removidas do site e do chat para impedir redistribuição não autorizada de bases de terceiros e assegurar respeito à <strong>Lei de Direitos Autorais (Lei nº 9.610/1998)</strong>.</p>
+      </article>
+      <article class="legal-card">
+        <h3>2. APIs Científicas Abertas &amp; Governança de IA</h3>
+        <p>As consultas online utilizam exclusivamente APIs públicas sob licenças abertas: <strong>OpenAlex</strong> (CC0 1.0), <strong>Crossref REST API</strong> (metadados abertos / <em>Polite Pool</em>), <strong>DOAJ</strong> (CC0 1.0), <strong>ORCID Public API</strong> (CC0 / Termos de Serviço) e <strong>NCBI PubMed E-utilities</strong> (domínio público EUA, com identificação <code>tool</code>/<code>email</code> e respeito ao limite de taxa). <strong>IA:</strong> a busca assistida roda localmente no navegador, <strong>sem envio</strong> de dados pessoais, manuscritos ou métricas proprietárias a LLMs externos e sem treinamento de IA.</p>
+      </article>
+      <article class="legal-card">
+        <h3>3. Scopus® (Elsevier), Web of Science™ (Clarivate) &amp; SJR</h3>
+        <p><strong>Scopus®</strong> e <strong>CiteScore™</strong> são marcas registradas da Elsevier B.V.; <strong>Web of Science™</strong>, <strong>Journal Citation Reports™ (JCR)</strong> e <strong>Journal Impact Factor™ (JIF)</strong> são marcas registradas da Clarivate™; <strong>SJR</strong> pertence à SCImago Lab. Este portal não realiza <em>web scraping</em> automatizado nem redistribui arquivos/tabelas completas do Scopus ou do JCR. Os indicadores exibidos são estritamente referenciais para apoio educacional; a conferência oficial deve ocorrer diretamente em <strong>scopus.com/sources</strong>, <strong>mjl.clarivate.com</strong> e <strong>jcr.clarivate.com</strong> (via Portal de Periódicos da CAPES / acesso institucional CAFe).</p>
+      </article>
+      <article class="legal-card">
+        <h3>4. Segurança da Informação, LGPD &amp; Marco Civil</h3>
+        <p>Operação alinhada à <strong>LGPD (Lei nº 13.709/2018)</strong>, ao <strong>Marco Civil da Internet (Lei nº 12.965/2014)</strong> e à <strong>Portaria CAPES nº 120/2024</strong>. Arquitetura estática em HTTPS, sem cadastro de usuários, sem cookies publicitários e sem hotlinking de mídia externa de editoras. Preferências locais permanecem somente no navegador (<code>localStorage</code>). Direitos dos titulares (Art. 18 da LGPD) atendidos via canal de contato do administrador.</p>
+      </article>
+    </div>
+    <div class="legal-disclaimer-bar">
+      <strong>Transparência e Escopo Jurídico:</strong> esta documentação fixa formaliza as regras técnicas, éticas e operacionais de conformidade do portal e serve de base auditável de governança. Não substitui a conferência obrigatória nas fontes oficiais das bases/editoras, a validação pelo orientador ou programa de pós-graduação, nem parecer ou certificação jurídica formal emitida por advogado inscrito na OAB ou assessoria jurídica habilitada.
+    </div>
+    <div class="legal-links-bar">
+      <a href="privacidade.html">Política Completa de Segurança, Direitos, APIs e LGPD</a>
+      <a href="sobre.html">Sobre e Fontes dos Dados</a>
+      <a href="checklist.html">Checklist de Submissão (Online)</a>
+      <a href="#sugerir">Contato e Direitos do Titular</a>
+    </div>
   </div>
 </section>
-<div class="footer-bottom"><span>RigorAtlas · Iniciativa independente de apoio à pesquisa científica</span><span>Sem vínculo institucional com universidades, órgãos públicos ou editoras · Uso educacional e não comercial</span></div></div></footer>
+<nav class="desktop-side-nav" aria-label="Menu lateral rápido para computador e notebook">
+  <span class="side-nav-title">Acesso rápido</span>
+  <a href="#inicio" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6.5h-5V21H4a1 1 0 0 1-1-1v-9.5z"/></svg><span>Início</span></a>
+  <a href="#revistas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3H10a2 2 0 0 1 2 2v15a2 2 0 0 0-2-1.5H4.5A2.5 2.5 0 0 1 2 16v-10.5zm20 0A2.5 2.5 0 0 0 19.5 3H14a2 2 0 0 0-2 2v15a2 2 0 0 1 2-1.5h5.5A2.5 2.5 0 0 0 22 16v-10.5z"/></svg><span>Catálogo</span></a>
+  <a href="#comparar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h7v12H4zM13 6h7v12h-7z"/></svg><span>Comparar</span></a>
+  <a href="#apresentacao"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5v-7z"/></svg><span>Aprendizado</span></a>
+  <a href="#requisitos-publicacao"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>7 Requisitos</span></a>
+  <a href="#sinais-alerta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L2 20h20L12 3zm0 6v5m0 3h.01"/></svg><span>Sinais de alerta</span></a>
+  <a href="checklist.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Checklist</span></a>
+  <a href="#sugerir"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm0 2l8 6 8-6"/></svg><span>Contato</span></a>
+  <a class="side-nav-whatsapp" href="https://wa.me/5548996390391?text=Ol%C3%A1!%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20o%20portal%20RigorAtlas." target="_blank" rel="noopener noreferrer" aria-label="Atendimento via WhatsApp (48) 99639-0391"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.9a8.5 8.5 0 0 1-12.5 7.5L3.5 20.5l1.2-4.3A8.5 8.5 0 1 1 20.5 11.9z"/><path d="M9.4 8.8c-.2-.5-.4-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.1 3.1 1.3 3.3c.2.2 2.2 3.4 5.4 4.7 2.6 1 3.2.8 3.8.8.6-.1 1.9-.8 2.1-1.5.3-.8.3-1.4.2-1.5-.1-.1-.3-.2-.6-.4s-1.9-.9-2.2-1c-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.2-.2.2-.3.3-.5.1-.2.1-.4 0-.5-.1-.2-.7-1.6-.9-2.2z"/></svg><span>WhatsApp</span></a>
+</nav>
 <nav class="mobile-floating-nav" aria-label="Atalhos rápidos para dispositivos móveis">
   <a href="#inicio" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6.5h-5V21H4a1 1 0 0 1-1-1v-9.5z"/></svg><span>Início</span></a>
   <a href="#revistas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3H10a2 2 0 0 1 2 2v15a2 2 0 0 0-2-1.5H4.5A2.5 2.5 0 0 1 2 16v-10.5zm20 0A2.5 2.5 0 0 0 19.5 3H14a2 2 0 0 0-2 2v15a2 2 0 0 1 2-1.5h5.5A2.5 2.5 0 0 0 22 16v-10.5z"/></svg><span>Catálogo</span></a>
   <a href="#comparar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h7v12H4zM13 6h7v12h-7z"/></svg><span>Comparar</span></a>
-  <a href="#sinais-alerta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L2 20h20L12 3zm0 6v5m0 3h.01"/></svg><span>Alerta</span></a>
-  <a href="#sugerir"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm0 2l8 6 8-6"/></svg><span>Contato</span></a>
+  <a href="#apresentacao"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5v-7z"/></svg><span>Aprender</span></a>
+  <a class="mobile-nav-whatsapp" href="https://wa.me/5548996390391?text=Ol%C3%A1!%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20o%20portal%20RigorAtlas." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (48) 99639-0391"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.9a8.5 8.5 0 0 1-12.5 7.5L3.5 20.5l1.2-4.3A8.5 8.5 0 1 1 20.5 11.9z"/><path d="M9.4 8.8c-.2-.5-.4-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.1 3.1 1.3 3.3c.2.2 2.2 3.4 5.4 4.7 2.6 1 3.2.8 3.8.8.6-.1 1.9-.8 2.1-1.5.3-.8.3-1.4.2-1.5-.1-.1-.3-.2-.6-.4s-1.9-.9-2.2-1c-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.2-.2.2-.3.3-.5.1-.2.1-.4 0-.5-.1-.2-.7-1.6-.9-2.2z"/></svg><span>WhatsApp</span></a>
 </nav>
-<script type="module" src="assets/js/app.js?v=20261124nav4"></script>
-<script type="module" src="assets/js/accessibility.js?v=20261124indep3"></script>
+<script type="module" src="assets/js/app.js?v=20261124v6"></script>
+<script type="module" src="assets/js/accessibility.js?v=20261124v6"></script>
 <script type="module" src="assets/js/contact.js?v=20261124indep3"></script>
 <script type="module" src="assets/js/visitor-tracker.js?v=20261124indep3"></script>
 <script type="module" src="assets/js/tech-status.js?v=20261124indep3"></script>
-<script type="module" src="assets/js/openalex-chat.js?v=20261124indep3"></script></body></html>
+<script type="module" src="assets/js/openalex-chat.js?v=20261124v6"></script></body></html>
