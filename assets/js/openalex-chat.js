@@ -150,8 +150,8 @@ function evaluateCapesAndCatalog({ title, issns = [], publisher, isOa }) {
   if (rec && rec.acordoCapes === true) {
     return {
       status: 'confirmed',
-      label: '✓ Faz parte do Acordo CAPES (gratuidade para autor UFT)',
-      detail: `${capesPub ? capesPub + ' · ' : ''}Sujeito a vínculo ativo e e-mail institucional (@uft.edu.br)`,
+      label: '✓ Faz parte do Acordo CAPES (instituições participantes)',
+      detail: `${capesPub ? capesPub + ' · ' : ''}Sujeito a vínculo ativo com instituição participante e e-mail institucional`,
       rec
     };
   }
@@ -235,7 +235,7 @@ async function queryOrcidProfileAndWorks(rawQuery, tokens) {
         );
         const hits = tokens.filter(t => full.includes(t)).length;
         const inst = norm((c['institution-name'] || []).join(' '));
-        const brBonus = /(tocantins|uft|brasil|brazil|federal|agro)/.test(inst) ? 2 : 0;
+        const brBonus = /(brasil|brazil|federal|estadual|agro|energia)/.test(inst) ? 2 : 0;
         return { c, hits, allMatch: hits === tokens.length, score: hits * 10 + brBonus };
       })
       .filter(x => x.allMatch)
@@ -477,7 +477,7 @@ async function queryPubMed(termQuery) {
         term: termQuery,
         retmax: '15',
         retmode: 'json',
-        tool: 'RigorAtlas-UFT',
+        tool: 'RigorAtlas',
         email: 'mdqmichael@gmail.com'
       })}`
     );
@@ -491,7 +491,7 @@ async function queryPubMed(termQuery) {
         db: 'pubmed',
         id: ids.join(','),
         retmode: 'json',
-        tool: 'RigorAtlas-UFT',
+        tool: 'RigorAtlas',
         email: 'mdqmichael@gmail.com'
       })}`
     );

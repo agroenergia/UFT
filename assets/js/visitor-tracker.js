@@ -153,7 +153,7 @@ function updateFooterBadge(data){
 export function formatVisitsTxt(data=getVisitData()){
   const lines=[
     "================================================================",
-    "RIGORATLAS PPGAD/UFT — REGISTRO DE VISITAS (BLOCO DE NOTAS)",
+    "RIGORATLAS — REGISTRO TÉCNICO LOCAL DE VISITAS",
     `Gerado em: ${formatDateBr(new Date())}`,
     `Total de visitas registradas neste navegador: ${data.totalVisitas}`,
     "Obs.: Em hospedagem estática (GitHub Pages), o registro padrão fica salvo no navegador do visitante.",

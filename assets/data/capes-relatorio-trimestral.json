@@ -1,7 +1,7 @@
 {
   "dataAuditoria": "2026-11-18",
   "proximaAuditoriaPrevista": "2027-02-16",
-  "normativa": "Portaria CAPES nº 120/2024 · PADICT Read & Publish · Universidades Federais (UFT/PPGAD)",
+  "normativa": "Portaria CAPES nº 120/2024 · PADICT Read & Publish · Instituições Participantes",
   "totalCatalogo": 404,
   "comAcordoCapesConfirmado": 270,
   "candidatasEditoraConveniadaCAPES": 85,
@@ -15,10 +15,10 @@
     "ACS": 7,
     "Royal Society Publishing": 4
   },
-  "requisitosObrigatoriosUFT": [
+  "requisitosObrigatoriosCAPES": [
     "Identificador ORCID validado e vinculado em meusdados.capes.gov.br",
-    "Autor correspondente com vínculo ativo com a Universidade Federal do Tocantins (PPGAD/UFT)",
-    "Uso obrigatório do e-mail institucional (@uft.edu.br ou @mail.uft.edu.br) na submissão",
+    "Autor correspondente com vínculo ativo com instituição brasileira participante do acordo CAPES",
+    "Uso obrigatório do e-mail institucional oficial da instituição participante na submissão",
     "Aprovação regular por revisão por pares e disponibilidade de cota anual da editora"
   ]
 }

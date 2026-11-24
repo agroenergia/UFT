@@ -7,13 +7,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20261124clean2">
+<link rel="stylesheet" href="assets/css/style.css?v=20261124indep3">
 </head>
 <body>
 <a class="skip-link" href="#inicio">Ir para o conteúdo principal</a>
 <header class="site-header">
   <div class="header-inner">
-    <a class="brand-lockup" href="#inicio" aria-label="RigorAtlas — início"><img class="ppgad-logo" src="assets/img/logo-pesquisa-ppgad.svg?v=20261026-2" alt="Símbolo do portal de pesquisa: lupa, globo e folhas verdes"><span class="brand-text"><strong>Rigor<span>Atlas</span></strong><small>Pesquisa Científica · PPGAD/UFT</small></span></a>
+    <a class="brand-lockup" href="#inicio" aria-label="RigorAtlas — início"><img class="brand-logo" src="assets/img/logo-rigoratlas.svg?v=20261124" alt="Símbolo do RigorAtlas: lupa, globo e folhas verdes"><span class="brand-text"><strong>Rigor<span>Atlas</span></strong><small>Pesquisa Científica</small></span></a>
     <form id="ai-search-form" class="header-search" role="search">
       <label class="sr-only" for="ai-question">Encontre revistas científicas para publicar sua pesquisa</label>
       <input id="ai-question" type="search" maxlength="1500" placeholder="Nome da revista (ex.: Bragantia) ou tema da pesquisa" title="Encontre revistas científicas para publicar sua pesquisa" autocomplete="off">
@@ -23,7 +23,7 @@
     </form>
   </div>
   <div class="header-subnav">
-    <nav id="primary-navigation" class="header-term-nav" aria-label="Navegação principal"><a href="#revistas" class="on">Catálogo</a><a href="#comparar">Comparar</a><a href="#apresentacao">Vídeo guia</a><a href="#requisitos-publicacao">Checklist em vídeo</a><a href="checklist.html">Checklist de submissão</a><a href="#faq">Acordos CAPES &amp; FAQ</a><a href="#sinais-alerta">Sinais de alerta</a><a href="sobre.html">Sobre e fontes</a><a href="privacidade.html">Segurança e Direitos</a><a href="#sugerir">Contato</a></nav>
+    <nav id="primary-navigation" class="header-term-nav" aria-label="Navegação principal"><a href="#revistas" class="on">Catálogo</a><a href="#comparar">Comparar</a><a href="#requisitos-publicacao">Requisitos (7 passos)</a><a href="checklist.html">Checklist completo</a><a href="#faq">Acordos CAPES &amp; FAQ</a><a href="#sinais-alerta">Sinais de alerta</a><a href="sobre.html">Sobre e fontes</a><a href="privacidade.html">Segurança e Direitos</a><a href="#sugerir">Contato</a></nav>
   </div>
 </header>
 <div class="ai-response-wrap">
@@ -52,36 +52,27 @@
 <main id="inicio">
 <section class="intro discovery-banner" aria-labelledby="banner-title">
   <div class="banner-copy">
-    <p class="banner-kicker"><span aria-hidden="true"></span> CIÊNCIA COM DIREÇÃO · PALMAS, TOCANTINS · PPGAD/UFT</p>
-    <h1 id="banner-title">Conheça o funcionamento do site <em>neste vídeo</em> para fazer a sua pesquisa.</h1>
-    <p class="banner-lead">Assista ao guia completo de 5 minutos e domine a pesquisa na base auditada e Crossref, a comparação de revistas, as regras do PPGAD/UFT e CAPES, o combate às revistas predatórias e o contato direto com os programadores.</p>
-    <div class="banner-actions"><button type="button" class="banner-primary" id="hero-play-btn">▶ Assistir ao vídeo agora</button><a class="banner-secondary" href="#revistas">Explorar revistas <span aria-hidden="true">↗</span></a><a class="banner-secondary" href="#ai-question" data-focus-search>Pesquisar tema <span aria-hidden="true">→</span></a></div>
+    <p class="banner-kicker"><span aria-hidden="true"></span> CIÊNCIA COM DIREÇÃO · INICIATIVA INDEPENDENTE DE APOIO CIENTÍFICO</p>
+    <h1 id="banner-title">Encontre a <em>revista certa</em> para publicar sua pesquisa.</h1>
+    <p class="banner-lead">Explore periódicos científicos em uma base auditada com indicadores referenciais da Scopus® e Web of Science™, consulte Acordos CAPES, compare critérios editoriais e proteja seu manuscrito contra revistas predatórias.</p>
+    <div class="banner-actions"><a class="banner-primary" href="#revistas">Explorar revistas <span aria-hidden="true">↗</span></a><a class="banner-secondary" href="#ai-question" data-focus-search>Pesquisar tema <span aria-hidden="true">→</span></a><a class="banner-secondary" href="#requisitos-publicacao">7 requisitos</a></div>
     <div class="banner-prompts" aria-label="Dúvidas frequentes"><span>Comece por uma dúvida (FAQ):</span><a href="#faq-portugues">Aceita português?</a><a href="#faq-sem-taxa">Tem opção sem taxa?</a><a href="#faq-combina">Meu artigo combina?</a></div>
   </div>
-  <div id="apresentacao" class="banner-video-hero" aria-labelledby="hero-video-title">
+  <aside id="apresentacao" class="banner-guide-panel" aria-labelledby="hero-guide-title">
     <div class="hero-video-head">
-      <span class="hero-video-badge">VÍDEO DE APRESENTAÇÃO · 5 MIN 11 S</span>
-      <h2 id="hero-video-title" class="hero-video-title">Guia prático passo a passo do RigorAtlas</h2>
+      <span class="hero-video-badge">METODOLOGIA EDITORIAL · RIGOR CIENTÍFICO</span>
+      <h2 id="hero-guide-title" class="hero-video-title">Como escolher seu periódico em 4 etapas</h2>
     </div>
-    <figure class="hero-video-figure">
-      <video id="hero-video" controls controlsList="nodownload" disablePictureInPicture preload="metadata" poster="assets/img/video-poster.jpg" playsinline aria-label="Conheça o funcionamento do site RigorAtlas neste vídeo de 5 minutos para fazer a sua pesquisa">
-        <source src="assets/video/apresentacao-rigoratlas.mp4" type="video/mp4">
-        <track kind="subtitles" srclang="pt-BR" label="Português (Brasil)" src="assets/video/apresentacao-rigoratlas.vtt" default>
-        <p>Seu navegador não suporta reprodução direta de vídeo MP4.</p>
-      </video>
-    </figure>
-    <div class="video-chapter-strip" role="group" aria-label="Ir diretamente para um capítulo do vídeo">
-      <button type="button" class="video-chapter-btn" data-seek="0">0:00 Visão geral</button>
-      <button type="button" class="video-chapter-btn" data-seek="34">0:34 Pesquisa</button>
-      <button type="button" class="video-chapter-btn" data-seek="84">1:24 Comparar</button>
-      <button type="button" class="video-chapter-btn" data-seek="128">2:08 PPGAD &amp; CAPES</button>
-      <button type="button" class="video-chapter-btn" data-seek="201">3:21 Predatórias</button>
-      <button type="button" class="video-chapter-btn" data-seek="260">4:20 Contato</button>
-    </div>
-    <p class="hero-video-foot">Com áudio em português, legendas integradas (CC) e destaques visuais · Exibição exclusivamente online (downloads desativados).</p>
-  </div>
-  <div class="banner-featured"><div class="featured-heading"><div><span class="eyebrow">DESTAQUES POR PERCENTIL SCOPUS</span><h2>5 revistas em destaque (&gt; 50% na Scopus)</h2></div><a href="#revistas">Ver todas as revistas →</a></div>
-    <p id="featured-criteria" class="featured-criteria">Exibição por faixas de Percentil na Scopus acima do piso de 50%: inclui 1 revista na faixa inicial (&gt; 50%), 1 no patamar de 75% e 3 revistas de alto nível (99%). A ficha completa identifica as fontes, os indicadores na Web of Science e os campos a confirmar.</p>
+    <ol class="guide-steps-clean">
+      <li><span class="guide-num">01</span><div><strong>Descubra pelo tema ou nome</strong><p>Use a barra superior ou o assistente de artigos para cruzar nossa base auditada com metadados abertos (Crossref, OpenAlex, PubMed e ORCID).</p></div></li>
+      <li><span class="guide-num">02</span><div><strong>Avalie impacto e indexação</strong><p>Consulte referências de CiteScore™ (Scopus®) e coleção/JIF™ (Web of Science™) e confirme sempre diretamente nas bases oficiais.</p></div></li>
+      <li><span class="guide-num">03</span><div><strong>Compare custos, prazos e CAPES</strong><p>Coloque até 4 periódicos lado a lado para verificar rota gratuita por assinatura, APC e participação em Acordos <em>Read &amp; Publish</em> da CAPES.</p></div></li>
+      <li><span class="guide-num">04</span><div><strong>Valide integridade e submeta</strong><p>Conclua os 7 critérios de elegibilidade, cheque sinais antipredatórios e valide a escolha final com seu orientador.</p></div></li>
+    </ol>
+    <p class="hero-video-foot">Projeto independente, sem fins lucrativos e sem vínculo institucional com universidades ou editoras · Consulta exclusivamente online.</p>
+  </aside>
+  <div class="banner-featured"><div class="featured-heading"><div><span class="eyebrow">DESTAQUES POR PERCENTIL SCOPUS®</span><h2>5 revistas em destaque (&gt; 50% na Scopus®)</h2></div><a href="#revistas">Ver todas as revistas →</a></div>
+    <p id="featured-criteria" class="featured-criteria">Exibição por faixas de Percentil na Scopus® acima do piso de 50%: inclui 1 revista na faixa inicial (&gt; 50%), 1 no patamar de 75% e 3 revistas de alto nível (99%). A ficha completa identifica as fontes, os indicadores na Web of Science™ e os campos a confirmar.</p>
     <div id="featured-journals" class="featured-journals" aria-describedby="featured-criteria"><p>Carregando destaques do catálogo…</p></div>
     <noscript><p>Ative o JavaScript para carregar as cinco revistas em destaque e usar os filtros do catálogo.</p></noscript>
   </div>
@@ -100,24 +91,24 @@
   <div class="telemetry-head">
     <div>
       <span class="eyebrow">INTELIGÊNCIA &amp; AUTOMAÇÃO CONTÍNUA</span>
-      <h2>Radar Científico OpenAlex &amp; Acordos CAPES/UFT</h2>
+      <h2>Radar Científico OpenAlex &amp; Acordos CAPES</h2>
     </div>
     <button type="button" class="primary telemetry-chat-btn" data-open-oa-chat>💬 Buscar artigos de interesse e onde publicar</button>
   </div>
   <div class="telemetry-grid">
     <article class="telemetry-card">
       <span class="telemetry-label">Base do portal</span>
-      <strong id="telemetry-total">394</strong>
+      <strong id="telemetry-total">412</strong>
       <small>Periódicos cadastrados com atualização contínua</small>
     </article>
     <article class="telemetry-card">
-      <span class="telemetry-label">Scopus &amp; Web of Science</span>
-      <strong id="telemetry-scopus-wos">387 Scopus · 347 WoS</strong>
-      <small>Percentis CiteScore e Classificador JCR (Q1–Q4)</small>
+      <span class="telemetry-label">Scopus® &amp; Web of Science™</span>
+      <strong id="telemetry-scopus-wos">397 Scopus · 357 WoS</strong>
+      <small>Percentis CiteScore™ e Classificador JCR™ (Q1–Q4)</small>
     </article>
     <article class="telemetry-card">
-      <span class="telemetry-label">Acordos CAPES / Federais</span>
-      <strong id="telemetry-capes">270 confirmadas + 82 editoras CAPES</strong>
+      <span class="telemetry-label">Acordos CAPES</span>
+      <strong id="telemetry-capes">270 confirmadas + editoras CAPES</strong>
       <small id="telemetry-quarterly">Próx. auditoria trimestral programada</small>
     </article>
     <article class="telemetry-card">
@@ -130,31 +121,24 @@
 <section id="requisitos-publicacao" class="req-checklist-section site-stage" aria-labelledby="req-title">
   <div class="section-heading req-heading">
     <div>
-      <span class="eyebrow">CHECKLIST EM VÍDEO · ELEGIBILIDADE DO ARTIGO</span>
+      <span class="eyebrow">ROTEIRO DE ELEGIBILIDADE DO ARTIGO</span>
       <h2 id="req-title">Principais requisitos para saber se seu artigo pode ser publicado na revista</h2>
     </div>
-    <p class="req-lead">Assista ao guia visual de 1 min 39 s e marque os 7 critérios abaixo para validar se o periódico escolhido atende às normas do PPGAD/UFT, CAPES e integridade científica.</p>
+    <p class="req-lead">Revise os 7 critérios essenciais abaixo e marque cada etapa conferida para avaliar se o periódico escolhido atende às exigências de qualidade, custos, prazos e integridade científica do seu programa de pós-graduação.</p>
   </div>
   <div class="req-layout">
-    <div class="req-video-box">
-      <figure class="req-video-figure">
-        <video id="checklist-video" controls controlsList="nodownload" disablePictureInPicture preload="metadata" poster="assets/img/checklist-video-poster.jpg" playsinline aria-label="Vídeo checklist em sete etapas para confirmar se o artigo pode ser publicado na revista">
-          <source src="assets/video/checklist-requisitos.mp4" type="video/mp4">
-          <track kind="subtitles" srclang="pt-BR" label="Português (Brasil)" src="assets/video/checklist-requisitos.vtt" default>
-          <p>Seu navegador não suporta reprodução de vídeo MP4.</p>
-        </video>
-      </figure>
-      <div class="video-chapter-strip req-chapter-strip" role="group" aria-label="Capítulos do checklist em vídeo">
-        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="0">Início</button>
-        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="9.8">1. Escopo</button>
-        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="21">2. Scopus &amp; WoS</button>
-        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="33.8">3. CAPES &amp; APC</button>
-        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="45.5">4. Idioma</button>
-        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="56.2">5. Prazos</button>
-        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="66.7">6. Predatórias</button>
-        <button type="button" class="video-chapter-btn" data-seek-target="checklist-video" data-seek="79.7">7. Ética &amp; ORCID</button>
-      </div>
-    </div>
+    <aside class="req-guide-panel" aria-label="Resumo metodológico dos 7 requisitos">
+      <span class="hero-video-badge">GUIA RÁPIDO · 7 PILARES DE DECISÃO</span>
+      <h3>Antes de formatar e submeter seu manuscrito</h3>
+      <p>Avaliar a adequação editorial antes do envio reduz rejeições de mesa (<em>desk rejection</em>), atrasos de cronograma e custos inesperados.</p>
+      <ul class="req-pillar-list">
+        <li><strong>Aderência científica:</strong> escopo editorial, tipo de artigo aceito e idioma compatíveis com seu trabalho.</li>
+        <li><strong>Rigor bibliométrico:</strong> conferência oficial da indexação vigente em <em>scopus.com/sources</em> e no <em>Journal Citation Reports™</em> (via Portal CAPES).</li>
+        <li><strong>Viabilidade financeira:</strong> verificação prévia de rota gratuita por assinatura ou cobertura por Acordo CAPES (Portaria nº 120/2024).</li>
+        <li><strong>Integridade editorial:</strong> checagem de revisão por pares real, corpo editorial verificável, ausência de alertas predatórios e ORCID atualizado.</li>
+      </ul>
+      <p class="req-guide-note">As marcações ficam salvas somente no seu navegador. Confirme sempre as normas específicas do seu programa com seu orientador.</p>
+    </aside>
     <div class="req-interactive-panel">
       <div class="req-score-head">
         <div>
@@ -184,7 +168,6 @@
     </div>
     <p class="faq-lead-text">Guia prático sobre os Acordos de Leitura e Publicação (Read &amp; Publish) da CAPES, isenção de taxas APC e orientações essenciais antes de planejar e submeter seu artigo.</p>
   </div>
-  <p class="faq-video-banner"><strong>Prefere acompanhar em vídeo?</strong> <a href="#apresentacao">Assista ao vídeo de apresentação de 5 minutos (pesquisa, comparação, regras PPGAD/CAPES, predatórias e contato) →</a></p>
   <div class="faq-accordion">
     <details class="faq-item" open>
       <summary class="faq-question">
@@ -198,7 +181,7 @@
           <span class="faq-tag">PADICT</span>
           <span class="faq-tag">Portaria nº 120/2024</span>
           <span class="faq-tag">Acesso Aberto Gratuito</span>
-          <span class="faq-tag">PPGAD / UFT</span>
+          <span class="faq-tag">Pós-Graduação</span>
         </div>
       </div>
     </details>
@@ -230,8 +213,8 @@
         <p>Conforme estabelecido pela <strong>Portaria CAPES nº 120/2024 (especialmente o Art. 10)</strong>, para ter a cobertura do APC aprovada, o pesquisador deve cumprir obrigatoriamente:</p>
         <ol class="faq-steps">
           <li><strong>Identificador ORCID validado:</strong> É obrigatório possuir um registro ORCID válido e cadastrado na plataforma <a href="https://meusdados.capes.gov.br/" target="_blank" rel="noopener noreferrer">meusdados.capes.gov.br ↗</a> na seção <em>"Identificadores"</em>. Faça essa conferência antes da submissão!</li>
-          <li><strong>Autor Correspondente (Corresponding Author):</strong> O autor correspondente deve possuir vínculo institucional ativo comprovado com a instituição participante (ex.: Universidade Federal do Tocantins - UFT, como discente ou docente do PPGAD).</li>
-          <li><strong>E-mail Institucional:</strong> Utilize o e-mail institucional oficial (ex.: <code>@uft.edu.br</code> ou <code>@mail.uft.edu.br</code>) no sistema de submissão da editora para permitir o reconhecimento automático de elegibilidade.</li>
+          <li><strong>Autor Correspondente (Corresponding Author):</strong> O autor correspondente deve possuir vínculo institucional ativo comprovado com uma instituição brasileira participante do acordo CAPES (como discente, docente ou pesquisador).</li>
+          <li><strong>E-mail Institucional:</strong> Utilize o e-mail institucional oficial da sua universidade ou centro de pesquisa (<code>@instituicao.edu.br</code>) no sistema de submissão da editora para permitir o reconhecimento automático de elegibilidade.</li>
           <li><strong>Aprovação por Pares:</strong> O artigo precisa ser aprovado no fluxo regular de avaliação por pares da revista. O acordo não interfere no processo editorial nem garante aceite.</li>
         </ol>
       </div>
@@ -249,8 +232,8 @@
             <p>O objetivo e a metodologia do meu trabalho se encaixam no <em>Aims and Scope</em> da revista? Verifique os artigos publicados nas últimas 3 edições para avaliar se o tema é recorrente.</p>
           </div>
           <div class="faq-check-box">
-            <strong>2. Critérios de Impacto (CiteScore / Percentil)</strong>
-            <p>A revista está indexada na Scopus ou Web of Science? O percentil CiteScore ou JIF é igual ou superior a 50% na categoria? O RigorAtlas destaca essas métricas diretamente da base oficial Scopus.</p>
+            <strong>2. Critérios de Impacto (CiteScore™ / Percentil)</strong>
+            <p>A revista está indexada na Scopus® ou Web of Science™? O percentil CiteScore™ ou JIF™ é igual ou superior a 50% na categoria? Confirme sempre os valores diretamente nas bases oficiais.</p>
           </div>
           <div class="faq-check-box">
             <strong>3. Modelo de Publicação e Custos</strong>
@@ -280,8 +263,8 @@
         <p>Se a revista não fizer parte dos acordos CAPES, você ainda conta com excelentes alternativas:</p>
         <ul>
           <li><strong>Rota Tradicional de Assinatura (Subscription / Green OA):</strong> A maioria dos periódicos das grandes editoras é no formato <em>híbrido</em>. Neles, publicar pelo modelo tradicional é <strong>100% gratuito ao autor</strong> (os leitores acessam via assinaturas universitárias do Portal de Periódicos).</li>
-          <li><strong>Periódicos Sem APC (Diamond Open Access):</strong> Muitas revistas acadêmicas brasileiras e latino-americanas (como as indexadas no SciELO e Redalyc) são mantidas por universidades públicas e não cobram nenhuma taxa nem de autores nem de leitores.</li>
-          <li><strong>Auxílio Financeiro Institucional:</strong> Consulte editais de fomento à publicação da Pró-Reitoria de Pesquisa e Pós-Graduação da UFT (PROPESQ) ou do PPGAD para eventual ressarcimento de APC.</li>
+          <li><strong>Periódicos Sem APC (Diamond Open Access):</strong> Muitas revistas acadêmicas brasileiras e latino-americanas (como as indexadas no SciELO e Redalyc) são mantidas por universidades e sociedades científicas sem cobrar taxas de autores ou leitores.</li>
+          <li><strong>Auxílio Financeiro Institucional:</strong> Consulte editais de fomento à publicação da Pró-Reitoria de Pesquisa da sua instituição ou agências de fomento para eventual apoio ao custeio de APC.</li>
         </ul>
       </div>
     </details>
@@ -291,8 +274,8 @@
         <span class="faq-icon" aria-hidden="true">+</span>
       </summary>
       <div class="faq-answer">
-        <p>As listas estáticas de estratos locais tornaram-se defasadas frente à evolução contínua da produção científica. O PPGAD e os programas de pós-graduação modernos utilizam como parâmetro de excelência métricas internacionais objetivas e transparentes:</p>
-        <p>A <strong>indexação oficial na Scopus e Web of Science</strong> e o <strong>percentil de citação CiteScore / JIF igual ou superior a 50%</strong> (preferencialmente ≥ 80% para alto impacto). Esses dados são auditáveis, atualizados anualmente e contam com links de evidência direta no site oficial da Scopus para cada periódico catalogado.</p>
+        <p>As listas estáticas de estratos locais tornaram-se defasadas frente à evolução contínua da produção científica. Programas de pós-graduação modernos utilizam frequentemente como parâmetro de excelência métricas internacionais objetivas e transparentes:</p>
+        <p>A <strong>indexação oficial na Scopus® e Web of Science™</strong> e o <strong>percentil de citação CiteScore™ / JIF™ igual ou superior a 50%</strong> (preferencialmente ≥ 80% para alto impacto). Esses dados são auditáveis, atualizados anualmente e devem ser confirmados diretamente nas bases oficiais.</p>
       </div>
     </details>
     <details class="faq-item" id="faq-portugues">
@@ -313,8 +296,8 @@
       <div class="faq-answer">
         <p>Sim! No catálogo há duas principais alternativas para publicar sem pagar taxa de processamento de artigo (APC):</p>
         <ul class="faq-list">
-          <li><strong>Sem APC ou rota tradicional de assinatura:</strong> 24 periódicos da base oferecem publicação gratuita por modelo tradicional de assinatura (<em>Subscription</em>) ou acesso aberto diamante (<em>Diamond OA</em>). Use o filtro <strong>Forma de publicação / Custo → Sem APC ou pela rota de assinatura (gratuito)</strong> em <a href="#revistas">Revistas acadêmicas</a>.</li>
-          <li><strong>Acordos Read &amp; Publish da CAPES:</strong> 270 periódicos da base contam com acordo CAPES informado. Quando o autor correspondente possui vínculo institucional ativo (ex.: UFT/PPGAD), ORCID validado no <em>meusdados.capes.gov.br</em> e há cota disponível, o APC pode ser coberto integralmente. Use o filtro <strong>Apoio CAPES → Com acordo CAPES informado</strong>.</li>
+          <li><strong>Sem APC ou rota tradicional de assinatura:</strong> periódicos da base oferecem publicação gratuita por modelo tradicional de assinatura (<em>Subscription</em>) ou acesso aberto diamante (<em>Diamond OA</em>). Use o filtro <strong>Forma de publicação / Custo → Sem APC ou pela rota de assinatura (gratuito)</strong> em <a href="#revistas">Revistas acadêmicas</a>.</li>
+          <li><strong>Acordos Read &amp; Publish da CAPES:</strong> 270 periódicos da base contam com acordo CAPES informado. Quando o autor correspondente possui vínculo institucional ativo com instituição participante, ORCID validado no <em>meusdados.capes.gov.br</em> e há cota disponível, o APC pode ser coberto integralmente. Use o filtro <strong>Apoio CAPES → Com acordo CAPES informado</strong>.</li>
         </ul>
       </div>
     </details>
@@ -327,24 +310,24 @@
         <p>Para avaliar se o seu manuscrito se encaixa em um periódico da nossa base:</p>
         <ol class="faq-steps">
           <li><strong>Pesquise o tema principal na busca do topo:</strong> digite palavras-chave do seu trabalho (por exemplo, <em>glicose</em>, <em>biomassa</em>, <em>energia solar</em> ou <em>sensoriamento</em>) para receber sugestões da nossa base auditada junto com referências complementares do Crossref.</li>
-          <li><strong>Compare escopo e tipos de artigo:</strong> abra a <strong>Ficha completa</strong> das revistas recomendadas para verificar o escopo editorial, a área de indexação na Scopus e os tipos de manuscrito aceitos.</li>
-          <li><strong>Valide os critérios e prazos:</strong> confira na barra de filtros de <a href="#revistas">Revistas acadêmicas</a> se o periódico atende ao percentil CiteScore/JIF desejado (≥ 50% ou ≥ 80%), idioma, custo e prazo estimado, e valide a escolha final com seu orientador.</li>
+          <li><strong>Compare escopo e tipos de artigo:</strong> abra a <strong>Ficha completa</strong> das revistas recomendadas para verificar o escopo editorial, a área de indexação na Scopus® e os tipos de manuscrito aceitos.</li>
+          <li><strong>Valide os critérios e prazos:</strong> confira na barra de filtros de <a href="#revistas">Revistas acadêmicas</a> se o periódico atende ao percentil CiteScore™/JIF™ desejado (≥ 50% ou ≥ 80%), idioma, custo e prazo estimado, e valide a escolha final com seu orientador.</li>
         </ol>
       </div>
     </details>
     <details class="faq-item" id="faq-wos">
       <summary class="faq-question">
-        <span class="faq-q-text">10. Além do Scopus, qual é o principal classificador de ranqueamento na Web of Science (WoS)?</span>
+        <span class="faq-q-text">10. Além da Scopus®, qual é o principal classificador de ranqueamento na Web of Science™ (WoS)?</span>
         <span class="faq-icon" aria-hidden="true">+</span>
       </summary>
       <div class="faq-answer">
-        <p>Na <strong>Web of Science (WoS / Clarivate)</strong>, os periódicos indexados na <em>Web of Science Core Collection</em> (<strong>SCIE</strong>, <strong>SSCI</strong>, <strong>ESCI</strong> e <strong>AHCI</strong>) são ranqueados anualmente no <strong>Journal Citation Reports (JCR)</strong> por categoria temática utilizando principalmente:</p>
+        <p>Na <strong>Web of Science™ (WoS / Clarivate™)</strong>, os periódicos indexados na <em>Web of Science Core Collection</em> (<strong>SCIE</strong>, <strong>SSCI</strong>, <strong>ESCI</strong> e <strong>AHCI</strong>) são ranqueados anualmente no <strong>Journal Citation Reports™ (JCR)</strong> por categoria temática utilizando principalmente:</p>
         <ul class="faq-list">
-          <li><strong>Quartil JIF (Q1, Q2, Q3, Q4) e Percentil JIF (0%–100%):</strong> é o principal classificador oficial de ranqueamento na WoS por categoria — calculado sobre o <strong>Journal Impact Factor (JIF)</strong> pela fórmula da Clarivate <em>(N − R + 0,5) / N × 100</em>. Cumpre na WoS o mesmo papel que o <strong>Percentil CiteScore</strong> na Scopus (Q1 = top 25% / percentil ≥ 75%; Q2 = 50% a 74,9%).</li>
-          <li><strong>Journal Impact Factor (JIF):</strong> pontuação média de citações nos 2 anos anteriores (exibido diretamente nos cartões do RigorAtlas quando publicado pela editora oficial).</li>
+          <li><strong>Quartil JIF (Q1, Q2, Q3, Q4) e Percentil JIF (0%–100%):</strong> é o principal classificador oficial de ranqueamento na WoS por categoria — calculado sobre o <strong>Journal Impact Factor™ (JIF)</strong> pela fórmula da Clarivate™ <em>(N − R + 0,5) / N × 100</em>. Cumpre na WoS o mesmo papel que o <strong>Percentil CiteScore™</strong> na Scopus® (Q1 = top 25% / percentil ≥ 75%; Q2 = 50% a 74,9%).</li>
+          <li><strong>Journal Impact Factor™ (JIF):</strong> pontuação média de citações nos 2 anos anteriores (exibido nos cartões do RigorAtlas apenas quando divulgado pela editora oficial).</li>
           <li><strong>Journal Citation Indicator (JCI):</strong> indicador normalizado por área (valor <code>1,0</code> = média mundial), aplicado a todas as coleções da Core Collection, incluindo ESCI e AHCI.</li>
         </ul>
-        <p class="faq-tip">As tabelas completas com Quartil JIF e Percentil JIF por categoria ficam no <a href="https://jcr.clarivate.com/" target="_blank" rel="noopener noreferrer">Journal Citation Reports (JCR) ↗</a>, acessível gratuitamente via assinatura institucional do <a href="https://www.periodicos.capes.gov.br/" target="_blank" rel="noopener noreferrer">Portal de Periódicos da CAPES ↗</a> (login CAFe/UFT).</p>
+        <p class="faq-tip">As tabelas completas com Quartil JIF e Percentil JIF por categoria ficam no <a href="https://jcr.clarivate.com/" target="_blank" rel="noopener noreferrer">Journal Citation Reports™ (JCR) ↗</a>, acessível via assinatura institucional do <a href="https://www.periodicos.capes.gov.br/" target="_blank" rel="noopener noreferrer">Portal de Periódicos da CAPES ↗</a> (login CAFe da sua instituição).</p>
       </div>
     </details>
   </div>
@@ -352,9 +335,9 @@
 <section id="sugerir" class="suggest-section site-stage stage-suggest contact-panel" aria-labelledby="sugerir-titulo">
 <div class="suggest-header"><h2 id="sugerir-titulo">Fale com o administrador</h2><p>Envie uma sugestão, correção ou dúvida diretamente por e-mail.</p><a class="contact-email" href="mailto:mdqmichael@gmail.com">mdqmichael@gmail.com ↗</a></div>
 <form id="suggest-form" class="suggest-form">
-<div class="suggest-grid"><div class="field"><label for="nome">Nome (opcional)</label><input id="nome" name="nome" type="text" autocomplete="name" placeholder="Seu nome" maxlength="160"></div><div class="field"><label for="email">E-mail (opcional, para resposta)</label><input id="email" name="email" type="email" autocomplete="email" placeholder="Seu e-mail" maxlength="254"></div><div class="field field-full"><label for="assunto">Assunto</label><select id="assunto" name="assunto"><option value="Sugestão de revista">Sugestão de nova revista</option><option value="Correção de dados / métrica">Correção de métrica ou link</option><option value="Dúvida sobre PPGAD / CAPES">Dúvida sobre PPGAD / Acordo CAPES</option><option value="Outro assunto">Outro assunto</option></select></div><div class="field field-full"><label for="mensagem">Mensagem</label><textarea id="mensagem" name="mensagem" rows="3" required maxlength="5000" placeholder="Escreva sua sugestão ou dúvida."></textarea></div></div>
+<div class="suggest-grid"><div class="field"><label for="nome">Nome (opcional)</label><input id="nome" name="nome" type="text" autocomplete="name" placeholder="Seu nome" maxlength="160"></div><div class="field"><label for="email">E-mail (opcional, para resposta)</label><input id="email" name="email" type="email" autocomplete="email" placeholder="Seu e-mail" maxlength="254"></div><div class="field field-full"><label for="assunto">Assunto</label><select id="assunto" name="assunto"><option value="Sugestão de revista">Sugestão de nova revista</option><option value="Correção de dados / métrica">Correção de métrica ou link</option><option value="Dúvida sobre Acordos CAPES / Critérios">Dúvida sobre Acordos CAPES / Critérios</option><option value="Outro assunto">Outro assunto</option></select></div><div class="field field-full"><label for="mensagem">Mensagem</label><textarea id="mensagem" name="mensagem" rows="3" required maxlength="5000" placeholder="Escreva sua sugestão ou dúvida."></textarea></div></div>
 <fieldset class="contact-channels"><legend>Como prefere enviar?</legend><label><input type="radio" name="contact-channel" value="gmail" checked> Gmail na web (mais rápido)</label><label><input type="radio" name="contact-channel" value="mailto"> App de e-mail padrão</label><label><input type="radio" name="contact-channel" value="copy"> Copiar mensagem pronta</label></fieldset>
-<p>Nome e e-mail são opcionais e usados apenas para responder sua mensagem. Não envie dados sensíveis. <a href="privacidade.html">Leia o aviso de privacidade e seus direitos</a>.</p>
+<p>Nome e e-mail são opcionais e usados apenas para responder sua mensagem. Não envie dados sensíveis. <a href="privacidade.html">Leia a Política de Segurança, Direitos e LGPD</a>.</p>
 <div class="suggest-actions"><button type="submit" id="suggest-submit-btn" class="primary suggest-submit">Enviar mensagem</button></div>
 <div id="contact-feedback" class="contact-feedback" role="status" aria-live="polite" hidden>
   <p id="contact-status-text"></p>
@@ -366,19 +349,19 @@
 </div>
 </form></section>
 </main>
-<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><img class="footer-logo" src="assets/img/logo-pesquisa-ppgad.svg?v=20261026-2" alt="" aria-hidden="true"><div><strong>RigorAtlas</strong><p>Rigor científico para escolher onde publicar.</p></div></div><div class="footer-objective"><span class="footer-label">Objetivo do projeto</span><p>Este projeto foi desenvolvido para ajudar os alunos do PPGAD/UFT a encontrar, consultar e comparar revistas e informações editoriais, facilitando a escolha de periódicos para a publicação de seus trabalhos científicos.</p></div><div class="project-credits" aria-label="Equipe do projeto"><div class="credits-heading"><span class="footer-label">Quem constrói o RigorAtlas</span><p>Uma iniciativa vinculada ao Programa de Pós-Graduação em Agroenergia Digital da Universidade Federal do Tocantins.</p></div><div class="credit-person"><span class="footer-label">Desenvolvimento e pesquisa</span><strong>Michael Oliveira</strong><small>Desenvolvedor e pesquisador responsável pelo projeto · PPGAD/UFT</small></div><div class="credit-person"><span class="footer-label">Desenvolvimento e pesquisa</span><strong>Neiber Garcia</strong><small>Desenvolvedor e pesquisador responsável pelo projeto · PPGAD/UFT</small></div><div class="credit-person"><span class="footer-label">Orientação acadêmica</span><strong>Prof. Dr. Guilherme Benko Siqueira</strong><small>Orientação do projeto</small></div><div class="credits-contact"><span class="footer-label">Contato do projeto</span><a href="#sugerir">Fale com o administrador</a></div></div>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><img class="footer-logo" src="assets/img/logo-rigoratlas.svg?v=20261124" alt="" aria-hidden="true"><div><strong>RigorAtlas</strong><p>Rigor científico para escolher onde publicar.</p></div></div><div class="footer-objective"><span class="footer-label">Objetivo e independência</span><p>O RigorAtlas é uma iniciativa independente e sem fins lucrativos desenvolvida para auxiliar pesquisadores e estudantes a consultar e comparar periódicos científicos e informações editoriais. Não possui vínculo institucional, representação oficial, patrocínio ou endosso de universidades, programas de pós-graduação, órgãos públicos ou editoras.</p></div><div class="project-credits" aria-label="Responsável pela iniciativa"><div class="credits-heading"><span class="footer-label">Projeto independente</span><p>Plataforma aberta de apoio à pesquisa científica em regime exclusivamente de consulta online.</p></div><div class="credit-person"><span class="footer-label">Desenvolvimento e manutenção</span><strong>Michael Oliveira</strong><small>Responsável técnico e curadoria independente do projeto</small></div><div class="credits-contact"><span class="footer-label">Contato</span><a href="#sugerir">Fale com o administrador</a></div></div>
 <section class="legal-compliance-footer" aria-labelledby="legal-footer-title">
   <div class="legal-compliance-head">
     <div>
       <span class="legal-compliance-kicker">DOCUMENTAÇÃO JURÍDICA FIXA · POLÍTICA DE SEGURANÇA, DIREITOS E GOVERNANÇA DE DADOS</span>
-      <h2 id="legal-footer-title">Conformidade Legal, Regras de Uso de APIs, IA e Plataformas Científicas</h2>
+      <h2 id="legal-footer-title">Conformidade Legal, Independência, APIs, IA e Plataformas Científicas</h2>
     </div>
     <span class="legal-badge-readonly">Regime Somente Consulta · Downloads Desativados</span>
   </div>
   <div class="legal-grid">
     <article class="legal-card">
-      <h3>1. Direitos, Regras e Vedação de Downloads</h3>
-      <p>O RigorAtlas é um portal acadêmico público sem fins lucrativos (PPGAD/UFT) em regime <strong>exclusivo de consulta online</strong>. Todas as funções de download e exportação em massa (XLS, CSV, PDF, JSON e MP4) foram removidas do site e do chat para impedir a redistribuição não autorizada de bases de terceiros e assegurar respeito à <strong>Lei de Direitos Autorais (Lei nº 9.610/1998)</strong> e aos contratos das plataformas bibliográficas.</p>
+      <h3>1. Direitos, Independência e Vedação de Downloads</h3>
+      <p>O RigorAtlas é um projeto <strong>independente, sem fins lucrativos e sem vínculo institucional</strong> com universidades ou órgãos públicos, operando em regime <strong>exclusivo de consulta online</strong>. Todas as funções de download e exportação em massa (XLS, CSV, PDF, JSON e MP4) foram removidas do site e do chat para impedir redistribuição não autorizada de bases de terceiros e assegurar respeito à <strong>Lei de Direitos Autorais (Lei nº 9.610/1998)</strong>.</p>
     </article>
     <article class="legal-card">
       <h3>2. APIs Científicas Abertas &amp; Governança de IA</h3>
@@ -386,15 +369,15 @@
     </article>
     <article class="legal-card">
       <h3>3. Scopus® (Elsevier), Web of Science™ (Clarivate) &amp; SJR</h3>
-      <p><strong>Scopus®</strong> e <strong>CiteScore™</strong> são marcas registradas da Elsevier B.V.; <strong>Web of Science™</strong>, <strong>Journal Citation Reports™ (JCR)</strong> e <strong>Journal Impact Factor™ (JIF)</strong> são marcas registradas da Clarivate™; <strong>SJR</strong> pertence à SCImago Lab. Este portal não realiza <em>web scraping</em> automatizado nem redistribui arquivos/tabelas completas do Scopus ou do JCR. Os indicadores exibidos são estritamente referenciais para apoio educacional; a conferência oficial deve ocorrer diretamente em <strong>scopus.com/sources</strong>, <strong>mjl.clarivate.com</strong> e <strong>jcr.clarivate.com</strong> (via Portal de Periódicos da CAPES / CAFe-UFT).</p>
+      <p><strong>Scopus®</strong> e <strong>CiteScore™</strong> são marcas registradas da Elsevier B.V.; <strong>Web of Science™</strong>, <strong>Journal Citation Reports™ (JCR)</strong> e <strong>Journal Impact Factor™ (JIF)</strong> são marcas registradas da Clarivate™; <strong>SJR</strong> pertence à SCImago Lab. Este portal não realiza <em>web scraping</em> automatizado nem redistribui arquivos/tabelas completas do Scopus ou do JCR. Os indicadores exibidos são estritamente referenciais para apoio educacional; a conferência oficial deve ocorrer diretamente em <strong>scopus.com/sources</strong>, <strong>mjl.clarivate.com</strong> e <strong>jcr.clarivate.com</strong> (via Portal de Periódicos da CAPES / acesso institucional CAFe).</p>
     </article>
     <article class="legal-card">
       <h3>4. Segurança da Informação, LGPD &amp; Marco Civil</h3>
-      <p>Operação alinhada à <strong>LGPD (Lei nº 13.709/2018)</strong>, ao <strong>Marco Civil da Internet (Lei nº 12.965/2014)</strong> e à <strong>Portaria CAPES nº 120/2024</strong>. Arquitetura estática em HTTPS, sem cadastro de usuários, sem cookies publicitários e sem hotlinking de mídia externa de editoras. Preferências locais permanecem somente no navegador (<code>localStorage</code>). Direitos dos titulares (Art. 18 da LGPD) atendidos via contato institucional do administrador.</p>
+      <p>Operação alinhada à <strong>LGPD (Lei nº 13.709/2018)</strong>, ao <strong>Marco Civil da Internet (Lei nº 12.965/2014)</strong> e à <strong>Portaria CAPES nº 120/2024</strong>. Arquitetura estática em HTTPS, sem cadastro de usuários, sem cookies publicitários e sem hotlinking de mídia externa de editoras. Preferências locais permanecem somente no navegador (<code>localStorage</code>). Direitos dos titulares (Art. 18 da LGPD) atendidos via canal de contato do administrador.</p>
     </article>
   </div>
   <div class="legal-disclaimer-bar">
-    <strong>Transparência e Escopo Jurídico:</strong> esta documentação fixa formaliza as regras técnicas, éticas e operacionais de conformidade do portal acadêmico e serve de base auditável de governança. Não substitui a conferência obrigatória nas fontes oficiais das bases/editoras, a validação pelo orientador/PPGAD nem parecer ou certificação jurídica formal emitida pela Procuradoria Federal junto à UFT, pelo Encarregado de Dados (DPO) ou por advogado inscrito na OAB.
+    <strong>Transparência e Escopo Jurídico:</strong> esta documentação fixa formaliza as regras técnicas, éticas e operacionais de conformidade do portal e serve de base auditável de governança. Não substitui a conferência obrigatória nas fontes oficiais das bases/editoras, a validação pelo orientador ou programa de pós-graduação, nem parecer ou certificação jurídica formal emitida por advogado inscrito na OAB ou assessoria jurídica habilitada.
   </div>
   <div class="legal-links-bar">
     <a href="privacidade.html">Política Completa de Segurança, Direitos, APIs e LGPD</a>
@@ -403,11 +386,10 @@
     <a href="#sugerir">Contato e Direitos do Titular</a>
   </div>
 </section>
-<div class="footer-bottom"><span>Programa de Pós-Graduação em Agroenergia Digital · Universidade Federal do Tocantins</span><span>Portal acadêmico de apoio à escolha de periódicos científicos · Uso estritamente educacional e não comercial</span></div></div></footer>
-<nav class="floating-actions" aria-label="Atalhos principais"><a href="#ai-question" data-focus-search><span aria-hidden="true">⌕</span><small>Pesquisar</small></a><a href="#revistas"><span aria-hidden="true">▤</span><small>Catálogo</small></a><a href="#comparar"><span aria-hidden="true">⇄</span><small>Comparar</small></a><a href="#faq"><span aria-hidden="true">?</span><small>FAQ</small></a><a href="privacidade.html" aria-label="Política de Segurança, Direitos, APIs e LGPD" title="Política de Segurança, Direitos e APIs"><span aria-hidden="true">§</span><small>Direitos</small></a><a href="#sugerir" aria-label="Fale com o administrador" title="Fale com o administrador"><span aria-hidden="true">✉</span><small>Contato</small></a></nav>
-<script type="module" src="assets/js/app.js?v=20261124clean2"></script>
-<script type="module" src="assets/js/accessibility.js?v=20261118v12"></script>
-<script type="module" src="assets/js/contact.js?v=20261118v12"></script>
-<script type="module" src="assets/js/visitor-tracker.js?v=20261124legal1"></script>
-<script type="module" src="assets/js/tech-status.js?v=20261118v12"></script>
-<script type="module" src="assets/js/openalex-chat.js?v=20261124legal1"></script></body></html>
+<div class="footer-bottom"><span>RigorAtlas · Iniciativa independente de apoio à pesquisa científica</span><span>Sem vínculo institucional com universidades, órgãos públicos ou editoras · Uso educacional e não comercial</span></div></div></footer>
+<script type="module" src="assets/js/app.js?v=20261124indep3"></script>
+<script type="module" src="assets/js/accessibility.js?v=20261124indep3"></script>
+<script type="module" src="assets/js/contact.js?v=20261124indep3"></script>
+<script type="module" src="assets/js/visitor-tracker.js?v=20261124indep3"></script>
+<script type="module" src="assets/js/tech-status.js?v=20261124indep3"></script>
+<script type="module" src="assets/js/openalex-chat.js?v=20261124indep3"></script></body></html>

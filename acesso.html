@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Área técnica | PPGAD UFT</title>
-<link rel="stylesheet" href="assets/css/style.css?v=20261124legal1">
+<title>Área técnica | RigorAtlas</title>
+<link rel="stylesheet" href="assets/css/style.css?v=20261124indep3">
 <style>
 .access-page{min-height:100vh;display:block;padding:28px 16px;background:var(--bg)}
 .access-card{width:min(1180px,100%);margin:0 auto 22px;min-width:0;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:28px}
@@ -114,12 +114,12 @@
   <div class="legal-compliance-head">
     <div>
       <span class="legal-compliance-kicker">DOCUMENTAÇÃO JURÍDICA FIXA · POLÍTICA DE SEGURANÇA, DIREITOS E GOVERNANÇA DE DADOS</span>
-      <h2 id="legal-footer-title">Conformidade Legal, APIs, IA, Scopus® e Web of Science™ — RigorAtlas (PPGAD/UFT)</h2>
+      <h2 id="legal-footer-title">Conformidade Legal, Independência, APIs, IA, Scopus® e Web of Science™ — RigorAtlas</h2>
     </div>
     <span class="legal-badge-readonly">Regime Somente Consulta · Downloads Desativados</span>
   </div>
   <div class="legal-disclaimer-bar">
-    <strong>Resumo Fixo:</strong> portal acadêmico público sem fins lucrativos (PPGAD/UFT) em modo somente consulta online (downloads e exportações desativados). APIs abertas em conformidade: OpenAlex (CC0), Crossref (Metadados Abertos), DOAJ (CC0), ORCID Public API (CC0/ToS) e NCBI PubMed E-utilities. Sem envio de dados a IA generativa externa. <strong>Scopus® / CiteScore™</strong> (Elsevier B.V.), <strong>Web of Science™ / JCR™ / JIF™</strong> (Clarivate™) e <strong>SJR</strong> (SCImago Lab) exibidos exclusivamente em caráter referencial, sem <em>scraping</em> nem redistribuição. Alinhado à LGPD (Lei nº 13.709/2018), Marco Civil (Lei nº 12.965/2014) e Lei de Direitos Autorais (Lei nº 9.610/1998). Documentação técnica de governança — não substitui parecer jurídico formal (Procuradoria/UFT ou OAB).
+    <strong>Resumo Fixo:</strong> iniciativa acadêmica independente, sem fins lucrativos e sem vínculo institucional com universidades, órgãos públicos ou editoras, operando em modo somente consulta online (downloads e exportações desativados). APIs abertas em conformidade: OpenAlex (CC0), Crossref (Metadados Abertos), DOAJ (CC0), ORCID Public API (CC0/ToS) e NCBI PubMed E-utilities. Sem envio de dados a IA generativa externa. <strong>Scopus® / CiteScore™</strong> (Elsevier B.V.), <strong>Web of Science™ / JCR™ / JIF™</strong> (Clarivate™) e <strong>SJR</strong> (SCImago Lab) exibidos exclusivamente em caráter referencial, sem <em>scraping</em> nem redistribuição. Alinhado à LGPD (Lei nº 13.709/2018), Marco Civil (Lei nº 12.965/2014) e Lei de Direitos Autorais (Lei nº 9.610/1998). Documentação técnica de governança — não substitui parecer jurídico formal emitido por advogado inscrito na OAB.
   </div>
   <div class="legal-links-bar">
     <a href="privacidade.html">Política Completa de Segurança, Direitos, APIs e LGPD</a>
@@ -143,7 +143,7 @@ async function sha256Hex(str){
 }
 
 async function loadData(){
-  const local=localStorage.getItem("ppgad_admin_base");
+  const local=localStorage.getItem("rigoratlas_admin_base");
   if(local){try{data=JSON.parse(local);return}catch{}}
   const res=await fetch(DATA_URL,{cache:"no-store"});
   if(!res.ok) throw new Error("Não foi possível carregar a base editorial.");
@@ -182,23 +182,23 @@ $("login-form").onsubmit=async e=>{
  const uHash=await sha256Hex($("usuario").value.trim());
  const pHash=await sha256Hex($("senha").value);
  if(uHash===USER_SHA256 && pHash===PASS_SHA256){
-   sessionStorage.setItem("ppgad_admin_auth","1");
+   sessionStorage.setItem("rigoratlas_admin_auth","1");
    $("login-view").style.display="none";$("admin-panel").style.display="block";
    try{await loadData();render()}catch(err){$("admin-panel").innerHTML="<p>"+esc(err.message)+"</p>"}
  }else $("login-msg").textContent="Usuário ou senha inválidos.";
 };
 
-$("logout").onclick=()=>{sessionStorage.removeItem("ppgad_admin_auth");location.reload()};
+$("logout").onclick=()=>{sessionStorage.removeItem("rigoratlas_admin_auth");location.reload()};
 $("add").onclick=()=>{data.revistas.unshift({id:Date.now(),titulo:"Nova revista",editora:"",issn:"",area:"",escopo:"",citescore:null,maiorPercentil:null,sjr:"",colecaoWos:"",fatorImpacto:null,acordoCapes:null,idioma:"",custo:"",url:"",urlInstrucoes:"",atualizadoEm:new Date().toISOString().slice(0,10)});render()};
-$("save-local").onclick=()=>{localStorage.setItem("ppgad_admin_base",JSON.stringify(data));alert("Rascunho salvo localmente neste navegador.")};
-$("reset").onclick=()=>{if(confirm("Restaurar a base original e apagar o rascunho local?")){localStorage.removeItem("ppgad_admin_base");location.reload()}};
-if(sessionStorage.getItem("ppgad_admin_auth")==="1"){
+$("save-local").onclick=()=>{localStorage.setItem("rigoratlas_admin_base",JSON.stringify(data));alert("Rascunho salvo localmente neste navegador.")};
+$("reset").onclick=()=>{if(confirm("Restaurar a base original e apagar o rascunho local?")){localStorage.removeItem("rigoratlas_admin_base");location.reload()}};
+if(sessionStorage.getItem("rigoratlas_admin_auth")==="1"){
  $("login-view").style.display="none";$("admin-panel").style.display="block";
  loadData().then(render).catch(e=>{$("admin-panel").innerHTML="<p>"+esc(e.message)+"</p>"});
 }
 </script>
 <script type="module">
-import {getVisitData,clearVisitLog} from "./assets/js/visitor-tracker.js?v=20261124legal1";
+import {getVisitData,clearVisitLog} from "./assets/js/visitor-tracker.js?v=20261124indep3";
 const $v=id=>document.getElementById(id);
 const escV=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function renderVisits(){
@@ -222,6 +222,6 @@ $v("visit-clear")?.addEventListener("click",()=>{
 });
 renderVisits();
 </script>
-<script type="module" src="assets/js/accessibility.js?v=20261118v8"></script>
+<script type="module" src="assets/js/accessibility.js?v=20261124indep3"></script>
 </body>
 </html>

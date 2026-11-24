@@ -1,14 +1,13 @@
 # RigorAtlas — fluxo de pesquisa e Prioridade 1
 
-Implementação baseada no PDF “Fluxograma de escolha da revista e melhorias do site - PPGAD”, seção 4. Os 68 registros e as datas editoriais foram preservados.
+Implementação baseada no fluxograma editorial de escolha de revista (seção 4). Os 68 registros e as datas editoriais foram preservados.
 
 ## Concluído
 
-- Catálogo, destaques e comparação com estado de falha, tentativa novamente e timeout. Pesquisa e CSV desabilitados quando os dados não carregam.
-- CSV UTF-8 com BOM, separador ponto e vírgula, campos novos, marca, nome com data e proteção contra fórmulas.
+- Catálogo, destaques e comparação com estado de falha, tentativa novamente e timeout. Pesquisa e exportação desabilitadas quando os dados não carregam.
 - Sobre e rodapé com data editorial e referência das bases. Ano ausente é explicitamente pendente, nunca presumido.
 - Nome/e-mail opcionais, aviso de uso, página LGPD e retorno do serviço de formulário sem alegar entrega de e-mail não verificada.
-- Identidade RigorAtlas; logotipo no catálogo para impressão, título de PDF e nome do CSV com a marca. CSV é texto e não comporta logotipo gráfico. Salvar como PDF depende do diálogo do navegador.
+- Identidade RigorAtlas.
 - Filtros manuais de indexação, maior percentil, estrato informado, percentil H, APC, acordo CAPES e prazo total; mesmos critérios alimentam catálogo e contexto do assistente existente.
 - Crossref permanece descoberta temática; candidatas externas não têm as métricas verificadas e são identificadas como pendentes. Títulos conhecidos incompatíveis com os filtros não são reintroduzidos como sugestões externas.
 
@@ -28,7 +27,7 @@ O acervo existente não contém os novos percentis estruturados. Filtros estrito
 
 ## Prioridade 2 — aguarda validação de Michael
 
-1. Semáforo dos critérios, com verde apenas com evidências completas, amarelo para pendência, vermelho para critério não atendido; preferir “Atende aos critérios informados” a certificação “Conta para PPGAD”.
+1. Semáforo dos critérios, com verde apenas com evidências completas, amarelo para pendência, vermelho para critério não atendido; preferir “Atende aos critérios informados” a certificação institucional.
 2. Régua de percentil com 50/80; faixas de estrato somente após validar regra oficial.
 3. Estimativa de custo em R$ com PTAX e data, taxas extras e condições de acordo/isenção.
 4. Estimativa de publicação comparada com a defesa, explicitamente não garantida.
