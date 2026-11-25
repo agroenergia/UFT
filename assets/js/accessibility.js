@@ -425,37 +425,15 @@ function ensureAccessibilityUI(){
       document.body.prepend(skip);
     }
   }
-  if(document.querySelector(".a11y-bar"))return;
-  const bar=document.createElement("section");
-  bar.className="a11y-bar a11y-bar-secondary";
-  bar.setAttribute("aria-label","Acessibilidade: conforto sensorial para autismo, modo foco e leitor automático em áudio");
-  bar.innerHTML=`<div class="a11y-group">
-      <span class="a11y-title">Acessibilidade</span>
-      <button type="button" id="a11y-calm" class="a11y-btn" aria-pressed="false" title="Cores suaves de baixo brilho e sem animações para conforto sensorial e autismo (Alt+C)">Conforto visual (Autismo)</button>
-      <button type="button" id="a11y-focus" class="a11y-btn" aria-pressed="false" title="Realce de foco, espaçamento ampliado e redução de distrações visuais (Alt+F)">Modo Foco</button>
-      <button type="button" id="a11y-contrast" class="a11y-btn" aria-pressed="false" title="Alto contraste para baixa visão">Alto contraste</button>
-      <button type="button" id="a11y-font-dec" class="a11y-btn a11y-btn-sm" aria-label="Diminuir tamanho da fonte">A-</button>
-      <button type="button" id="a11y-font-inc" class="a11y-btn a11y-btn-sm" aria-label="Aumentar tamanho da fonte">A+</button>
-    </div>
-    <div class="a11y-group a11y-audio-group">
-      <button type="button" id="a11y-auto-read" class="a11y-btn a11y-btn-audio" aria-pressed="false" title="Ativar leitura automática em áudio em português ao focar ou clicar (Alt+L)">🔊 Leitor automático</button>
-      <button type="button" id="a11y-read-page" class="a11y-btn" aria-pressed="false" title="Ouvir os blocos da página em sequência (Alt+P)">▶ Ouvir página</button>
-      <button type="button" id="a11y-stop" class="a11y-btn" hidden aria-label="Parar leitura em áudio">■ Parar áudio</button>
-      <label class="a11y-rate"><span>Voz</span><select id="a11y-rate" aria-label="Velocidade do leitor em áudio"><option value="0.9">0.9x</option><option value="1" selected>1.0x</option><option value="1.15">1.15x</option><option value="1.3">1.3x</option></select></label>
-      <button type="button" id="a11y-reset" class="a11y-btn a11y-btn-ghost">Padrão</button>
-    </div>
-    <div id="a11y-live" class="sr-only" role="status" aria-live="polite"></div>`;
-  const mainEl=document.querySelector("main");
-  if(mainEl)mainEl.prepend(bar);
-  else document.body.prepend(bar);
-}
-
-if(SPEECH_SUPPORTED){
-  window.speechSynthesis.getVoices();
-  window.speechSynthesis.addEventListener?.("voiceschanged",pickPortugueseVoice);
+  if(!document.getElementById("a11y-live")){
+    const live=document.createElement("div");
+    live.id="a11y-live";
+    live.className="sr-only";
+    live.setAttribute("role","status");
+    live.setAttribute("aria-live","polite");
+    document.body.appendChild(live);
+  }
 }
 
 ensureAccessibilityUI();
-applyTheme();
-initFocusHoverHighlight();
 bindControls();
