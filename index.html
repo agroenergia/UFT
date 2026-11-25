@@ -7,18 +7,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20261124v6">
+<link rel="stylesheet" href="assets/css/style.css?v=20261124nat7">
 </head>
-<body>
+<body class="nature-glass-site">
 <a class="skip-link" href="#inicio">Ir para o conteúdo principal</a>
 <header class="site-header">
   <div class="header-inner">
-    <a class="brand-lockup" href="#inicio" aria-label="RigorAtlas — início"><img class="brand-logo" src="assets/img/logo-rigoratlas.svg?v=20261124" alt="Símbolo do RigorAtlas: lupa, globo e folhas verdes"><span class="brand-text"><strong>Rigor<span>Atlas</span></strong><small>Pesquisa Científica</small></span></a>
+    <a class="brand-lockup" href="#inicio" aria-label="RigorAtlas — início"><img class="brand-logo" src="assets/img/logo-rigoratlas.svg?v=20261124" alt="Símbolo do RigorAtlas: lupa, globo e folhas verdes"><span class="brand-text"><strong>Rigor<span>Atlas</span></strong><small>Bioenergia &amp; Pesquisa Científica</small></span></a>
     <form id="ai-search-form" class="header-search" role="search">
       <label class="sr-only" for="ai-question">Pesquise por tema do artigo, nome da revista, ISSN, editora ou área científica</label>
       <div class="search-field-group">
-        <input id="ai-question" type="search" maxlength="1500" placeholder="Busque tema do artigo (ex.: bioenergia, IA), revista (ex.: Bragantia), ISSN ou editora" title="Pesquise por tema da pesquisa, nome da revista, ISSN, editora ou área científica" aria-describedby="search-hint-text" autocomplete="off">
-        <span id="search-hint-text" class="search-hint">Sugestões de busca: <strong>tema do artigo</strong> (ex.: biomassa, glicose, sensores), <strong>nome da revista</strong> (ex.: Bragantia), <strong>ISSN</strong>, <strong>editora</strong> ou <strong>área científica</strong>.</span>
+        <input id="ai-question" type="search" maxlength="1500" placeholder="Busque tema (bioenergia, IA), revista (Bragantia), ISSN ou editora" title="Pesquise por tema da pesquisa, nome da revista, ISSN, editora ou área científica" aria-describedby="search-hint-text" autocomplete="off">
+        <span id="search-hint-text" class="search-hint">Sugestões: <strong>tema do artigo</strong> (biomassa, glicose, sensores) · <strong>revista</strong> (Bragantia) · <strong>ISSN</strong> · <strong>editora</strong></span>
       </div>
       <div class="header-actions">
         <button type="submit" id="ai-search-button" aria-label="Pesquisar revistas">Pesquisar</button>
@@ -29,6 +29,7 @@
     <nav id="primary-navigation" class="header-term-nav" aria-label="Navegação principal">
       <a href="#inicio" class="on">Início</a>
       <a href="#revistas">Catálogo de revistas</a>
+      <a href="apresentacao.html" class="nav-live-pill"><span class="live-dot-mini" aria-hidden="true"></span> Apresentação Ao Vivo</a>
       <a href="#comparar">Comparar</a>
       <a href="#apresentacao">Aprendizado</a>
       <a href="#sinais-alerta">Sinais de alerta</a>
@@ -37,7 +38,7 @@
         <button type="button" class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true" aria-controls="nav-more-menu">Mais recursos <span class="nav-caret" aria-hidden="true">▾</span></button>
         <div id="nav-more-menu" class="nav-dropdown-menu" role="menu">
           <a href="#requisitos-publicacao" role="menuitem">Vídeo: 7 requisitos</a>
-          <a href="checklist.html" role="menuitem">Checklist completo</a>
+          <a href="checklist.html" role="menuitem">Checklist completo (29 etapas)</a>
           <a href="#faq" role="menuitem">Acordos CAPES &amp; FAQ</a>
           <a href="sobre.html" role="menuitem">Sobre e fontes</a>
           <a href="privacidade.html" role="menuitem">Segurança e Direitos</a>
@@ -47,117 +48,100 @@
   </div>
 </header>
 <div class="ai-response-wrap">
-  <section class="a11y-bar" aria-label="Acessibilidade: conforto sensorial para autismo, modo foco e leitor automático em áudio">
-    <div class="a11y-group">
-      <span class="a11y-title">Acessibilidade</span>
-      <button type="button" id="a11y-calm" class="a11y-btn" aria-pressed="false" title="Cores suaves de baixo brilho e sem animações para conforto sensorial e autismo (Alt+C)">Conforto visual (Autismo)</button>
-      <button type="button" id="a11y-focus" class="a11y-btn" aria-pressed="false" title="Realce de foco, espaçamento ampliado e redução de distrações visuais (Alt+F)">Modo Foco</button>
-      <button type="button" id="a11y-contrast" class="a11y-btn" aria-pressed="false" title="Alto contraste para baixa visão">Alto contraste</button>
-      <button type="button" id="a11y-font-dec" class="a11y-btn a11y-btn-sm" aria-label="Diminuir tamanho da fonte">A-</button>
-      <button type="button" id="a11y-font-inc" class="a11y-btn a11y-btn-sm" aria-label="Aumentar tamanho da fonte">A+</button>
-    </div>
-    <div class="a11y-group a11y-audio-group">
-      <button type="button" id="a11y-auto-read" class="a11y-btn a11y-btn-audio" aria-pressed="false" title="Ativar leitura automática em áudio em português ao focar, clicar ou pesquisar (Alt+L)">🔊 Leitor automático ao navegar</button>
-      <button type="button" id="a11y-read-page" class="a11y-btn" aria-pressed="false" title="Ouvir os blocos da página em sequência (Alt+P)">▶ Ouvir página</button>
-      <button type="button" id="a11y-stop" class="a11y-btn" hidden aria-label="Parar leitura em áudio">■ Parar áudio</button>
-      <label class="a11y-rate"><span>Voz</span><select id="a11y-rate" aria-label="Velocidade do leitor em áudio"><option value="0.9">0.9x</option><option value="1" selected>1.0x</option><option value="1.15">1.15x</option><option value="1.3">1.3x</option></select></label>
-      <button type="button" id="a11y-reset" class="a11y-btn a11y-btn-ghost">Padrão</button>
-    </div>
-    <div id="a11y-live" class="sr-only" role="status" aria-live="polite"></div>
-  </section>
-  <div id="ai-status" class="ai-status" role="status" aria-live="polite" hidden></div><div id="ai-loading" class="ai-loading" role="status" aria-live="polite" hidden><span class="ai-spinner" aria-hidden="true"></span><div><strong>Estamos preparando sua pesquisa</strong><p>Buscando em nossa base auditada e consultando recursos da plataforma Crossref. A pesquisa pode levar alguns segundos até aparecer na tela, por favor aguarde.</p></div></div>
+  <div id="a11y-live" class="sr-only" role="status" aria-live="polite"></div>
+  <div id="ai-status" class="ai-status" role="status" aria-live="polite" hidden></div><div id="ai-loading" class="ai-loading" role="status" aria-live="polite" hidden><span class="ai-spinner" aria-hidden="true"></span><div><strong>Preparando sua pesquisa</strong><p>Consultando nossa base auditada e a API pública do Crossref…</p></div></div>
   <div id="ai-answer" class="ai-answer" aria-live="polite"></div>
 </div>
 <main id="inicio">
 <section class="intro discovery-banner" aria-labelledby="banner-title">
   <div class="banner-copy">
-    <p class="banner-kicker"><span aria-hidden="true"></span> CIÊNCIA COM DIREÇÃO · INICIATIVA INDEPENDENTE DE APOIO CIENTÍFICO</p>
+    <p class="banner-kicker"><span aria-hidden="true"></span> CIÊNCIA COM DIREÇÃO · BIOENERGIA &amp; RIGOR EDITORIAL</p>
     <h1 id="banner-title">Encontre a <em>revista certa</em> para publicar sua pesquisa.</h1>
-    <p class="banner-lead">Explore periódicos científicos em uma base auditada com indicadores referenciais da Scopus® e Web of Science™, consulte Acordos CAPES, compare critérios editoriais e proteja seu manuscrito contra revistas predatórias.</p>
-    <div class="banner-actions"><a class="banner-primary" href="#revistas">Explorar revistas <span aria-hidden="true">↗</span></a><button type="button" id="hero-play-btn" class="banner-secondary">▶ Assistir ao guia em vídeo</button><a class="banner-secondary" href="#ai-question" data-focus-search>Pesquisar tema <span aria-hidden="true">→</span></a></div>
-    <div class="banner-prompts" aria-label="Dúvidas frequentes"><span>Comece por uma dúvida (FAQ):</span><a href="#faq-portugues">Aceita português?</a><a href="#faq-sem-taxa">Tem opção sem taxa?</a><a href="#faq-combina">Meu artigo combina?</a></div>
+    <p class="banner-lead">Compare periódicos auditados com indicadores Scopus® e Web of Science™, Acordos CAPES e dados científicos em tempo real.</p>
+    <div class="banner-actions">
+      <a class="banner-primary" href="#revistas">Explorar catálogo <span aria-hidden="true">↗</span></a>
+      <a class="banner-accent-live" href="apresentacao.html"><span class="live-dot-mini" aria-hidden="true"></span> Apresentação Ao Vivo</a>
+      <button type="button" id="hero-play-btn" class="banner-secondary">▶ Guia em vídeo</button>
+    </div>
+    <div class="banner-prompts" aria-label="Dúvidas frequentes"><span>Atalhos rápidos:</span><a href="#faq-portugues">Aceita português?</a><a href="#faq-sem-taxa">Sem taxa?</a><a href="#faq-combina">Meu artigo combina?</a></div>
   </div>
   <div id="apresentacao" class="banner-video-hero" aria-labelledby="hero-video-title">
     <div class="hero-video-head">
-      <span class="hero-video-badge">APRENDIZADO · VÍDEO DE APRESENTAÇÃO · 5 MIN 11 S</span>
-      <h2 id="hero-video-title" class="hero-video-title">Guia prático passo a passo do RigorAtlas</h2>
+      <span class="hero-video-badge">APRENDIZADO · 5 MIN 11 S</span>
+      <h2 id="hero-video-title" class="hero-video-title">Guia prático do RigorAtlas</h2>
     </div>
     <figure class="hero-video-figure">
-      <video id="hero-video" controls controlsList="nodownload" disablePictureInPicture preload="metadata" poster="assets/img/video-poster.jpg" playsinline aria-label="Conheça o funcionamento do site RigorAtlas neste vídeo de 5 minutos para fazer a sua pesquisa">
+      <video id="hero-video" controls controlsList="nodownload" disablePictureInPicture preload="metadata" poster="assets/img/video-poster.jpg?v=20261124nat8" playsinline aria-label="Guia em vídeo sobre o funcionamento do portal RigorAtlas">
         <source src="assets/video/apresentacao-rigoratlas.mp4" type="video/mp4">
         <track kind="subtitles" srclang="pt-BR" label="Português (Brasil)" src="assets/video/apresentacao-rigoratlas.vtt" default>
         <p>Seu navegador não suporta reprodução direta de vídeo MP4.</p>
       </video>
     </figure>
-    <div class="video-chapter-strip" role="group" aria-label="Ir diretamente para um capítulo do vídeo">
+    <div class="video-chapter-strip" role="group" aria-label="Capítulos do vídeo">
       <button type="button" class="video-chapter-btn" data-seek="0">0:00 Visão geral</button>
       <button type="button" class="video-chapter-btn" data-seek="34">0:34 Pesquisa</button>
       <button type="button" class="video-chapter-btn" data-seek="84">1:24 Comparar</button>
-      <button type="button" class="video-chapter-btn" data-seek="128">2:08 Critérios &amp; CAPES</button>
+      <button type="button" class="video-chapter-btn" data-seek="128">2:08 CAPES</button>
       <button type="button" class="video-chapter-btn" data-seek="201">3:21 Predatórias</button>
       <button type="button" class="video-chapter-btn" data-seek="260">4:20 Contato</button>
     </div>
-    <p class="hero-video-foot">Com áudio em português, legendas integradas (CC) e capítulos clicáveis para facilitar o aprendizado.</p>
   </div>
-  <div class="banner-featured"><div class="featured-heading"><div><span class="eyebrow">DESTAQUES POR PERCENTIL SCOPUS®</span><h2>5 revistas em destaque (&gt; 50% na Scopus®)</h2></div><a href="#revistas">Ver todas as revistas →</a></div>
-    <p id="featured-criteria" class="featured-criteria">Exibição por faixas de Percentil na Scopus® acima do piso de 50%: inclui 1 revista na faixa inicial (&gt; 50%), 1 no patamar de 75% e 3 revistas de alto nível (99%). A ficha completa identifica as fontes, os indicadores na Web of Science™ e os campos a confirmar.</p>
+  <div class="banner-featured"><div class="featured-heading"><div><span class="eyebrow">DESTAQUES SCOPUS®</span><h2>5 revistas em destaque (&gt; 50%)</h2></div><a href="#revistas">Ver todas →</a></div>
+    <p id="featured-criteria" class="featured-criteria">Seleção por faixas de percentil CiteScore™ acima de 50% (faixa inicial, 75% e 99%).</p>
     <div id="featured-journals" class="featured-journals" aria-describedby="featured-criteria"><p>Carregando destaques do catálogo…</p></div>
-    <noscript><p>Ative o JavaScript para carregar as cinco revistas em destaque e usar os filtros do catálogo.</p></noscript>
+    <noscript><p>Ative o JavaScript para carregar os destaques e filtros.</p></noscript>
   </div>
 </section>
-<section id="como-funciona" class="site-guide site-stage stage-guide" aria-labelledby="guide-title">
-  <div class="section-heading"><h2 id="guide-title">Passo a passo</h2></div>
-  <div class="site-flow">
-    <a class="flow-step" href="#ai-question" data-focus-search><span class="flow-kicker">Busca</span><strong>Explore a literatura</strong></a>
-    <a class="flow-step" href="#revistas"><span class="flow-kicker">Catálogo</span><strong>Filtre as revistas conforme seu critério</strong></a>
-    <a class="flow-step" href="#revistas"><span class="flow-kicker">Ficha completa</span><strong>Entenda todos os detalhes de uma revista</strong></a>
-    <a class="flow-step" href="#comparar"><span class="flow-kicker">Comparação</span><strong>Selecione uma ou mais revistas e compare</strong></a>
-    <a class="flow-step" href="#faq"><span class="flow-kicker">Acordos CAPES</span><strong>Perguntas frequentes e regras de publicação</strong></a>
-  </div>
-</section>
-<section id="tech-telemetry" class="tech-telemetry site-stage" aria-label="Painel tecnológico e atualizações automáticas do catálogo">
+<section id="tech-telemetry" class="tech-telemetry site-stage" aria-label="Painel gráfico e indicadores do catálogo">
   <div class="telemetry-head">
     <div>
-      <span class="eyebrow">INTELIGÊNCIA &amp; AUTOMAÇÃO CONTÍNUA</span>
-      <h2>Radar Científico OpenAlex &amp; Acordos CAPES</h2>
+      <span class="eyebrow">OBSERVATÓRIO EM TEMPO REAL</span>
+      <h2>Radar Científico OpenAlex, Crossref &amp; CAPES</h2>
     </div>
-    <button type="button" class="primary telemetry-chat-btn" data-open-oa-chat>💬 Buscar artigos de interesse e onde publicar</button>
+    <div class="telemetry-actions">
+      <a href="apresentacao.html" class="banner-accent-live">📊 Ver gráficos ao vivo ↗</a>
+      <button type="button" class="primary telemetry-chat-btn" data-open-oa-chat>💬 Assistente de artigos</button>
+    </div>
   </div>
   <div class="telemetry-grid">
-    <article class="telemetry-card">
+    <article class="telemetry-card kpi-emerald">
       <span class="telemetry-label">Base do portal</span>
       <strong id="telemetry-total">412</strong>
-      <small>Periódicos cadastrados com atualização contínua</small>
+      <div class="kpi-mini-bar" aria-hidden="true"><span style="width:94%"></span></div>
+      <small>Periódicos científicos auditados</small>
     </article>
-    <article class="telemetry-card">
-      <span class="telemetry-label">Scopus® &amp; Web of Science™</span>
+    <article class="telemetry-card kpi-teal">
+      <span class="telemetry-label">Scopus® &amp; WoS™</span>
       <strong id="telemetry-scopus-wos">397 Scopus · 357 WoS</strong>
-      <small>Percentis CiteScore™ e Classificador JCR™ (Q1–Q4)</small>
+      <div class="kpi-mini-bar" aria-hidden="true"><span style="width:88%"></span></div>
+      <small>Percentis CiteScore™ e JCR™</small>
     </article>
-    <article class="telemetry-card">
+    <article class="telemetry-card kpi-amber">
       <span class="telemetry-label">Acordos CAPES</span>
-      <strong id="telemetry-capes">270 confirmadas + editoras CAPES</strong>
-      <small id="telemetry-quarterly">Próx. auditoria trimestral programada</small>
+      <strong id="telemetry-capes">270 confirmadas</strong>
+      <div class="kpi-mini-bar" aria-hidden="true"><span style="width:76%"></span></div>
+      <small id="telemetry-quarterly">Auditoria trimestral programada</small>
     </article>
-    <article class="telemetry-card">
-      <span class="telemetry-label">Ampliação Semanal</span>
-      <strong id="telemetry-weekly">Atualização automática semanal</strong>
-      <small>Descoberta auditada via OpenAlex REST API / DOAJ</small>
+    <article class="telemetry-card kpi-emerald">
+      <span class="telemetry-label">APIs Abertas</span>
+      <strong id="telemetry-weekly">Tempo real</strong>
+      <div class="kpi-mini-bar" aria-hidden="true"><span style="width:100%"></span></div>
+      <small>OpenAlex (CC0) · Crossref · DOAJ</small>
     </article>
   </div>
 </section>
 <section id="requisitos-publicacao" class="req-checklist-section site-stage" aria-labelledby="req-title">
   <div class="section-heading req-heading">
     <div>
-      <span class="eyebrow">CHECKLIST EM VÍDEO · ELEGIBILIDADE DO ARTIGO</span>
-      <h2 id="req-title">Principais requisitos para saber se seu artigo pode ser publicado na revista</h2>
+      <span class="eyebrow">CHECKLIST EM VÍDEO · 7 ETAPAS</span>
+      <h2 id="req-title">Seu artigo está pronto para a revista escolhida?</h2>
     </div>
-    <p class="req-lead">Assista ao guia visual de 1 min 39 s e marque os 7 critérios abaixo para avaliar se o periódico escolhido atende às exigências de qualidade, custos, prazos e integridade científica do seu programa de pós-graduação.</p>
+    <p class="req-lead">Assista ao resumo de 1 min 39 s e marque os 7 critérios essenciais antes da submissão.</p>
   </div>
   <div class="req-layout">
     <div class="req-video-box">
       <figure class="req-video-figure">
-        <video id="checklist-video" controls controlsList="nodownload" disablePictureInPicture preload="metadata" poster="assets/img/checklist-video-poster.jpg" playsinline aria-label="Vídeo checklist em sete etapas para confirmar se o artigo pode ser publicado na revista">
+        <video id="checklist-video" controls controlsList="nodownload" disablePictureInPicture preload="metadata" poster="assets/img/checklist-video-poster.jpg?v=20261124nat8" playsinline aria-label="Vídeo checklist em sete etapas para confirmar se o artigo pode ser publicado na revista">
           <source src="assets/video/checklist-requisitos.mp4" type="video/mp4">
           <track kind="subtitles" srclang="pt-BR" label="Português (Brasil)" src="assets/video/checklist-requisitos.vtt" default>
           <p>Seu navegador não suporta reprodução de vídeo MP4.</p>
@@ -423,26 +407,24 @@
   </div>
 </section>
 <nav class="desktop-side-nav" aria-label="Menu lateral rápido para computador e notebook">
-  <span class="side-nav-title">Acesso rápido</span>
   <a href="#inicio" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6.5h-5V21H4a1 1 0 0 1-1-1v-9.5z"/></svg><span>Início</span></a>
   <a href="#revistas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3H10a2 2 0 0 1 2 2v15a2 2 0 0 0-2-1.5H4.5A2.5 2.5 0 0 1 2 16v-10.5zm20 0A2.5 2.5 0 0 0 19.5 3H14a2 2 0 0 0-2 2v15a2 2 0 0 1 2-1.5h5.5A2.5 2.5 0 0 0 22 16v-10.5z"/></svg><span>Catálogo</span></a>
+  <a href="apresentacao.html" class="side-nav-live"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 16v-5m4 5V8m4 8v-3m4 3V5"/></svg><span>Ao Vivo</span></a>
   <a href="#comparar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h7v12H4zM13 6h7v12h-7z"/></svg><span>Comparar</span></a>
-  <a href="#apresentacao"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5v-7z"/></svg><span>Aprendizado</span></a>
-  <a href="#requisitos-publicacao"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>7 Requisitos</span></a>
-  <a href="#sinais-alerta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L2 20h20L12 3zm0 6v5m0 3h.01"/></svg><span>Sinais de alerta</span></a>
-  <a href="checklist.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Checklist</span></a>
+  <a href="#apresentacao"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5v-7z"/></svg><span>Vídeos</span></a>
+  <a href="#sinais-alerta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L2 20h20L12 3zm0 6v5m0 3h.01"/></svg><span>Alerta</span></a>
   <a href="#sugerir"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm0 2l8 6 8-6"/></svg><span>Contato</span></a>
   <a class="side-nav-whatsapp" href="https://wa.me/5548996390391?text=Ol%C3%A1!%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20o%20portal%20RigorAtlas." target="_blank" rel="noopener noreferrer" aria-label="Atendimento via WhatsApp (48) 99639-0391"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.9a8.5 8.5 0 0 1-12.5 7.5L3.5 20.5l1.2-4.3A8.5 8.5 0 1 1 20.5 11.9z"/><path d="M9.4 8.8c-.2-.5-.4-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.1 3.1 1.3 3.3c.2.2 2.2 3.4 5.4 4.7 2.6 1 3.2.8 3.8.8.6-.1 1.9-.8 2.1-1.5.3-.8.3-1.4.2-1.5-.1-.1-.3-.2-.6-.4s-1.9-.9-2.2-1c-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.2-.2.2-.3.3-.5.1-.2.1-.4 0-.5-.1-.2-.7-1.6-.9-2.2z"/></svg><span>WhatsApp</span></a>
 </nav>
 <nav class="mobile-floating-nav" aria-label="Atalhos rápidos para dispositivos móveis">
   <a href="#inicio" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6.5h-5V21H4a1 1 0 0 1-1-1v-9.5z"/></svg><span>Início</span></a>
   <a href="#revistas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3H10a2 2 0 0 1 2 2v15a2 2 0 0 0-2-1.5H4.5A2.5 2.5 0 0 1 2 16v-10.5zm20 0A2.5 2.5 0 0 0 19.5 3H14a2 2 0 0 0-2 2v15a2 2 0 0 1 2-1.5h5.5A2.5 2.5 0 0 0 22 16v-10.5z"/></svg><span>Catálogo</span></a>
-  <a href="#comparar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h7v12H4zM13 6h7v12h-7z"/></svg><span>Comparar</span></a>
-  <a href="#apresentacao"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5v-7z"/></svg><span>Aprender</span></a>
+  <a href="apresentacao.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 16v-5m4 5V8m4 8v-3m4 3V5"/></svg><span>Ao Vivo</span></a>
+  <a href="#apresentacao"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5v-7z"/></svg><span>Vídeos</span></a>
   <a class="mobile-nav-whatsapp" href="https://wa.me/5548996390391?text=Ol%C3%A1!%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20o%20portal%20RigorAtlas." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (48) 99639-0391"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.9a8.5 8.5 0 0 1-12.5 7.5L3.5 20.5l1.2-4.3A8.5 8.5 0 1 1 20.5 11.9z"/><path d="M9.4 8.8c-.2-.5-.4-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.1 3.1 1.3 3.3c.2.2 2.2 3.4 5.4 4.7 2.6 1 3.2.8 3.8.8.6-.1 1.9-.8 2.1-1.5.3-.8.3-1.4.2-1.5-.1-.1-.3-.2-.6-.4s-1.9-.9-2.2-1c-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.2-.2.2-.3.3-.5.1-.2.1-.4 0-.5-.1-.2-.7-1.6-.9-2.2z"/></svg><span>WhatsApp</span></a>
 </nav>
-<script type="module" src="assets/js/app.js?v=20261124v6"></script>
-<script type="module" src="assets/js/accessibility.js?v=20261124v6"></script>
+<script type="module" src="assets/js/app.js?v=20261124nat7"></script>
+<script type="module" src="assets/js/accessibility.js?v=20261124nat7"></script>
 <script type="module" src="assets/js/contact.js?v=20261124indep3"></script>
 <script type="module" src="assets/js/visitor-tracker.js?v=20261124indep3"></script>
 <script type="module" src="assets/js/tech-status.js?v=20261124indep3"></script>

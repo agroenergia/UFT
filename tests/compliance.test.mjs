@@ -133,10 +133,11 @@ test('fixed legal compliance footer and full policy documentation cover independ
   }
 });
 
-test('header displays search hint, main terms including Aprendizado, desktop left sidebar with WhatsApp, and mobile floating nav', async () => {
+test('header displays search hint, main terms including Aprendizado & Apresentação Ao Vivo, removes .a11y-bar, and provides desktop rail + mobile dock with WhatsApp', async () => {
   const indexHtml = await read('index.html');
   assert.doesNotMatch(indexHtml, /id="menu-toggle"/i, 'index.html must not contain #menu-toggle button');
   assert.doesNotMatch(indexHtml, /<span>Menu<\/span>/i, 'index.html must not show Menu button label');
+  assert.doesNotMatch(indexHtml, /class="a11y-bar"/i, 'index.html must not render removed accessibility toolbar');
   assert.match(indexHtml, /<span id="search-hint-text" class="search-hint">/i, 'search bar must display descriptive hint span');
   assert.match(indexHtml, /<div class="header-subnav">\s*<nav id="primary-navigation" class="header-term-nav"[^>]*>/i, 'index.html must render always-visible horizontal term navigation under search bar');
   assert.doesNotMatch(indexHtml, /id="primary-navigation"[^>]*\shidden\b/i, '#primary-navigation must not be hidden');
@@ -144,7 +145,7 @@ test('header displays search hint, main terms including Aprendizado, desktop lef
   assert.ok(navMatch, '#primary-navigation must exist');
   const navBlock = navMatch[0];
   const beforeDropdown = navBlock.split('data-nav-dropdown')[0];
-  for (const mainTerm of ['>Início<', '>Catálogo de revistas<', '>Comparar<', '>Aprendizado<', '>Sinais de alerta<', '>Contato<']) {
+  for (const mainTerm of ['>Início<', '>Catálogo de revistas<', 'Apresentação Ao Vivo', '>Comparar<', '>Aprendizado<', '>Sinais de alerta<', '>Contato<']) {
     assert.ok(beforeDropdown.includes(mainTerm), `primary top-level nav must include ${mainTerm}`);
   }
   assert.match(navBlock, /id="nav-more-menu" class="nav-dropdown-menu"/i, 'secondary items must live in dropdown menu');
@@ -156,6 +157,20 @@ test('header displays search hint, main terms including Aprendizado, desktop lef
   assert.ok(searchPos > 0 && navPos > searchPos, 'horizontal term navigation must appear below the search bar');
 });
 
+test('interactive real-time presentation uses OpenAlex/Crossref/ORCID, has no downloads, and never associates personal names with counts', async () => {
+  const presHtml = await read('apresentacao.html');
+  const presJs = await read('assets/js/apresentacao.js');
+  assert.doesNotMatch(presHtml, /<a\b[^>]*\sdownload(?=[\s>="'])/i, 'apresentacao.html must not allow downloads');
+  assert.match(presHtml, /DOCUMENTAÇÃO JURÍDICA FIXA/i, 'apresentacao.html must include sober legal footer');
+  assert.match(presHtml, /sem associar nomes individuais a quantidades/i, 'apresentacao.html must display ethical notice');
+  assert.match(presJs, /https:\/\/api\.openalex\.org\/works/, 'apresentacao.js must query OpenAlex live');
+  assert.match(presJs, /https:\/\/api\.crossref\.org\/works/, 'apresentacao.js must query Crossref live');
+  assert.match(presJs, /https:\/\/pub\.orcid\.org\/v3\.0\/expanded-search\//, 'apresentacao.js must query ORCID live');
+  assert.match(presJs, /scholar\.google\.com/, 'apresentacao.js must link Google Scholar');
+  assert.match(presJs, /lattes\.cnpq\.br|buscatextual\.cnpq\.br/, 'apresentacao.js must link Lattes');
+  assert.doesNotMatch(presJs, /works_count|cited_by_count/i, 'apresentacao.js must never attach personal publication/citation counts to researcher cards');
+});
+
 test('institutional independence: zero unauthorized UFT/PPGAD references remain, .search-privacy banner removed, and approved team credits present', async () => {
   const indexHtml = await read('index.html');
   assert.doesNotMatch(indexHtml, /class="search-privacy"/i, 'index.html must not display the top .search-privacy banner');
@@ -163,7 +178,7 @@ test('institutional independence: zero unauthorized UFT/PPGAD references remain,
     assert.ok(indexHtml.includes(member), `index.html footer must include ${member}`);
   }
 
-  const forbidden = /\b(uft|ppgad|propesq|tocantins|palmas)\b|universidade federal do tocantins|agroenergia digital|agroneg[oó]cio digital|nibert|dra\.?\s*solange|@uft\.edu\.br|@mail\.uft\.edu\.br|logo-pesquisa-ppgad|ppgad_admin|ppgad-logo|cafe\/uft|procuradoria federal/i;
+  const forbidden = /\b(uft|ppgad|propesq|tocantins|palmas)\b|universidade federal do tocantins|agroneg[oó]cio digital|nibert|dra\.?\s*solange|@uft\.edu\.br|@mail\.uft\.edu\.br|logo-pesquisa-ppgad|ppgad_admin|ppgad-logo|cafe\/uft|procuradoria federal/i;
   const files = await walkFiles(rootDir);
   const violations = [];
   for (const rel of files) {

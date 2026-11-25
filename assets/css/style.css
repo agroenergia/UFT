@@ -2762,3 +2762,312 @@ html[data-a11y-contrast="true"] .legal-compliance-footer *,html[data-a11y-contra
 html[data-a11y-contrast="true"] .oa-chat-fab,html[data-a11y-contrast="true"] .telemetry-chat-btn{background:#000000!important;color:#ffff00!important;border:2px solid #ffff00!important}
 html[data-a11y-contrast="true"] .oa-chat-fab *{color:#ffff00!important}
 
+/* ==========================================================================
+   RigorAtlas — Tema Natureza & Vidro Translúcido (Glassmorphism Bioenergia)
+   Unificado visualmente com apresentacao.html
+   ========================================================================== */
+body.nature-glass-site{
+  background:#193e2c url("../img/bg-bioenergia-campo.jpg") center top / cover fixed no-repeat!important;
+  position:relative;
+}
+body.nature-glass-site::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:linear-gradient(180deg,rgba(244,249,245,.52) 0%,rgba(232,243,235,.40) 48%,rgba(16,44,31,.42) 100%);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+  pointer-events:none;
+  z-index:0;
+}
+body.nature-glass-site>.site-header,
+body.nature-glass-site>.ai-response-wrap,
+body.nature-glass-site>main,
+body.nature-glass-site>footer{position:relative;z-index:1}
+
+/* Cabeçalho em vidro fosco claro + pílulas modernas */
+body.nature-glass-site .site-header{
+  background:rgba(255,255,255,.92)!important;
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-top:3px solid #15803d;
+  border-bottom:1px solid rgba(20,83,60,.14);
+  box-shadow:0 8px 28px rgba(10,38,24,.10);
+  z-index:90;
+}
+body.nature-glass-site .header-subnav{
+  background:rgba(244,249,245,.76)!important;
+  border-top:1px solid rgba(20,83,60,.10);
+}
+body.nature-glass-site .site-header nav.header-term-nav{
+  gap:8px;
+  padding:6px 0;
+}
+@media(max-width:960px){
+  body.nature-glass-site .site-header nav.header-term-nav{
+    flex-wrap:nowrap!important;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    gap:6px;
+    padding:6px 2px;
+  }
+  body.nature-glass-site .site-header nav.header-term-nav::-webkit-scrollbar{display:none}
+  body.nature-glass-site .site-header nav.header-term-nav>a,
+  body.nature-glass-site .site-header nav.header-term-nav .nav-dropdown{flex:0 0 auto}
+  body.nature-glass-site .site-header nav.header-term-nav>a,
+  body.nature-glass-site .site-header nav.header-term-nav .nav-dropdown-trigger{
+    padding:6px 11px;
+    font-size:12px;
+    white-space:nowrap;
+  }
+}
+body.nature-glass-site .site-header nav.header-term-nav>a,
+body.nature-glass-site .site-header nav.header-term-nav .nav-dropdown-trigger{
+  padding:7px 13px;
+  border:1px solid transparent;
+  border-radius:999px;
+  font-size:12.8px;
+  font-weight:600;
+  color:#1f3b2e;
+}
+body.nature-glass-site .site-header nav.header-term-nav>a:hover,
+body.nature-glass-site .site-header nav.header-term-nav .nav-dropdown-trigger:hover,
+body.nature-glass-site .site-header nav.header-term-nav .nav-dropdown:hover .nav-dropdown-trigger{
+  background:rgba(21,128,61,.10);
+  border-color:rgba(21,128,61,.22);
+  color:#14533c;
+}
+body.nature-glass-site .site-header nav.header-term-nav>a.on{
+  background:#14533c;
+  color:#ffffff;
+  border-color:#14533c;
+}
+body.nature-glass-site .site-header nav.header-term-nav>a.nav-live-pill{
+  background:linear-gradient(135deg,#ecfdf5,#dcfce7);
+  border:1px solid #86efac;
+  color:#14533c;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+body.nature-glass-site .site-header nav.header-term-nav>a.nav-live-pill:hover{
+  background:#15803d;
+  border-color:#15803d;
+  color:#ffffff;
+}
+.live-dot-mini{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#16a34a;
+  box-shadow:0 0 0 3px rgba(22,163,74,.25);
+  display:inline-block;
+  flex:none;
+}
+body.nature-glass-site .site-header nav.header-term-nav>a.nav-live-pill:hover .live-dot-mini{
+  background:#86efac;
+}
+
+/* Botões gráficos modernos */
+body.nature-glass-site .banner-primary,
+body.nature-glass-site .primary,
+body.nature-glass-site .suggest-submit{
+  background:linear-gradient(135deg,#14533c,#15803d)!important;
+  border:1px solid #14533c!important;
+  border-radius:10px!important;
+  box-shadow:0 6px 16px rgba(20,83,60,.22)!important;
+  transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+}
+body.nature-glass-site .banner-primary:hover,
+body.nature-glass-site .primary:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px rgba(20,83,60,.30)!important;
+  filter:brightness(1.04);
+}
+.banner-accent-live{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:42px;
+  padding:9px 16px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#ecfdf5,#d1fae5);
+  border:1px solid #6ee7b7;
+  color:#14533c;
+  font-size:13.5px;
+  font-weight:700;
+  text-decoration:none;
+  transition:transform .15s ease,background .15s ease,color .15s ease;
+}
+.banner-accent-live:hover{
+  background:#15803d;
+  border-color:#15803d;
+  color:#ffffff;
+  transform:translateY(-1px);
+}
+.banner-accent-live:hover .live-dot-mini{background:#86efac}
+
+/* Superfícies em vidro fosco claro sobre o campo de bioenergia */
+body.nature-glass-site .discovery-banner,
+body.nature-glass-site main>section.site-stage,
+body.nature-glass-site main>section.req-checklist-section,
+body.nature-glass-site main>section.predatory-section,
+body.nature-glass-site main>section.compare-section,
+body.nature-glass-site main>section.faq-section,
+body.nature-glass-site main>section.suggest-section,
+body.nature-glass-site main>section#tech-telemetry.tech-telemetry{
+  background:rgba(255,255,255,.90)!important;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.78)!important;
+  border-radius:18px!important;
+  box-shadow:0 14px 36px rgba(10,38,24,.13)!important;
+}
+body.nature-glass-site .banner-video-hero{
+  background:rgba(248,252,249,.88)!important;
+  border:1px solid rgba(20,83,60,.16)!important;
+  border-top:3px solid #15803d!important;
+  border-radius:14px!important;
+}
+
+/* Radar Científico com cartões gráficos modernos (barras visuais) */
+.telemetry-actions{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+}
+body.nature-glass-site .telemetry-card{
+  background:rgba(255,255,255,.94)!important;
+  border:1px solid rgba(20,83,60,.14)!important;
+  border-top:3px solid #15803d!important;
+  border-radius:14px!important;
+  padding:15px 16px!important;
+}
+body.nature-glass-site .telemetry-card.kpi-teal{border-top-color:#0e7490!important}
+body.nature-glass-site .telemetry-card.kpi-amber{border-top-color:#b45309!important}
+.kpi-mini-bar{
+  width:100%;
+  height:6px;
+  border-radius:999px;
+  background:rgba(20,83,60,.10);
+  overflow:hidden;
+  margin:7px 0 6px;
+}
+.kpi-mini-bar span{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#15803d,#22c55e);
+}
+.kpi-teal .kpi-mini-bar span{background:linear-gradient(90deg,#0e7490,#06b6d4)}
+.kpi-amber .kpi-mini-bar span{background:linear-gradient(90deg,#b45309,#f59e0b)}
+
+/* Rail lateral esquerdo fino translúcido verde-musgo (desktop/notebook >= 961px) */
+@media(min-width:961px){
+  body.nature-glass-site .desktop-side-nav{
+    left:12px;
+    top:calc(var(--header-offset,130px) + 10px);
+    width:76px;
+    padding:10px 6px;
+    gap:5px;
+    background:rgba(13,44,31,.88)!important;
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.18)!important;
+    border-radius:16px;
+    box-shadow:0 12px 30px rgba(8,28,18,.26);
+  }
+  body.nature-glass-site .desktop-side-nav a{
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:3px;
+    padding:8px 3px;
+    border-radius:11px;
+    color:#d1fae5;
+    font-size:9.8px;
+    font-weight:600;
+    text-align:center;
+  }
+  body.nature-glass-site .desktop-side-nav a svg{
+    width:18px;
+    height:18px;
+  }
+  body.nature-glass-site .desktop-side-nav a:hover{
+    background:rgba(255,255,255,.15);
+    color:#ffffff;
+  }
+  body.nature-glass-site .desktop-side-nav a.on{
+    background:rgba(255,255,255,.95);
+    color:#14533c;
+    box-shadow:0 4px 12px rgba(0,0,0,.16);
+  }
+  body.nature-glass-site .desktop-side-nav a.side-nav-live{
+    background:rgba(34,197,94,.20);
+    border:1px solid rgba(134,239,172,.35);
+    color:#dcfce7;
+  }
+  body.nature-glass-site .desktop-side-nav a.side-nav-live:hover{
+    background:#15803d;
+    color:#ffffff;
+  }
+  body.nature-glass-site .desktop-side-nav a.side-nav-whatsapp{
+    margin-top:4px;
+    background:#16a34a;
+    border:1px solid #4ade80;
+    color:#ffffff;
+  }
+  body.nature-glass-site .desktop-side-nav a.side-nav-whatsapp:hover{
+    background:#15803d;
+    color:#ffffff;
+  }
+}
+@media(min-width:961px) and (max-width:1420px){
+  body.nature-glass-site:has(.desktop-side-nav) .ai-response-wrap,
+  body.nature-glass-site:has(.desktop-side-nav) main#inicio,
+  body.nature-glass-site:has(.desktop-side-nav) .footer-inner,
+  body.nature-glass-site:has(.desktop-side-nav) .legal-compliance-inner{
+    margin-left:102px!important;
+    margin-right:20px!important;
+    width:auto!important;
+    max-width:1180px!important;
+  }
+}
+
+/* Barra flutuante mobile em vidro verde-musgo (casando com a apresentação) */
+@media(max-width:960px){
+  body.nature-glass-site .mobile-floating-nav{
+    background:rgba(13,44,31,.92)!important;
+    border:1px solid rgba(255,255,255,.22)!important;
+    box-shadow:0 12px 30px rgba(0,0,0,.28)!important;
+  }
+  body.nature-glass-site .mobile-floating-nav a{
+    color:#d1fae5;
+  }
+  body.nature-glass-site .mobile-floating-nav a.on{
+    background:rgba(255,255,255,.95);
+    color:#14533c;
+  }
+  body.nature-glass-site .mobile-floating-nav a.mobile-nav-whatsapp{
+    background:#16a34a;
+    color:#ffffff;
+  }
+}
+
+/* Rodapé principal verde-floresta translúcido (mantendo o jurídico fixo 100% branco/preto sóbrio) */
+body.nature-glass-site .site-footer{
+  background:rgba(12,38,26,.92)!important;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-top:3px solid #22c55e;
+}
+body.nature-glass-site .legal-compliance-footer{
+  background:#ffffff!important;
+  color:#111111!important;
+  backdrop-filter:none!important;
+}
+
+

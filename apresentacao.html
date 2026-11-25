@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apresentação Interativa — Agroenergia Digital &amp; Biocombustíveis | RigorAtlas</title>
+<meta name="description" content="Apresentação científica interativa com dados em tempo real das APIs OpenAlex, Crossref e ORCID sobre Agroenergia Digital, Biocombustíveis e Linhas de Pesquisa nos últimos 5 anos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/apresentacao.css?v=20261124v2">
+</head>
+<body class="pres-body">
+<div class="pres-shell">
+  <aside class="pres-rail" aria-label="Navegação da apresentação interativa">
+    <a class="pres-rail-brand" href="index.html" title="Voltar ao portal RigorAtlas">
+      <img src="assets/img/logo-rigoratlas.svg?v=20261124" alt="Logotipo RigorAtlas">
+      <span>RigorAtlas</span>
+    </a>
+    <nav class="pres-rail-nav">
+      <button type="button" class="pres-rail-btn active" data-slide="0">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+        <span>Visão Geral</span>
+      </button>
+      <button type="button" class="pres-rail-btn" data-slide="1">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 16v-5m4 5V8m4 8v-3m4 3V5"/></svg>
+        <span>Semestres</span>
+      </button>
+      <button type="button" class="pres-rail-btn" data-slide="2">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>Linhas</span>
+      </button>
+      <button type="button" class="pres-rail-btn" data-slide="3">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Docentes</span>
+      </button>
+      <a class="pres-rail-btn" href="index.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6.5h-5V21H4a1 1 0 0 1-1-1v-9.5z"/></svg>
+        <span>Portal</span>
+      </a>
+    </nav>
+    <div class="pres-rail-bottom">
+      <button type="button" id="rail-fullscreen" class="pres-rail-btn" title="Alternar tela cheia">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        <span>Tela Cheia</span>
+      </button>
+      <a class="pres-rail-btn" href="https://wa.me/5548996390391?text=Ol%C3%A1!%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20a%20apresenta%C3%A7%C3%A3o%20RigorAtlas." target="_blank" rel="noopener noreferrer" title="WhatsApp (48) 99639-0391">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.9a8.5 8.5 0 0 1-12.5 7.5L3.5 20.5l1.2-4.3A8.5 8.5 0 1 1 20.5 11.9z"/></svg>
+        <span>WhatsApp</span>
+      </a>
+    </div>
+  </aside>
+
+  <main class="pres-main">
+    <header class="pres-topbar">
+      <div class="pres-title-block">
+        <h1>Agroenergia Digital — Dados Científicos em Tempo Real</h1>
+        <p id="active-line-subtitle">Panorama Integrado — Bioenergia, Biocombustíveis &amp; Tecnologias Digitais (últimos 5 anos)</p>
+      </div>
+      <div class="pres-live-bar">
+        <span id="live-status-pill" class="pres-live-pill loading" role="status" aria-live="polite">
+          <span class="pres-live-dot" aria-hidden="true"></span>
+          <span id="live-status-text">Conectando às APIs abertas…</span>
+        </span>
+        <button type="button" id="btn-refresh-live" class="pres-action-btn">↻ Atualizar ao vivo</button>
+        <button type="button" id="btn-slide-mode" class="pres-action-btn ghost">▣ Modo Slides</button>
+        <button type="button" id="btn-fullscreen" class="pres-action-btn ghost">⛶ Tela cheia</button>
+      </div>
+    </header>
+
+    <section class="pres-filters" aria-label="Filtros interativos em tempo real">
+      <div class="pres-filter-group">
+        <label class="pres-filter-label" for="filter-line">Área / Linha</label>
+        <select id="filter-line" class="pres-select" aria-label="Selecionar linha de pesquisa"></select>
+
+        <label class="pres-filter-label" for="filter-year">Período</label>
+        <select id="filter-year" class="pres-select" aria-label="Filtrar período de anos"></select>
+
+        <div class="pres-segmented" role="group" aria-label="Granularidade temporal">
+          <button type="button" class="pres-seg-btn active" data-granularity="semester">Por Semestre (S1/S2)</button>
+          <button type="button" class="pres-seg-btn" data-granularity="year">Por Ano</button>
+        </div>
+      </div>
+      <div class="pres-slide-pager" aria-label="Navegação por seções">
+        <button type="button" id="btn-prev-slide" aria-label="Seção anterior">‹</button>
+        <span id="slide-counter">Seção 1 / 4</span>
+        <button type="button" id="btn-next-slide" aria-label="Próxima seção">›</button>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 1: VISÃO GERAL & KPIs + GRÁFICO PRINCIPAL -->
+    <section id="sec-visao-geral" class="pres-section slide-active" aria-label="Visão geral e indicadores em tempo real">
+      <div class="pres-kpi-grid">
+        <article class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">Publicações na Temática (5 anos)</span>
+            <span id="kpi-total-badge" class="kpi-badge">Ao vivo</span>
+          </div>
+          <div class="kpi-value-row">
+            <strong id="kpi-total-value" class="kpi-value">…</strong>
+            <span id="kpi-total-meta" class="kpi-meta">Consultando OpenAlex</span>
+          </div>
+          <svg id="spark-total" class="kpi-sparkline" aria-hidden="true"></svg>
+        </article>
+
+        <article class="kpi-card teal">
+          <div class="kpi-top">
+            <span class="kpi-label">Registros DOI (Crossref)</span>
+            <span class="kpi-badge neutral">Crossref API</span>
+          </div>
+          <div class="kpi-value-row">
+            <strong id="kpi-crossref-value" class="kpi-value">…</strong>
+            <span id="kpi-crossref-meta" class="kpi-meta">Consultando Crossref</span>
+          </div>
+          <svg id="spark-crossref" class="kpi-sparkline" aria-hidden="true"></svg>
+        </article>
+
+        <article class="kpi-card amber">
+          <div class="kpi-top">
+            <span class="kpi-label">Taxa de Acesso Aberto</span>
+            <span class="kpi-badge amber">Ciência Aberta</span>
+          </div>
+          <div class="kpi-value-row">
+            <strong id="kpi-oa-value" class="kpi-value">…</strong>
+            <span id="kpi-oa-meta" class="kpi-meta">Proporção Open Access</span>
+          </div>
+          <svg id="spark-oa" class="kpi-sparkline" aria-hidden="true"></svg>
+        </article>
+      </div>
+
+      <article class="glass-card" style="margin-top:18px">
+        <div class="glass-card-head">
+          <div>
+            <h2>Evolução de Publicações Científicas — Últimos 5 Anos</h2>
+            <p class="glass-card-sub">Dados temáticos agregados consultados ao vivo. Passe o cursor sobre qualquer barra para ver detalhes e variação percentual.</p>
+          </div>
+          <span class="api-source-tag">OpenAlex (CC0) · Crossref REST API</span>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:#0e7490"></span> 1º Semestre (S1 · Jan–Jun)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#15803d"></span> 2º Semestre (S2 · Jul–Dez) / Total Anual</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#b45309"></span> Linha de tendência</span>
+        </div>
+        <div id="main-evolution-chart" class="pres-chart-wrap"><p class="glass-card-sub">Carregando gráfico em tempo real…</p></div>
+      </article>
+    </section>
+
+    <!-- SEÇÃO 2: SEMESTRES, CASCATA DE VARIAÇÃO E MATRIZ -->
+    <section id="sec-semestres" class="pres-section" aria-label="Análise semestral e anual">
+      <div class="pres-two-col">
+        <article class="glass-card">
+          <div class="glass-card-head">
+            <div>
+              <h2>Variação Semestral (Cascata S1 ↔ S2)</h2>
+              <p class="glass-card-sub">Crescimento ou retração de cada semestre em relação ao período imediatamente anterior.</p>
+            </div>
+            <span class="api-source-tag">Série Dinâmica 5 Anos</span>
+          </div>
+          <div id="waterfall-chart" class="pres-chart-wrap"><p class="glass-card-sub">Calculando variações semestrais…</p></div>
+        </article>
+
+        <article class="glass-card">
+          <div class="glass-card-head">
+            <div>
+              <h2>Matriz Comparativa por Semestre e Ano</h2>
+              <p class="glass-card-sub">Consolidação cruzada OpenAlex (S1/S2) e Crossref (DOIs anuais) na área selecionada.</p>
+            </div>
+          </div>
+          <div class="pres-table-wrap">
+            <table class="pres-table">
+              <thead>
+                <tr>
+                  <th scope="col">Ano</th>
+                  <th scope="col">S1 (Jan–Jun)</th>
+                  <th scope="col">S2 (Jul–Dez)</th>
+                  <th scope="col">OpenAlex Total</th>
+                  <th scope="col">Crossref DOIs</th>
+                  <th scope="col">Var. Anual</th>
+                </tr>
+              </thead>
+              <tbody id="semester-matrix-body">
+                <tr><td colspan="6">Consultando dados ao vivo…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 3: LINHAS DE PESQUISA & ARTIGOS RECENTES AO VIVO -->
+    <section id="sec-linhas" class="pres-section" aria-label="Linhas de pesquisa e produções recentes">
+      <div class="pres-two-col">
+        <article class="glass-card">
+          <div class="glass-card-head">
+            <div>
+              <h2>Linhas de Pesquisa em Agroenergia &amp; Biocombustíveis</h2>
+              <p class="glass-card-sub">Clique em uma linha de pesquisa para filtrar todos os gráficos da apresentação em tempo real.</p>
+            </div>
+            <span class="api-source-tag">3 Eixos Temáticos</span>
+          </div>
+          <div id="research-lines-bars" class="line-bars"><p class="glass-card-sub">Carregando comparativo das linhas…</p></div>
+        </article>
+
+        <article class="glass-card">
+          <div class="glass-card-head">
+            <div>
+              <h2>Publicações Recentes na Temática (Ao Vivo)</h2>
+              <p class="glass-card-sub">Amostra em tempo real mesclando OpenAlex e Crossref com links diretos para o DOI oficial.</p>
+            </div>
+            <span class="api-source-tag">Feed DOI Ao Vivo</span>
+          </div>
+          <div id="live-works-list" class="live-works-list"><p class="glass-card-sub">Buscando publicações recentes…</p></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 4: DIRETÓRIO DE PESQUISADORES (SEM QUANTITATIVOS INDIVIDUAIS) -->
+    <section id="sec-pesquisadores" class="pres-section" aria-label="Diretório de pesquisadores e links oficiais">
+      <article class="glass-card">
+        <div class="glass-card-head">
+          <div>
+            <h2>Diretório de Pesquisadores — Perfis Públicos</h2>
+            <p class="glass-card-sub">Acesso direto aos currículos e bases públicas oficiais (Google Scholar, Plataforma Lattes e ORCID).</p>
+          </div>
+          <span class="api-source-tag">ORCID Public API v3.0</span>
+        </div>
+        <div class="ethics-notice">
+          <strong>Diretriz Ética de Apresentação:</strong> esta seção disponibiliza exclusivamente links para perfis científicos públicos (<strong>Google Scholar</strong>, <strong>Lattes</strong> e <strong>ORCID</strong>), <strong>sem associar nomes individuais a quantidades de publicações, citações ou rankings pessoais</strong>. Todos os gráficos quantitativos da apresentação refletem exclusivamente o volume agregado das áreas temáticas.
+        </div>
+        <div class="faculty-toolbar">
+          <input type="search" id="faculty-search" class="faculty-search" placeholder="Filtrar pesquisador por nome ou linha temática…" aria-label="Filtrar pesquisador por nome ou linha temática">
+          <span id="faculty-count" class="glass-card-sub"></span>
+        </div>
+        <div id="faculty-grid" class="faculty-grid"></div>
+      </article>
+    </section>
+  </main>
+</div>
+
+<footer class="pres-legal-footer" aria-labelledby="pres-legal-title">
+  <div class="pres-legal-inner">
+    <span class="legal-compliance-kicker">DOCUMENTAÇÃO JURÍDICA FIXA · POLÍTICA DE SEGURANÇA, DIREITOS E GOVERNANÇA DE DADOS</span>
+    <h2 id="pres-legal-title">Conformidade Legal, Independência, APIs, IA, Scopus® e Web of Science™ — RigorAtlas</h2>
+    <p>Iniciativa acadêmica independente, sem fins lucrativos e sem vínculo institucional com universidades, órgãos públicos ou editoras. Os dados quantitativos exibidos nesta apresentação são consultados em tempo real nas APIs públicas abertas <strong>OpenAlex (CC0 1.0)</strong>, <strong>Crossref REST API</strong> (com identificação <code>mailto</code>) e <strong>ORCID Public API v3.0</strong>, exclusivamente de forma agregada por área temática e sem associação de nomes pessoais a quantitativos. Sem envio de dados a IA generativa externa e sem opções de download/exportação em massa. <strong>Scopus® / CiteScore™</strong> (Elsevier B.V.), <strong>Web of Science™ / JCR™ / JIF™</strong> (Clarivate™) e <strong>SJR</strong> (SCImago Lab) permanecem sob titularidade de seus respectivos proprietários. Alinhado à LGPD (Lei nº 13.709/2018), Marco Civil (Lei nº 12.965/2014) e Lei de Direitos Autorais (Lei nº 9.610/1998). Documentação técnica de governança — não substitui parecer jurídico formal emitido por advogado inscrito na OAB.</p>
+    <div class="pres-legal-links">
+      <a href="index.html">Portal RigorAtlas</a>
+      <a href="privacidade.html">Política Completa de Segurança, Direitos, APIs e LGPD</a>
+      <a href="sobre.html">Sobre e Fontes dos Dados</a>
+      <a href="index.html#sugerir">Contato e Direitos do Titular</a>
+    </div>
+  </div>
+</footer>
+
+<div id="chart-tooltip" class="chart-tooltip" role="tooltip" aria-hidden="true"></div>
+<script type="module" src="assets/js/apresentacao.js?v=20261124v2"></script>
+</body>
+</html>
